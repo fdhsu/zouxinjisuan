@@ -43,12 +43,6 @@
     onLoad() {
       this._startLikeAnimation();
     },
-    onShareAppMessage() {
-      return {
-        title: '快来和我们玩转软件开发吧～',
-        path: '/pages/about/about?from=share'
-      }
-    },
     methods: {
       _startLikeAnimation() {
         this.animation_timer = setInterval(() => {
