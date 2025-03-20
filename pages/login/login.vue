@@ -1,16 +1,25 @@
 <template>
 <view class="login" :style="'background: url(' + bgImg[imgIndex] + '); background-size: cover;background-repeat:no-repeat; background-position: center;'">
   <view class="logo">
-    <image src="/static/images/log.png"></image>
+    <image src="/static/logo/144-144.png"></image>
   </view>
- 
+
   <view class="login_from">
       <input placeholder="请输入手机号" v-model="tel" type="number" maxlength="11" placeholder-style="color: #333"></input>
       <view class="codes">
       	<input placeholder="请输入短信验证码" v-model="smscode"  maxlength="6" type="number" placeholder-style="color: #333"></input>
 		<view @click="getCode" :style="{opacity: isCode == true ? '1':'0.8'}">{{codeName}}</view>
       </view>
+	   
+	   <checkbox-group @change="checkboxChange">
+	   	<label>
+	   		<checkbox value="readCb" :checked="isReadChk"/>我已阅读并同意
+	   	</label>
+	   	<text class="link" @click="navigateToAgreement">《用户协议》</text>
+	   </checkbox-group>
+	   
       <view class="login_btn" @click="onlogin">登录</view>
+
   </view>
   <!-- #ifdef MP-WEIXIN -->
   <view class="login_from">
@@ -25,6 +34,7 @@ import { setUserInfo,setToken } from "../../utils/auth";
 export default {
   data() {
     return {
+	  isReadChk: false,
       isCanUse: uni.getStorageSync('isCanUse'),
       nickName: '',
       avatarUrl: '',
@@ -39,57 +49,18 @@ export default {
     };
   },
   props: {},
-
-  /**
-   * 生命周期函数--监听页面加载
-   */
-  onLoad: function (options) {
-    // // #ifdef MP-WEIXIN
-    // this.wxlogin(); //小程序获取用户code
-    // // #endif
-  },
-
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {},
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-    this.setbImg();  //动态切换背景
-  },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-    clearInterval(this.imgTime);
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-    clearInterval(this.imgTime);
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {},
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {},
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {},
   methods: {
+	checkboxChange(e) {
+		console.log(e)
+		console.log(e.detail.value)
+		console.log(e.detail.value.length > 0)
+		this.isReadChk = e.detail.value.length > 0
+	},
+	navigateToAgreement() {
+		uni.navigateTo({
+			url: '/pages/me/agreement'
+		});
+	},
     getUserInfo() {
       let _this = this;
       uni.getUserInfo({
@@ -125,29 +96,19 @@ export default {
 
       });
     },
-
-    setbImg() {
-      clearInterval(this.imgTime);
-      let that = this;
-      console.log('执行了');
-      let imgTime = setInterval(() => {
-        let imgIndex = that.imgIndex + 1;
-        if (imgIndex >= that.bgImg.length) {
-          imgIndex = 0;
-        }
-        that.setData({
-          imgIndex: imgIndex
-        });
-      }, 15000);
-      this.setData({
-        imgTime: imgTime
-      });
-    },
 	onlogin(){ //登录 模拟存储token
+	if (!this.agree) {
+	        uni.showToast({
+	          title: '请先同意用户协议',
+	          icon: 'none'
+	        });
+	        return;
+	      } 
+	
 		let date = new Date().getTime()
 		//setToken(date)
 		let user = {  //模拟存储用户信息
-			avatarUrl: '/static/images/face.jpg',
+			avatarUrl: '../../static/logo.png',
 			nickName: '用户2020'
 		}
 		setUserInfo(user)
@@ -231,6 +192,13 @@ export default {
 };
 </script>
 <style scoped lang="scss">
+.agreement{
+	padding-top: 20px;
+}
+checkbox {
+  appearance: none; /* 清除默认样式 */
+  -webkit-appearance: none;
+}
 .login{
   height: 100%;
   width: 100%;
@@ -246,7 +214,7 @@ export default {
   display: block;
   border-radius: 50%;
   margin: 0 auto;
-  margin-top: 150upx;
+  margin-top: 250upx;
 }
 .login_from{
   width: 80vw;
@@ -285,11 +253,11 @@ export default {
 	border-radius: 10upx;
 }
 .login_btn{
-  width: 500upx;
+  width: 100%;
   height: 80upx;
   margin: 0 auto;
   background-color: rgba(70, 143, 152, 0.8);
-  margin-top: 60px;
+  margin-top: 30px;
   text-align: center;
   line-height: 80upx;
   border-radius: 40upx;
@@ -309,6 +277,9 @@ export default {
   bottom: 5vh;
   left: 50%;
   transform: translateX(-50%);
+}
+.link{
+	color: rgba(70, 143, 152, 0.8)
 }
 .wxLogin view{
   text-align: center;

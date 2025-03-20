@@ -2,7 +2,7 @@
 <template>
 	<view>
 		<cu-custom bgColor="bg-gradual-blue" :isBack="false">
-			<block slot="content">首页1</block>
+			<block slot="content">首页</block>
 		</cu-custom>
 		<!-- banner图 -->
 		<view class="uni-padding-wrap">
@@ -11,7 +11,6 @@
 					<swiper class="swiper" circular="true" indicator-dots="true" autoplay="true" interval="3500"
 						duration="600">
 						<swiper-item class="swiper-list" v-for="(item, index) in bannerList" :key="index">
-						
 							<view class="swiper-item uni-bg-red" @click="handleClick(item)">
 								<image class="swiper-img" :src="item.imageUrl" mode=""></image>
 							</view>
@@ -60,12 +59,12 @@
 				pixelRatio: 1,
 				bannerList: [
 					{
-						imageUrl: 'https://image-static.segmentfault.com/124/741/1247413166-66ab41d07436d_fix732',
-						link: 'https://g.51wcity.com/game/random/rBAS8'
+						imageUrl: '../../static/images/2.webp',
+						link: 'https://appweb.yangqianguan.com/v2/activity/flexible?act=BYVddKHQ'
 					},
 					{
-						imageUrl: 'https://image-static.segmentfault.com/192/420/192420230-66ab443f45c79_fix732',
-						link: 'https://g.51wcity.com/game/random/rBA7e?packageNo=1'
+						imageUrl: '../../static/images/1.webp',
+						link: 'https://www.51hicard.com/landingPage/page?code=ry201003&page_name=dx-ry20ml&hfqorigin=hfq150170000216280000&agent=ruiyi&rp_hfq=1s'
 					},
 				],
 				tools: [

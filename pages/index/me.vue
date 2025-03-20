@@ -56,12 +56,13 @@
 					<!-- <view class="cu-avatar2 round xl margin-right-sm shadow-blur-lg bg-img open-data" style="overflow: hidden;">
 						<open-data type="userAvatarUrl"></open-data>
 					</view> -->
-					<view class="cu-avatar2 round xl margin-right-sm shadow-blur-lg bg-img open-data"
+					<view @click="onLogin" class="cu-avatar2 round xl margin-right-sm shadow-blur-lg bg-img open-data"
 						style="overflow: hidden;">
-						<image src="../../static/logo.png" style="width: 90%; height: 90%;"></image>
+						<image :src="userdata.avatarUrl" v-if="userdata.avatarUrl"></image>
+						<image src="../../static/logo.png" v-else></image>
 					</view>
 					<view class="padding text-blue text-xl text-bold" @click="onLogin">
-						登录
+						{{userdata.nickName||'登录'}}
 					</view>
 
 				</view>
@@ -114,6 +115,7 @@
 	export default {
 		data() {
 			return {
+				userdata: {},
 				// Custom: this.Custom,
 				// CustomBar: this.CustomBar,
 				spaceShow: true,
@@ -174,7 +176,7 @@
 		},
 		watch: {
 			topBackGroupImageIndex(val) {
-				console.log(val)
+				//console.log(val)
 				if (val == 4 || val == 5) {
 					this.spaceShow = true;
 				} else {
@@ -183,6 +185,7 @@
 			}
 		},
 		mounted() {
+			  this.userdata = getUserInfo() || {};
 		},
 		methods: {
 			onLogin(){
@@ -212,6 +215,7 @@
 			showModal(e) {
 				this.modalName = e.currentTarget.dataset.target
 			},
+			
 			goMedal() {
 				uni.navigateTo({
 					url: '../../tn_components/medal'

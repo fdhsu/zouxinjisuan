@@ -8,7 +8,7 @@
 			<view class="cu-card case" >
 				<view class=" shadow">
 					<view class="image">
-						<image src="https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg" mode="widthFix">
+						<image src="../../static/me/day.jpg" mode="widthFix">
 						</image>
 						<view class="cu-tag shuli" style="right: 24px;">{{getLunarDay.dateStr}}</view>
 						<view class="cu-tag bg-grey shuli" style="height: 80px;">{{getLunarDay.lunarYear}}</view>
@@ -21,7 +21,7 @@
 						</view>
 					<view class="padding bg-white" style="padding-top: 80px;">
 						<view class="text-left padding">{{messages[date]}}</view>
-						<view class="text-right padding">流量圈子</view>
+						<view class="text-right padding">祝福</view>
 					</view>
 				</view>
 			</view>

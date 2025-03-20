@@ -1,12 +1,15 @@
 {
-    "name" : "小北工具箱",
-    "appid" : "__UNI__0DEB53B",
+    "name" : "走心计算器",
+    "appid" : "__UNI__657F005",
     "description" : "实用通用型工具",
     "versionName" : "1.0.0",
     "versionCode" : "100",
     "transformPx" : false,
     /* 5+App特有相关 */
     "app-plus" : {
+        "compatible" : {
+            "ignoreVersion" : true
+        },
         "usingComponents" : true,
         "nvueStyleCompiler" : "uni-app",
         "compilerVersion" : 3,
@@ -51,14 +54,94 @@
                 "ad" : {}
             },
             "icons" : {
+                //可选，JSON对象，应用图标相关配置
+                "ios" : {
+                    //可选，JSON对象，iOS平台图标配置 
+                    "appstore" : "", //必填，字符串类型，分辨率1024x1024, 提交app sotre使用的图标路径
+                    "iphone" : {
+                        //可选，JSON对象，iPhone设备图标配置
+                        "app@2x" : "", //可选，字符串类型，分辨率120x120，程序图标路径  
+                        "app@3x" : "", //可选，字符串类型，分辨率180x180，程序图标路径  
+                        "spotlight@2x" : "", //可选，字符串类型，分辨率80x80，Spotlight搜索图标路径
+                        "spotlight@3x" : "", //可选，字符串类型，分辨率120x120，Spotlight搜索图标路径
+                        "settings@2x" : "", //可选，字符串类型，分辨率58x58，Settings设置图标路径
+                        "settings@3x" : "", //可选，字符串类型，分辨率87x87，Settings设置图标路径
+                        "notification@2x" : "", //可选，字符串类型，分辨率40x40，通知栏图标路径
+                        "notification@3x" : "" //可选，字符串类型，分辨率60x60，通知栏图标路径
+                    },
+                    "ipad" : {
+                        //可选，JSON对象，iPad设备图标配置
+                        "app" : "", //可选，字符串类型，分辨率76x76，程序图标图标路径
+                        "app@2x" : "", //可选，字符串类型，分辨率152x152，程序图标图标路径
+                        "proapp@2x" : "", //可选，字符串类型，分辨率167x167，程序图标图标路径
+                        "spotlight" : "", //可选，字符串类型，分辨率40x40，Spotlight搜索图标路径
+                        "spotlight@2x" : "", //可选，字符串类型，分辨率80x80，Spotlight搜索图标路径
+                        "settings" : "", //可选，字符串类型，分辨率29x29，Settings设置图标路径
+                        "settings@2x" : "", //可选，字符串类型，分辨率58x58，Settings设置图标路径
+                        "notification" : "", //可选，字符串类型，分辨率20x20，通知栏图标路径
+                        "notification@2x" : "" //可选，字符串类型，分辨率740x40，通知栏图标路径
+                    }
+                },
                 "android" : {
-                    "hdpi" : "",
-                    "xxxhdpi" : "C:/Users/Administrator/Pictures/icon.png"
+                    //可选，JSON对象，Android平台图标配置
+                    "ldpi" : "", //可选，字符串类型，普通屏设备程序图标，分辨率要求48x48，已废弃  
+                    "mdpi" : "", //可选，字符串类型，大屏设备程序图标，分辨率要求48x48，已废弃  
+                    "hdpi" : "C:/Users/tengyue/Documents/WeChat Files/b892711458/FileStorage/File/2025-03/logo_jsq/72-72.png", //可选，字符串类型，高分屏设备程序图标，分辨率要求72x72
+                    "xhdpi" : "C:/Users/tengyue/Documents/WeChat Files/b892711458/FileStorage/File/2025-03/logo_jsq/96-96.png", //可选，字符串类型，720P高分屏设备程序图标，分辨率要求96x96
+                    "xxhdpi" : "C:/Users/tengyue/Documents/WeChat Files/b892711458/FileStorage/File/2025-03/logo_jsq/144-144.png", //可选，字符串类型，1080P高分屏设备程序图标，分辨率要求144x144
+                    "xxxhdpi" : "C:/Users/tengyue/Documents/WeChat Files/b892711458/FileStorage/File/2025-03/logo_jsq/192-192.png" //可选，字符串类型，2K屏设备程序图标，分辨率要求192x192
                 }
             },
             "splashscreen" : {
-                "useOriginalMsgbox" : true,
-                "androidStyle" : "common"
+                //可选，JSON对象，启动界面配置
+                "iosStyle" : "common", //可选，字符串类型，iOS平台启动界面样式，可取值common、default、storyboard
+                "ios" : {
+                    //可选，JSON对象，iOS平台启动界面配置 
+                    "storyboard" : "", //可选，字符串类型，自定义storyboard启动界面文件路径，iosStyle值为storyboard时生效
+                    "iphone" : {
+                        //可选，JSON对象，iPhone设备启动图配置，iosStyle值为default时生效
+                        "default" : "", //可选，字符串类型，分辨率320x480，iPhone3（G/GS）启动图片路径，已废弃  
+                        "retina35" : "", //可选，字符串类型，分辨率640x960，3.5英寸设备(iPhone4/4S)启动图片路径，已废弃 
+                        "retina40" : "", //可选，字符串类型，分辨率640x1136，4.0英寸设备(iPhone5/5S)启动图片路径
+                        "retina40l" : "", //可选，字符串类型，分辨率1136x640，4.0英寸设备(iPhone5/5S)横屏启动图片路径
+                        "retina47" : "", //可选，字符串类型，分辨率750x1334，4.7英寸设备（iPhone6/7/8）启动图片路径
+                        "retina47l" : "", //可选，字符串类型，分辨率1334x750，4.7英寸设备（iPhone6/7/8）横屏启动图片路径
+                        "retina55" : "", //可选，字符串类型，分辨率1242x2208，5.5英寸设备（iPhone6/7/8Plus）启动图片路径  
+                        "retina55l" : "", //可选，字符串类型，分辨率2208x1242，5.5英寸设备（iPhone6/7/8Plus）横屏启动图片路径
+                        "iphonex" : "", //可选，字符串类型，分辨率1125x2436，5.8英寸设备（iPhoneX/XS）启动图片路径
+                        "iphonexl" : "", //可选，字符串类型，分辨率2436x1125，5.8英寸设备（iPhoneX/XS）横屏启动图片路径
+                        "portrait-896h@2x" : "", //可选，字符串类型，分辨率828x1792，6.1英寸设备（iPhoneXR）启动图片路径
+                        "landscape-896h@2x" : "", //可选，字符串类型，分辨率1792x828，6.1英寸设备（iPhoneXR）iPhoneXR横屏启动图片路径
+                        "portrait-896h@3x" : "", //可选，字符串类型，分辨率1242x2688，6.5英寸设备（iPhoneXS Max）启动图片路径
+                        "landscape-896h@3x" : "" //可选，字符串类型，分辨率2688x1242，6.5英寸设备（iPhoneXS Max）横屏启动图片路径
+                    },
+                    "ipad" : {
+                        //可选，JSON对象，iPad设备启动图配置，iosStyle值为default时生效
+                        "portrait" : "", //可选，字符串类型，分辨率768x1004，iPad竖屏启动图片路径，已废弃  
+                        "portrait-retina" : "", //可选，字符串类型，分辨率1536x2008，iPad高分屏竖屏启动图片路径，已废弃  
+                        "landscape" : "", //可选，字符串类型，分辨率1024x748，iPad横屏启动图片路径，已废弃   
+                        "landscape-retina" : "", //可选，字符串类型，分辨率2048x1496，iPad高分屏横屏启动图片路径，已废弃  
+                        "portrait7" : "", //可选，字符串类型，分辨率768x1024，9.7/7.9英寸iPad/mini竖屏启动图片路径 
+                        "landscape7" : "", //可选，字符串类型，分辨率1024x768，9.7/7.9英寸iPad/mini横屏启动图片路径
+                        "portrait-retina7" : "", //可选，字符串类型，分辨率1536x2048，9.7/7.9英寸iPad/mini高分屏竖屏图片路径
+                        "landscape-retina7" : "", //可选，字符串类型，分辨率2048x1536，9.7/7.9英寸iPad/mini高分屏横屏启动图片路径
+                        "portrait-1112h@2x" : "", //可选，字符串类型，分辨率1668x2224，10.5英寸iPad Pro竖屏启动图片路径
+                        "landscape-1112h@2x" : "", //可选，字符串类型，分辨率2224x1668，10.5英寸iPad Pro横屏启动图片路径
+                        "portrait-1194h@2x" : "", //可选，字符串类型，分辨率1668x2388，11英寸iPad Pro竖屏启动图片路径
+                        "landscape-1194h@2x" : "", //可选，字符串类型，分辨率2388x1668，11英寸iPad Pro横屏启动图片路径
+                        "portrait-1366h@2x" : "", //可选，字符串类型，分辨率2048x2732，12.9英寸iPad Pro竖屏启动图片路径
+                        "landscape-1366h@2x" : "" //可选，字符串类型，分辨率2732x2048，12.9英寸iPad Pro横屏启动图片路径
+                    }
+                },
+                "androidStyle" : "common", //可选，字符串类型，Android平台启动界面样式，可取值common、default
+                "android" : {
+                    //可选，JSON对象，Android平台启动图片配置， androidStyle值为default时生效
+                    "ldpi" : "", //可选，字符串类型，分辨率320x442，低密度屏幕启动图片路径，已废弃
+                    "mdpi" : "", //可选，字符串类型，分辨率240x282，中密度屏幕启动图片路径，已废弃
+                    "hdpi" : "", //可选，字符串类型，分辨率480x762，高密度屏幕启动图片路径
+                    "xhdpi" : "", //可选，字符串类型，分辨率720x1242，720P高密度屏幕启动图片路径
+                    "xxhdpi" : "" //可选，字符串类型，分辨率1080x1882，1080P高密度屏幕启动图片路径
+                }
             }
         },
         "uniStatistics" : {

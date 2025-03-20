@@ -77,9 +77,16 @@
 		    }
 		},
 		{
+		    "path" : "pages/me/agreement",
+		    "style": {
+		    	"navigationBarTitleText": "用户协议",
+		    	"navigationStyle": "custom"
+		    }
+		},
+		{
 		    "path" : "pages/me/aboutMe",
 		    "style": {
-		    	"navigationBarTitleText": "关于我",
+		    	"navigationBarTitleText": "关于我们",
 		    	"navigationStyle": "custom"
 		    }
 		}
@@ -92,6 +99,7 @@
             }
             
         },
+		
         {
         	"path" : "pages/index/webview",
         	"style" : 
