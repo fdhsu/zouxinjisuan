@@ -195,9 +195,25 @@ export default {
 .agreement{
 	padding-top: 20px;
 }
-checkbox {
-  appearance: none; /* 清除默认样式 */
-  -webkit-appearance: none;
+checkbox::before {  
+    font-family: "cuIcon";  
+    content: "\e645";  
+    position: absolute;  
+    color: #ffffff !important;  
+    top: 50%;  
+    margin-top: -8px;  
+    right: 5px;  
+    font-size: 32upx;  
+    line-height: 16px;  
+    pointer-events: none;  
+    transform: scale(1, 1);  
+    transition: all 0.3s ease-in-out 0s;  
+    /* z-index: 9; */  
+}  
+
+/* checkbox .uni-checkbox-input::before, */  
+radio .uni-radio-input::before {  
+    display: none;  
 }
 .login{
   height: 100%;
