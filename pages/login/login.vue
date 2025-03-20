@@ -97,7 +97,7 @@ export default {
       });
     },
 	onlogin(){ //登录 模拟存储token
-	if (!this.agree) {
+	if (!this.isReadChk) {
 	        uni.showToast({
 	          title: '请先同意用户协议',
 	          icon: 'none'
@@ -194,26 +194,6 @@ export default {
 <style scoped lang="scss">
 .agreement{
 	padding-top: 20px;
-}
-checkbox::before {  
-    font-family: "cuIcon";  
-    content: "\e645";  
-    position: absolute;  
-    color: #ffffff !important;  
-    top: 50%;  
-    margin-top: -8px;  
-    right: 5px;  
-    font-size: 32upx;  
-    line-height: 16px;  
-    pointer-events: none;  
-    transform: scale(1, 1);  
-    transition: all 0.3s ease-in-out 0s;  
-    /* z-index: 9; */  
-}  
-
-/* checkbox .uni-checkbox-input::before, */  
-radio .uni-radio-input::before {  
-    display: none;  
 }
 .login{
   height: 100%;

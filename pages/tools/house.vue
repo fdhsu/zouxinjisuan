@@ -126,29 +126,10 @@
 				periodMap: {},
 				periodList: [],
 				showRate: false,
-				rateList: [{
-						value: '0.04165',
-						label: '基准利率8.5折(4.165%)'
-					},
+				rateList: [
 					{
-						value: '0.0441',
-						label: '基准利率9折(4.41%)'
-					},
-					{
-						value: '0.04655',
-						label: '基准利率9.5折(4.655%)'
-					},
-					{
-						value: '0.049',
-						label: '基准利率(4.9%)'
-					},
-					{
-						value: '0.0539',
-						label: '基准利率1.1倍(5.39%)'
-					},
-					{
-						value: '0.0588',
-						label: '基准利率1.2倍(5.88%)'
+						value: '0.033',
+						label: '基准利率(3.3%)'
 					},
 					{
 						value: '0',
@@ -157,16 +138,8 @@
 				],
 				showGjjRate: false,
 				gjjRateList: [{
-						value: '0.0325',
-						label: '基准利率(3.25%)'
-					},
-					{
-						value: '0.03575',
-						label: '基准利率1.1倍(3.575%)'
-					},
-					{
-						value: '0.039',
-						label: '基准利率1.2倍(3.9%)'
+						value: '0.0275',
+						label: '公积金(2.75%)'
 					},
 					{
 						value: '0',
@@ -177,8 +150,8 @@
 				amount: undefined,
 				gjjAmount: undefined,
 				period: 20,
-				rate: "0.049",
-				gjjRate: "0.0325",
+				rate: "0.0330",
+				gjjRate: "0.0275",
 				customeRate: undefined,
 				customeType: undefined,
 				showResultList: false,
@@ -423,8 +396,8 @@
 				this.amount= undefined;
 				this.gjjAmount= undefined;
 				this.period= 20;
-				this.rate= "0.049";
-				this.gjjRate="0.0325";
+				this.rate= "0.033";
+				this.gjjRate="0.0275";
 				this.customeRate= undefined;
 				this.customeType= undefined;
 				this.reslut= {
