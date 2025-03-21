@@ -5,18 +5,18 @@
 			<u-cell-group>
 				<u-cell-item @click="changeType" title="选择计算方式" :value="typeMap[type]"></u-cell-item>
 				<u-cell-item title="商业贷款金额(万元)" :arrow="false">
-					<u-input v-model="amount" input-align="right" placeholder="请输入商业贷款金额" />
+					<u-input v-model="amount" type="number" input-align="right" placeholder="请输入商业贷款金额" />
 				</u-cell-item>
 				<u-cell-item @click="showPeriod = true" title="贷款期限" :value="periodMap[period]"></u-cell-item>
 				<u-cell-item @click="showRate = true" title="商业贷款年利率" :value="(rate * 100).toFixed(3) + '%'">
 				</u-cell-item>
 			</u-cell-group>
 		</view>
-		<view v-show="current == 1">
+		<view v-show="current == 1"> 
 			<u-cell-group>
 				<u-cell-item @click="changeType" title="选择计算方式" :value="typeMap[type]"></u-cell-item>
 				<u-cell-item title="公积金贷款金额(万元)" :arrow="false">
-					<u-input v-model="gjjAmount" input-align="right" placeholder="请输入商业贷款金额" />
+					<u-input v-model="gjjAmount" type="number" input-align="right" placeholder="请输入公积金贷款金额" />
 				</u-cell-item>
 				<u-cell-item @click="showPeriod = true" title="贷款期限" :value="periodMap[period]"></u-cell-item>
 				<u-cell-item @click="showGjjRate = true" title="公积金贷款年利率" :value="(gjjRate * 100).toFixed(3) + '%'">
@@ -28,12 +28,12 @@
 				<u-cell-item @click="changeType" title="选择计算方式" :value="typeMap[type]"></u-cell-item>
 				<u-cell-item @click="showPeriod = true" title="贷款期限" :value="periodMap[period]"></u-cell-item>
 				<u-cell-item title="商业贷款金额(万元)" :arrow="false">
-					<u-input v-model="amount" input-align="right" placeholder="请输入商业贷款金额" />
+					<u-input v-model="amount" type="number" input-align="right" placeholder="请输入商业贷款金额" />
 				</u-cell-item>
 				<u-cell-item @click="showRate = true" title="商业贷款年利率" :value="(rate * 100).toFixed(3) + '%'">
 				</u-cell-item>
 				<u-cell-item title="公积金贷款金额(万元)" :arrow="false">
-					<u-input v-model="gjjAmount" input-align="right" placeholder="请输入公积金贷款金额" />
+					<u-input v-model="gjjAmount" type="number" input-align="right" placeholder="请输入公积金贷款金额" />
 				</u-cell-item>
 				<u-cell-item @click="showGjjRate = true" title="公积金贷款年利率" :value="(gjjRate * 100).toFixed(3) + '%'">
 				</u-cell-item>
@@ -82,7 +82,7 @@
 		<u-modal v-model="showCustomeRate" @confirm="customeConfirm">
 			<view class="slot-content">
 				<view style="padding: 0 30upx;">
-					<u-input v-model="customeRate" input-align="center" placeholder="请输入贷款利率(%)"></u-input>
+					<u-input v-model="customeRate" type="number" input-align="center" placeholder="请输入贷款利率(%)"></u-input>
 				</view>
 			</view>
 		</u-modal>
@@ -249,11 +249,36 @@
 				
 			},
 			calc(){
-				if(this.current == 2){
-					this.calcGroup();
-				} else {
-					this.calcSimple();
+				if(this.current == 1){
+					if(this.gjjAmount){
+						this.calcSimple();
+					}else{
+						this.$refs.uToast.show({
+							title: '请输入贷款金额',
+							type: 'warning'
+						})
+					}
+				}else if(this.current == 2){
+					if(this.amount && this.gjjAmount){
+						this.calcGroup();
+					}else{
+						this.$refs.uToast.show({
+							title: '请输入商贷和公积金贷款金额',
+							type: 'warning'
+						})
+					}
+					
+				}else{
+					if(this.amount){
+						this.calcSimple();
+					}else{
+						this.$refs.uToast.show({
+							title: '请输入贷款金额',
+							type: 'warning'
+						})
+					}
 				}
+				
 			},
 			calcSimple() {
 				//商业贷款、公积金贷款

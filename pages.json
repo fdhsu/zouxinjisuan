@@ -11,23 +11,9 @@
 			}
 		},
 		{
-		    "path" : "pages/tools/ip",
-		    "style" : {
-		        "navigationBarTitleText" : "IP地址查询",
-				"navigationBarBackgroundColor":"#F8F8F8"
-		    }
-		},
-		{
 		    "path" : "pages/tools/electric",
 		    "style" : {
-		        "navigationBarTitleText" : "电费计算器",
-				"navigationBarBackgroundColor":"#F8F8F8"
-		    }
-		},
-		{
-		    "path" : "pages/tools/oil",
-		    "style" : {
-		        "navigationBarTitleText" : "油价查询",
+		        "navigationBarTitleText" : "简易计算器",
 				"navigationBarBackgroundColor":"#F8F8F8"
 		    }
 		},
@@ -49,30 +35,9 @@
 		    }
 		},
 		{
-		    "path" : "pages/tools/mobile",
-		    "style" : {
-		        "navigationBarTitleText" : "手机号码查询",
-				"navigationBarBackgroundColor":"#F8F8F8"
-		    }
-		},
-		{
-		    "path" : "pages/tools/idcard",
-		    "style" : {
-		        "navigationBarTitleText" : "",
-				"navigationBarBackgroundColor":"#F8F8F8"
-		    }
-		},
-		{
 		    "path" : "pages/tools/house",
 		    "style" : {
 		        "navigationBarTitleText" : "房贷计算器",
-				"navigationBarBackgroundColor":"#F8F8F8"
-		    }
-		},
-		{
-		    "path" : "pages/tools/bank",
-		    "style" : {
-		        "navigationBarTitleText" : "银行卡查询",
 				"navigationBarBackgroundColor":"#F8F8F8"
 		    }
 		},

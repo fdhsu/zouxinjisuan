@@ -1,5 +1,9 @@
 <!-- 个人中心 -->
 <template>
+	<view>
+		<cu-custom bgColor="bg-gradual-blue" :isBack="false">
+			<block slot="content">个人中心</block>
+		</cu-custom>
 	<view class="components-theme">
 		<navigator target="miniProgram" app-id='wx307a52ca028d3c07' version='release' hover-class="none">
 			<view class="dong">
@@ -41,7 +45,7 @@
 		</view>
 		<!-- 顶部背景 -->
 		<view class='UCenter-bg'
-			:style="'background-image: url(' + pic[topBackGroupImageIndex].link + ');margin-top:' + CustomBar + 'px;'">
+			:style="'background-image: url(' + pic[topBackGroupImageIndex].link + ');margin-top:0px;'">
 			<view class='space' v-show="spaceShow">
 				<view class="stars ">
 					<view class="star "></view>
@@ -106,7 +110,7 @@
 
 		</block>
 		<view style="height: 110rpx;width: 1rpx;"></view>
-
+	</view>
 	</view>
 </template>
 

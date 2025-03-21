@@ -1,258 +1,196 @@
 <template>
-	<view class="tools">
-		<u-card title="每度电的电价" :show-foot="false" :show-head="false">
-			<view class="" slot="body">
-				<u-form ref="uForm" label-width="150">
-					<u-form-item label="每度电价"><u-input v-model="form.dj" placeholder="请输入电价"/><view slot="right">元</view></u-form-item>
-					<u-form-item label="设备功率"><u-input v-model="form.gl" placeholder="请输入功率"/><view slot="right">瓦</view></u-form-item>
-					<u-form-item label="每天使用"><u-input v-model="form.dayTxt" type="select" @click="showDay = true"/></u-form-item>
-					<u-form-item label="每月使用"><u-input v-model="form.monthTxt" type="select" @click="showMonth = true"/></u-form-item>
-				</u-form>
-				<u-button @click="submit">计算电费</u-button>
-			</view>
-		</u-card>
-		<u-card title="每度电的电价" :show-foot="false" :show-head="false">
-			<view class="" slot="body">
-				<u-form ref="uForm" label-width="200">
-					<u-form-item label="每月的用电量"><u-input placeholder=" " :disabled="true" v-model="result.vol"/><view slot="right">瓦</view></u-form-item>
-					<u-form-item label="每周电费大约"><u-input placeholder=" " :disabled="true" v-model="result.week"/><view slot="right">元</view></u-form-item>
-					<u-form-item label="每月电费大约"><u-input placeholder=" " :disabled="true" v-model="result.month"/><view slot="right">元</view></u-form-item>
-					<u-form-item label="每年电费大约"><u-input placeholder=" " :disabled="true" v-model="result.year"/><view slot="right">元</view></u-form-item>
-				</u-form>
-			</view>
-		</u-card>
-		<u-select v-model="showDay" :list="dayList" @confirm="dayConfirm"></u-select>
-		<u-select v-model="showMonth" :list="monthList" @confirm="monthConfirm"></u-select>
+	<view class="tools container">
+		<view class="display">{{ displayValue }}</view>
+		    <view class="buttons">
+		      <view class="row">
+		        <button class="btn operator" @click="handleButtonClick('C')">C</button>
+		        <button class="btn operator" @click="handleButtonClick('±')">±</button>
+		        <button class="btn operator" @click="handleButtonClick('%')">%</button>
+		        <button class="btn operator" @click="handleButtonClick('/')">÷</button>
+		      </view>
+		      <view class="row">
+		        <button class="btn" @click="handleButtonClick('7')">7</button>
+		        <button class="btn" @click="handleButtonClick('8')">8</button>
+		        <button class="btn" @click="handleButtonClick('9')">9</button>
+		        <button class="btn operator" @click="handleButtonClick('*')">×</button>
+		      </view>
+		      <view class="row">
+		        <button class="btn" @click="handleButtonClick('4')">4</button>
+		        <button class="btn" @click="handleButtonClick('5')">5</button>
+		        <button class="btn" @click="handleButtonClick('6')">6</button>
+		        <button class="btn operator" @click="handleButtonClick('-')">−</button>
+		      </view>
+		      <view class="row">
+		        <button class="btn" @click="handleButtonClick('1')">1</button>
+		        <button class="btn" @click="handleButtonClick('2')">2</button>
+		        <button class="btn" @click="handleButtonClick('3')">3</button>
+		        <button class="btn operator" @click="handleButtonClick('+')">+</button>
+		      </view>
+		      <view class="row">
+		        <button class="btn zero" @click="handleButtonClick('0')">0</button>
+		        <button class="btn" @click="handleButtonClick('.')">.</button>
+		        <button class="btn operator equal" @click="calculateResult">=</button>
+		      </view>
+		    </view>
 		<u-toast ref="uToast" />
 	</view>
 </template>
 
 <script>
-	var app = getApp();
-	
-	export default {
-		data() {
-			return {
-				colors: '',
-				form: {
-					dj: null,
-					gl: null,
-					day: 24,
-					month: 30,
-					dayTxt: '24小时',
-					monthTxt: '30天'
-				},
-				result: {},
-				dayList: [],
-				monthList: [],
-				showDay: false,
-				showMonth: false
-			};
-		},
-		components: {
-		},
-		props: {},
+export default {
+  data() {
+    return {
+      displayValue: '0',
+      firstOperand: null,
+      operator: null,
+      waitingForSecondOperand: false
+    };
+  },
+  methods: {
+    handleButtonClick(value) {
+      if (value === 'C') {
+        this.displayValue = '0';
+        this.firstOperand = null;
+        this.operator = null;
+        this.waitingForSecondOperand = false;
+        return;
+      }
 
-		/**
-		 * 生命周期函数--监听页面加载
-		 */
-		onLoad: function(options) {
-			this.setData({
-				colors: app.globalData.newColor
-			});
-			let dayList = [];
-			for(let i = 1; i <= 24; i++){
-				dayList.push({value: i, label: i + '小时'})
-			}
-			let monthList = [];
-			for(let i = 1; i <= 30; i++){
-				monthList.push({value: i, label: i + '天'})
-			}
-			this.setData({
-				dayList: dayList,
-				monthList: monthList
-			})
-		},
+      if (value === '±') {
+        this.displayValue = String(parseFloat(this.displayValue) * -1);
+        return;
+      }
 
-		/**
-		 * 生命周期函数--监听页面初次渲染完成
-		 */
-		onReady: function() {},
+      if (value === '%') {
+        this.displayValue = String(parseFloat(this.displayValue) / 100);
+        return;
+      }
 
-		/**
-		 * 生命周期函数--监听页面显示
-		 */
-		onShow: function() {},
-
-		/**
-		 * 生命周期函数--监听页面隐藏
-		 */
-		onHide: function() {},
-
-		/**
-		 * 生命周期函数--监听页面卸载
-		 */
-		onUnload: function() {},
-
-		/**
-		 * 页面相关事件处理函数--监听用户下拉动作
-		 */
-		onPullDownRefresh: function() {},
-
-		/**
-		 * 页面上拉触底事件的处理函数
-		 */
-		onReachBottom: function() {},
-
-		/**
-		 * 用户点击右上角分享
-		 */
-		onShareAppMessage: function() {},
-		methods: {
-			dayConfirm(e) {
-				let form = this.form;
-				form.day = e[0].value;
-				form.dayTxt = e[0].label;
-				this.setData({
-					form: form
-				})
-			},
-			monthConfirm(e) {
-				let form = this.form;
-				form.month = e[0].value;
-				form.monthTxt = e[0].label;
-				this.setData({
-					form: form
-				})
-			},
-			submit() {
-				let x;let h;let f;let t;let v;let q;let u;let r;let w;
-				if(!this.form.dj){
-					this.$refs.uToast.show({
-						title: '请输入电价',
-						type: 'error'
-					})
-					return;
-				}
-				if(!this.form.gl){
-					this.$refs.uToast.show({
-						title: '请输入功率',
-						type: 'error'
-					})
-					return;
-				}
-				t = this.form.dj; //每度电价
-				t = parseFloat(t);
-				x = this.form.gl; //设备功率
-				x = parseFloat(x);
-				h = this.form.day //每天使用
-				f = this.form.month //每月使用
-				let kwhperday= x / 1e3 * h;
-				v = kwhperday * f;
-				if(v>20){
-					v=v
-				}else{
-					v=v*10/10
-				}
-				let costperday = kwhperday * t;
-				u = kwhperday * f * t;
-				w = u * 12;
-				r = costperday * 7;
-				this.setData({
-					result: {
-						vol: v.toFixed(),
-						week: r.toFixed(2),
-						month: u.toFixed(2),
-						year: w.toFixed(2)
-					}
-				})
-			}
-		}
-	};
+      if (/\d/.test(value)) {
+        if (this.waitingForSecondOperand) {
+          this.displayValue = value;
+          this.waitingForSecondOperand = false;
+        } else {
+          this.displayValue = this.displayValue === '0' ? value : this.displayValue + value;
+        }
+      } else if (value === '.') {
+        if (!this.displayValue.includes('.')) {
+          this.displayValue += value;
+        }
+      } else {
+        if (this.firstOperand === null) {
+          this.firstOperand = parseFloat(this.displayValue);
+        } else if (this.operator) {
+          const result = this.calculate(this.firstOperand, parseFloat(this.displayValue), this.operator);
+          this.displayValue = String(result);
+          this.firstOperand = result;
+        }
+        this.operator = value;
+        this.waitingForSecondOperand = true;
+      }
+    },
+    calculateResult() {
+      if (this.operator && !this.waitingForSecondOperand) {
+        const result = this.calculate(this.firstOperand, parseFloat(this.displayValue), this.operator);
+        this.displayValue = String(result);
+        this.firstOperand = null;
+        this.operator = null;
+        this.waitingForSecondOperand = true;
+      }
+    },
+    calculate(firstOperand, secondOperand, operator) {
+      switch (operator) {
+        case '+':
+          return firstOperand + secondOperand;
+        case '-':
+          return firstOperand - secondOperand;
+        case '*':
+          return firstOperand * secondOperand;
+        case '/':
+          return firstOperand / secondOperand;
+        default:
+          return secondOperand;
+      }
+    }
+  }
+};
 </script>
+
 <style lang="scss" scoped>
-	page {
-		background-color: #F5F5FA;
-	}
-	.result{
-		padding: 0 4%;
-		margin-top: 20upx;
-		background-color: #ffffff;
-	}
-	.result .title{
-		padding: 30upx 0 20upx 0;
-		font-size: 30upx;
-		font-weight: bold;
-	}
-	.t_input {
-		padding: 20upx 4%;
-		background-color: #fff;
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-	}
+page {
+  	background-color: #F5F5FA;
+}
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  padding: 20px;
+}
 
-	.t_input .title {
-		height: 80upx;
-		line-height: 80upx;
-		color: #333;
-		font-weight: bold;
-		width: 100upx;
-	}
+.display {
+  width: 100%;
+  height: 100px;
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0 20px;
+  font-size: 48px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
 
-	.t_input .inputs {
-		color: #333;
-		font-size: 32upx;
-	}
+.buttons {
+  width: 100%;
+}
 
-	.inputs input {
-		height: 80upx;
-		line-height: 80upx;
-		width: 100%;
-		display: block;
-	}
+.row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+}
 
-	.all_btn {
-		font-size: 24upx;
-		font-family: Source Han Sans CN;
-		font-weight: 400;
-		width: 150upx;
-	}
+.btn {
+  width: 22%;
+  height: 80px;
+  font-size: 28px;
+  border: none;
+  border-radius: 15px;
+  background-color: rgba(255, 255, 255, 0.9);
+  color: #333;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
 
-	.jilu {
-		height: 60upx;
-		line-height: 60upx;
-		padding: 0 4%;
-		font-size: 28upx;
-		color: #999;
-		font-family: Source Han Sans CN;
-		font-weight: 400;
-		margin-top: 10upx;
-	}
+.btn:active {
+  background-color: rgba(255, 255, 255, 0.7);
+}
 
-	.addclerk {
-		width: 80%;
-		height: 82upx;
-		line-height: 82upx;
-		border-radius: 15upx;
-		font-size: 32upx;
-		font-family: Source Han Sans CN;
-		font-weight: 500;
-		color: rgba(255, 255, 255, 1);
-		text-align: center;
-		position: fixed;
-		bottom: 30upx;
-		left: 50%;
-		transform: translateX(-50%);
-		background-color: pink;
-	}
+.zero {
+  width: 48%;
+}
 
-	.addclerk:active {
-		opacity: 0.8;
-	}
-</style>
-<style>
-	page {
-		background-color: #F5F5FA;
-	}
+.operator {
+  background-color: #ff9500;
+  color: white;
+}
+
+.operator:active {
+  background-color: #e08900;
+}
+
+.equal {
+  background-color: #34c759;
+  color: white;
+}
+
+.equal:active {
+  background-color: #2da94f;
+}
 </style>

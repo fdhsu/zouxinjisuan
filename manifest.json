@@ -86,10 +86,10 @@
                     //可选，JSON对象，Android平台图标配置
                     "ldpi" : "", //可选，字符串类型，普通屏设备程序图标，分辨率要求48x48，已废弃  
                     "mdpi" : "", //可选，字符串类型，大屏设备程序图标，分辨率要求48x48，已废弃  
-                    "hdpi" : "C:/Users/tengyue/Documents/WeChat Files/b892711458/FileStorage/File/2025-03/logo_jsq/72-72.png", //可选，字符串类型，高分屏设备程序图标，分辨率要求72x72
-                    "xhdpi" : "C:/Users/tengyue/Documents/WeChat Files/b892711458/FileStorage/File/2025-03/logo_jsq/96-96.png", //可选，字符串类型，720P高分屏设备程序图标，分辨率要求96x96
-                    "xxhdpi" : "C:/Users/tengyue/Documents/WeChat Files/b892711458/FileStorage/File/2025-03/logo_jsq/144-144.png", //可选，字符串类型，1080P高分屏设备程序图标，分辨率要求144x144
-                    "xxxhdpi" : "C:/Users/tengyue/Documents/WeChat Files/b892711458/FileStorage/File/2025-03/logo_jsq/192-192.png" //可选，字符串类型，2K屏设备程序图标，分辨率要求192x192
+                    "hdpi" : "static/logo/72-72.png", //可选，字符串类型，高分屏设备程序图标，分辨率要求72x72
+                    "xhdpi" : "static/logo/96-96.png", //可选，字符串类型，720P高分屏设备程序图标，分辨率要求96x96
+                    "xxhdpi" : "static/logo/144-144.png", //可选，字符串类型，1080P高分屏设备程序图标，分辨率要求144x144
+                    "xxxhdpi" : "static/logo/192-192.png" //可选，字符串类型，2K屏设备程序图标，分辨率要求192x192
                 }
             },
             "splashscreen" : {
@@ -146,6 +146,12 @@
         },
         "uniStatistics" : {
             "enable" : true
+        },
+        "uni-stat" : {
+            "enable" : false
+        },
+        "uni-ad" : {
+            "enable" : false
         }
     },
     /* 快应用特有相关 */
