@@ -57,19 +57,23 @@
 
 			<block>
 				<view class='text-center'>
-					 <view @click="onLogin" class="cu-avatar2 round xl margin-right-sm shadow-blur-lg bg-img open-data"
+					 <view class="cu-avatar2 round xl margin-right-sm shadow-blur-lg bg-img open-data"
+						style="overflow: hidden;">
+						<image :src="userdata.avatarUrl" v-if="userdata.avatarUrl"></image>
+						<image src="../../static/logo/192-192.png" v-else></image>
+					</view>
+					<view class="padding text-white text-xl text-bold">
+						{{userdata.nickName||'走心计算器'}}
+					</view>
+					<!--
+					<view @click="onLogin" class="cu-avatar2 round xl margin-right-sm shadow-blur-lg bg-img open-data"
 						style="overflow: hidden;">
 						<image :src="userdata.avatarUrl" v-if="userdata.avatarUrl"></image>
 						<image src="../../static/logo/192-192.png" v-else></image>
 					</view>
 					<view class="padding text-white text-xl text-bold" @click="onLogin">
-						{{userdata.nickName||'游客'}}
+						{{userdata.nickName||'走心计算器'}}
 					</view>
-					<!--
-					<view class="cu-avatar2 round xl margin-right-sm shadow-blur-lg bg-img open-data"style="overflow: hidden;">
-						<image src="../../static/logo/192-192.png"></image>
-					</view>
-					<view class="padding text-white text-xl text-bold">游客 <text @click="onLogin" class="text-blue">登录</text></view>
 					 -->
 				</view>
 			</block>
@@ -107,6 +111,16 @@
 						<image src='../../static/me/icon/xiaoxi.png' class='png' mode='aspectFit'></image>
 						<text class='text-lg margin-sm'>关于我们</text>
 					</button>
+				</view>
+				
+			</view>
+			<view
+				class="cu-list menu card-menu margin-top-lg margin-bottom-lg shadow-shop bg-white text-black my-radius sm-border">
+				<view class="cu-item">
+					<button class='content cu-btn' @click="goRecommend">
+							<image src='../../static/me/icon/dengta.png' class='png' mode='aspectFit'></image>
+							<text class='text-lg margin-sm'>走心推荐</text>
+						</button>
 				</view>
 			</view>
 
@@ -233,6 +247,11 @@
 					url: '../me/aboutMe'
 				})
 			},
+			goRecommend(){
+				uni.navigateTo({
+					url: `/pages/index/webview?url=${encodeURIComponent('https://g.51wcity.com/game/random/rBAxV')}`
+				})
+			}
 		}
 	}
 </script>
