@@ -28,7 +28,7 @@ export function setUserInfo(value) {
 }
 export function getUserInfo() {
   let userinfo = uni.getStorageSync('userinfo');
-  console.log('userinfo', userinfo)
+//  console.log('userinfo', userinfo)
   if (userinfo) {
     return JSON.parse(userinfo);
   }

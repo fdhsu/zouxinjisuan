@@ -108,8 +108,8 @@ export default {
 		let date = new Date().getTime()
 		//setToken(date)
 		let user = {  //模拟存储用户信息
-			avatarUrl: '../../static/logo.png',
-			nickName: '用户2020'
+			avatarUrl: '../../static/logo/192-192.png',
+			nickName: '游客'
 		}
 		setUserInfo(user)
 		

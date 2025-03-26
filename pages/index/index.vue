@@ -8,11 +8,11 @@
 		<view class="uni-padding-wrap">
 			<view class="page-section swiper">
 				<view class="page-section-spacing">
-					<swiper class="swiper" circular="true" indicator-dots="true" autoplay="true" interval="3500"
-						duration="600">
+					<swiper class="swiper" circular="true" indicator-dots="true" autoplay="true" interval="3500" duration="600" :style="{ height: swiperHeight + 'px' }">
 						<swiper-item class="swiper-list" v-for="(item, index) in bannerList" :key="index">
-							<view class="swiper-item uni-bg-red" @click="handleClick(item)">
-								<image class="swiper-img" :src="item.imageUrl" mode=""></image>
+							<!-- <view class="swiper-item uni-bg-red" @click="handleClick(item)"> -->
+								<view class="swiper-item uni-bg-red">
+								<image class="swiper-img" :src="item.imageUrl" mode="widthFix" @load="onImageLoad"></image>
 							</view>
 						</swiper-item>
 					</swiper>
@@ -51,6 +51,7 @@
 		},
 		data() {
 			return {
+				swiperHeight: 300, // 初始高度，可以设置为默认值
 				duration: 1,
 				scrollTop: 0,
 				old: {
@@ -59,11 +60,11 @@
 				pixelRatio: 1,
 				bannerList: [
 					{
-						imageUrl: '../../static/images/2.webp',
+						imageUrl: '../../static/images/b1.png',
 						link: 'https://appweb.yangqianguan.com/v2/activity/flexible?act=BYVddKHQ'
 					},
 					{
-						imageUrl: '../../static/images/1.webp',
+						imageUrl: '../../static/images/b2.png',
 						link: 'https://www.51hicard.com/landingPage/page?code=ry201003&page_name=dx-ry20ml&hfqorigin=hfq150170000216280000&agent=ruiyi&rp_hfq=1s'
 					},
 				],
@@ -104,6 +105,16 @@
 			//this.getServerData();
 		},
 		methods: {
+			// 图片加载完成事件
+			onImageLoad(event) {
+			      const { width, height } = event.detail;
+			      // 根据图片宽高比计算高度
+			      const systemInfo = uni.getSystemInfoSync();
+			      const windowWidth = systemInfo.windowWidth;
+			      const imageHeight = (height / width) * windowWidth;
+			      // 设置 swiper 高度
+			      this.swiperHeight = imageHeight;
+			 },
 			handleClick(item) {
 				console.log(item.link)
 			      uni.navigateTo({

@@ -2,7 +2,8 @@
 <template>
   <view>
 	  <cu-custom bgColor="bg-gradual-blue" :isBack="false">
-	  	<block slot="content">首页2</block>
+		  <block slot="backText">返回</block>
+	  	  <block slot="content">详情</block>
 	  </cu-custom>
 	  <view class="cu-card article no-card">
 		  <web-view :src="url"></web-view>

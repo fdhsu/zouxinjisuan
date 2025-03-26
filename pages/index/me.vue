@@ -5,7 +5,7 @@
 			<block slot="content">个人中心</block>
 		</cu-custom>
 	<view class="components-theme">
-		<navigator target="miniProgram" app-id='wx307a52ca028d3c07' version='release' hover-class="none">
+		<navigator target="miniProgram"  version='release' hover-class="none">
 			<view class="dong">
 				<view class="monster">
 					<view class="monster__face">
@@ -57,22 +57,24 @@
 
 			<block>
 				<view class='text-center'>
-					<!-- <view class="cu-avatar2 round xl margin-right-sm shadow-blur-lg bg-img open-data" style="overflow: hidden;">
-						<open-data type="userAvatarUrl"></open-data>
-					</view> -->
-					<view @click="onLogin" class="cu-avatar2 round xl margin-right-sm shadow-blur-lg bg-img open-data"
+					 <view @click="onLogin" class="cu-avatar2 round xl margin-right-sm shadow-blur-lg bg-img open-data"
 						style="overflow: hidden;">
 						<image :src="userdata.avatarUrl" v-if="userdata.avatarUrl"></image>
-						<image src="../../static/logo.png" v-else></image>
+						<image src="../../static/logo/192-192.png" v-else></image>
 					</view>
-					<view class="padding text-blue text-xl text-bold" @click="onLogin">
-						{{userdata.nickName||'登录'}}
+					<view class="padding text-white text-xl text-bold" @click="onLogin">
+						{{userdata.nickName||'游客'}}
 					</view>
-
+					<!--
+					<view class="cu-avatar2 round xl margin-right-sm shadow-blur-lg bg-img open-data"style="overflow: hidden;">
+						<image src="../../static/logo/192-192.png"></image>
+					</view>
+					<view class="padding text-white text-xl text-bold">游客 <text @click="onLogin" class="text-blue">登录</text></view>
+					 -->
 				</view>
 			</block>
 			<image
-				src='https://cdn.nlark.com/yuque/0/2019/gif/280373/1570670848649-assets/web-upload/3dbaa72a-062b-470f-9b9d-058ff8f85ab8.gif'
+				src='../../static/me/mebg.gif'
 				mode='scaleToFill' class='gif-wave'></image>
 		</view>
 
@@ -258,8 +260,8 @@
 	}
 
 	.UCenter-bg image {
-		width: 200rpx;
-		height: 200rpx;
+		width: 150rpx;
+		height: 150rpx;
 	}
 
 	.UCenter-bg .gif-wave {

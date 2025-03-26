@@ -186,11 +186,11 @@ page {
 }
 
 .equal {
-  background-color: #34c759;
+  background-color: #0076FF;
   color: white;
 }
 
 .equal:active {
-  background-color: #2da94f;
+  background-color: #0095FF;
 }
 </style>
