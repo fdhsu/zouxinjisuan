@@ -196,41 +196,6 @@
 			
 
 		},
-
-		/**
-		 * 生命周期函数--监听页面初次渲染完成
-		 */
-		onReady: function() {},
-
-		/**
-		 * 生命周期函数--监听页面显示
-		 */
-		onShow: function() {},
-
-		/**
-		 * 生命周期函数--监听页面隐藏
-		 */
-		onHide: function() {},
-
-		/**
-		 * 生命周期函数--监听页面卸载
-		 */
-		onUnload: function() {},
-
-		/**
-		 * 页面相关事件处理函数--监听用户下拉动作
-		 */
-		onPullDownRefresh: function() {},
-
-		/**
-		 * 页面上拉触底事件的处理函数
-		 */
-		onReachBottom: function() {},
-
-		/**
-		 * 用户点击右上角分享
-		 */
-		onShareAppMessage: function() {},
 		methods: {
 			changeResultType(type){
 				this.type=type;
@@ -408,9 +373,12 @@
 			},
 			//本金还款的月还款额(参数: 年利率 / 贷款总额 / 贷款总月份 / 贷款当前月0～length-1)
 			getMonthMoney2(lilv, total, month, cur_month){
-			  var lilv_month = lilv / 12;//月利率
+			  var lilv_month = lilv / 12; //月利率
 			  var benjin_money = total / month;
-			  return (total - benjin_money * cur_month) * lilv_month + benjin_money;
+			  // 更精确的计算方式，先计算剩余本金利息，再加上固定本金
+			  var remaining_principal = total - benjin_money * cur_month;
+			  var interest = remaining_principal * lilv_month;
+			  return interest + benjin_money;
 			},
 			sectionChange(index) {
 				this.current = index;
