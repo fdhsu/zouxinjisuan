@@ -1,5 +1,8 @@
 <template>
-<view class="login" :style="'background: url(' + bgImg[imgIndex] + '); background-size: cover;background-repeat:no-repeat; background-position: center;'">
+<view>
+	<cu-custom bgColor="bg-gradual-blue" :isBack="true">
+		<block slot="content">登录</block>
+	</cu-custom>
   <view class="logo">
     <image src="/static/logo/144-144.png"></image>
   </view>
@@ -270,7 +273,7 @@ export default {
   display: block;
   border-radius: 50%;
   margin: 0 auto;
-  margin-top: 250upx;
+  margin-top: 150upx;
 }
 .login_from{
   width: 80vw;

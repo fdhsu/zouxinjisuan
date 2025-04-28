@@ -1,0 +1,8 @@
+{
+  "name": "aiogin",
+  "dependencies": {},
+  "extensions": {
+    "uni-cloud-jql": {},
+    "uni-cloud-verify": {}
+  }
+}
