@@ -21,7 +21,7 @@
 		</view>
 
 		<!-- 导航栏 -->
-		<view class="cu-list grid solids-bottom col-3 no-border">
+		<view class="cu-list grid solids-bottom col-2 no-border">
 			<view class="cu-item" v-for="(item, index) in tools" :key="index"
 				:style="[{ animation: 'show ' + ((index + 1) * 0.2 + 1) + 's 1' }]" @click="goTool"
 				:data-mid="item.mid">
@@ -78,20 +78,12 @@
 						name: '房贷计算器'
 					},
 					{
-						cuIcon: 'formfill',
-						color: 'blue',
-						count: 0,
-						badge: 0,
-						mid: '7',
-						name: '简易计算器'
-					},
-					{
 						cuIcon: 'appreciatefill',
 						color: 'blue',
 						count: 0,
 						badge: 0,
 						mid: '8',
-						name: '火星文转换'
+						name: '繁简转换'
 					}
 				],
 				projectList: []

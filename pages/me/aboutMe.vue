@@ -13,14 +13,14 @@
 	</view>
 	
 	<view class="titleZ text-center align-center margin-top-xl">
-		<text class="text-bold">计算房贷？火星文转换？</text>
+		<text class="text-bold">计算房贷？繁简文字转换？</text>
 		<view class="contentZ margin-top-lg">
 			<text class="text-xl text-bold">计算房贷</text>
 			<text class="text-xl">：我们可以测算商贷，公积金贷款，还有组合贷，最重要的是可自定义输入贷款利率哦~</text>
 		</view>
 		<view class="contentZ" style="margin-top: 40rpx;">
-			<text class="text-xl text-bold">火星文转换</text>
-			<text class="text-xl">：简体中文转成繁体字，繁体字转成简体中文，简体转成火星文~</text>
+			<text class="text-xl text-bold">繁简转换</text>
+			<text class="text-xl">：简体中文转成繁体字，繁体字转成简体中文~</text>
 		</view>
 	</view>
 	

@@ -3,23 +3,23 @@
   <view class="logo">
     <image src="/static/logo/144-144.png"></image>
   </view>
-
   <view class="login_from">
-      <input placeholder="请输入手机号" v-model="tel" type="number" maxlength="11" placeholder-style="color: #333"></input>
-      <view class="codes">
-      	<input placeholder="请输入短信验证码" v-model="smscode"  maxlength="6" type="number" placeholder-style="color: #333"></input>
-		<view @click="getCode" :style="{opacity: isCode == true ? '1':'0.8'}">{{codeName}}</view>
-      </view>
-	   
-	   <checkbox-group @change="checkboxChange">
+      <input placeholder="请输入手机号" v-model="mobile" type="number" maxlength="11" placeholder-style="color: #333"></input>
+	  <input placeholder="密码" v-model="password"  maxlength="20" type="password" placeholder-style="color: #333"></input>
+		
+	   <!-- <checkbox-group @change="checkboxChange">
 	   	<label>
 	   		<checkbox value="readCb" :checked="isReadChk"/>我已阅读并同意
 	   	</label>
-	   	<text class="link" @click="navigateToAgreement">《用户协议》</text>
-	   </checkbox-group>
+		<navigator open-type="navigate" url="./privacy?url=http://app.uy4.cn/static/upload/app/agreement.html">《用户协议》</navigator>
+		<navigator open-type="navigate" url="./privacy?url=http://app.uy4.cn/static/upload/app/privacy.html">《隐私协议》</navigator>
+	   </checkbox-group> -->
 	   
       <view class="login_btn" @click="onlogin">登录</view>
-
+	  <view class="register">
+		  <text class="link " @click="navigateToRegister">没有账户，去注册</text>
+	  </view>
+		
   </view>
   <!-- #ifdef MP-WEIXIN -->
   <view class="login_from">
@@ -30,20 +30,27 @@
 </template>
 
 <script>
+// 引入 JSON 文件
+// const manifest = require('@/manifest.json');
+	
+// // 获取 appid
+// const appid = manifest.appid;
+// console.log('当前项目的 appid 是:', appid);
 import { setUserInfo,setToken } from "../../utils/auth";
 export default {
   data() {
     return {
-	  isReadChk: false,
+	  isReadChk: true,
       isCanUse: uni.getStorageSync('isCanUse'),
-      nickName: '',
+      mobile: '',
+	  password:'',
       avatarUrl: '',
       bgImg: ['', ''],
       imgTime: '',
       imgIndex: 0,
 	  codeName: '验证码',
       isCode: true,
-	  tel:'',
+	
 	  smscode:'',
 	  wxcode: ''
     };
@@ -51,10 +58,15 @@ export default {
   props: {},
   methods: {
 	checkboxChange(e) {
-		console.log(e)
-		console.log(e.detail.value)
-		console.log(e.detail.value.length > 0)
+		// console.log(e)
+		// console.log(e.detail.value)
+		// console.log(e.detail.value.length > 0)
 		this.isReadChk = e.detail.value.length > 0
+	},
+	navigateToRegister() {
+		uni.navigateTo({
+			url: '/pages/login/register'
+		});
 	},
 	navigateToAgreement() {
 		uni.navigateTo({
@@ -72,7 +84,7 @@ export default {
 		  _this.request('/v1/login/weixin', form, 'POST').then(res=>{
 			  console.log("login: ", res)
 		  	_this.setData({
-		  	  nickName: infoRes.userInfo.nickName,
+		  	  mobile: infoRes.userInfo.mobile,
 		  	  //昵称
 		  	  avatarUrl: infoRes.userInfo.avatarUrl //头像
 		  	});
@@ -104,27 +116,72 @@ export default {
 	        });
 	        return;
 	      } 
-	
+	if(!this.mobile){
+		uni.showToast({ title: '手机号不能为空',icon:"none" });
+		return false;
+	}
+	const regex = /^1[3-9]\d{9}$/;
+	if(!regex.test(this.mobile)){
+		uni.showToast({ title: '输入正确手机号',icon:"none" });
+		return false;
+	}
+	if(!this.password){
+		uni.showToast({ title: '密码不能为空',icon:"none" });
+		return false;
+	}
 		let date = new Date().getTime()
 		//setToken(date)
-		let user = {  //模拟存储用户信息
-			avatarUrl: '../../static/logo/192-192.png',
-			nickName: '游客'
-		}
-		setUserInfo(user)
+		// let user = {  //模拟存储用户信息
+		// 	avatarUrl: '../../static/logo/192-192.png',
+		// 	nickName: '游客'
+		// }
+		// setUserInfo(user)
 		
+		
+		// setUserInfo(infoRes.userInfo);  //模拟存储用户信息
 		uni.showLoading({
 			title:'登录中...'
 		})
-		setTimeout(()=>{
+		/*setTimeout(()=>{
 			uni.hideLoading()
 			uni.showToast({
 				title:'登陆成功'
 			})
-		}, 500)
-		setTimeout(()=>{
+		}, 500)*/
+		
+		//console.log('当前项目的 appid 是:', appid);
+		uniCloud.callFunction({
+		  name: 'applogin',
+		  data: {
+		    appid: "__UNI__657F005",
+		    mobile: this.mobile,
+		    password: this.password
+		  }
+		}).then(res => {
+		  console.log(res.result);
+		  if (res.result.code === 200) {
+		    // 保存token和用户信息
+			setToken(res.result.data.token)
+			setUserInfo(res.result.data)
+			uni.showToast({
+				title:'登陆成功'
+			})
 			uni.navigateBack(-1)
-		},1500)
+		  }else{
+			  uni.showToast({
+			  	title: res.result.message,
+			  	icon: 'none'
+			  })
+		  }
+		  uni.hideLoading()
+		}).catch(err => {
+		  console.error(err);
+		  uni.showToast({
+		  	title: err.message,
+		  	icon: 'none'
+		  })
+		  uni.hideLoading()
+		});
 	},
 	getCode() { //获取用户短信验证码
 		if(this.isCode == false){
@@ -195,6 +252,9 @@ export default {
 .agreement{
 	padding-top: 20px;
 }
+.register{
+	padding-top: 20px;
+}
 .login{
   height: 100%;
   width: 100%;
@@ -237,6 +297,18 @@ export default {
 .codes input{
 	width: 75%;
 }
+.agreement {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    font-size: 30rpx;
+    margin-top: 80rpx;
+    color: #FFA800;
+    text-align: center;
+    height: 40rpx;
+    line-height: 40rpx;
+  }
 .codes view{
 	height: 80upx;
 	line-height: 80upx;

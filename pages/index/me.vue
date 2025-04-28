@@ -57,7 +57,7 @@
 
 			<block>
 				<view class='text-center'>
-					 <view class="cu-avatar2 round xl margin-right-sm shadow-blur-lg bg-img open-data"
+					<!-- <view class="cu-avatar2 round xl margin-right-sm shadow-blur-lg bg-img open-data"
 						style="overflow: hidden;">
 						<image :src="userdata.avatarUrl" v-if="userdata.avatarUrl"></image>
 						<image src="../../static/logo/192-192.png" v-else></image>
@@ -65,16 +65,16 @@
 					<view class="padding text-white text-xl text-bold">
 						{{userdata.nickName||'走心计算器'}}
 					</view>
-					<!--
+					 -->
 					<view @click="onLogin" class="cu-avatar2 round xl margin-right-sm shadow-blur-lg bg-img open-data"
 						style="overflow: hidden;">
 						<image :src="userdata.avatarUrl" v-if="userdata.avatarUrl"></image>
 						<image src="../../static/logo/192-192.png" v-else></image>
 					</view>
 					<view class="padding text-white text-xl text-bold" @click="onLogin">
-						{{userdata.nickName||'走心计算器'}}
+						{{userdata.mobile||'走心计算器'}}
 					</view>
-					 -->
+					
 				</view>
 			</block>
 			<image
