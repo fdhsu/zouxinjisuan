@@ -1,5 +1,5 @@
 'use strict';
-const { validateApp, usersCollection } = require('../user/init');
+const { validateApp, usersCollection } = require('../user/index');
 const crypto = require('crypto');
 
 /**

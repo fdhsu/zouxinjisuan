@@ -1,5 +1,6 @@
 {
   "name": "aiogin",
+  "main": "init.js",
   "dependencies": {},
   "extensions": {
     "uni-cloud-jql": {},
