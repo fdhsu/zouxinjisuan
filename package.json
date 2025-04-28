@@ -1,0 +1,22 @@
+{
+  "name": "250320mortgagetool",
+  "version": "1.0.0",
+  "description": "小工具",
+  "main": "main.js",
+  "dependencies": {
+    "decimal.js": "^10.5.0",
+    "opencc-js": "^1.0.5"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://192.168.5.154//recordapp/mortgagetool.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
+ 
