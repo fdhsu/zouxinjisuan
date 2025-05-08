@@ -4,34 +4,39 @@
 	},
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
 		{
-			"path": "pages/index/tabbar",
-			"style": {
-				"navigationBarTitleText": "工具包",
-				"navigationStyle": "custom"
-			}
+		    "path" : "pages/index/index",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "首页"
+		    }
+		    
+		},{
+		    "path" : "pages/home/home",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "每日一句"
+		    }
+		    
 		},
+		{
+		    "path" : "pages/index/me",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "个人中心"
+		    }
+		    
+		},
+		
 		{
 		    "path" : "pages/tools/electric",
 		    "style" : {
-		        "navigationBarTitleText" : "简易计算器",
-				"navigationBarBackgroundColor":"#F8F8F8"
+		        "navigationBarTitleText" : "简易计算器"
 		    }
 		},
 		{
 		    "path" : "pages/login/register",
 		    "style" : {
-		        "navigationStyle" : "custom",
 		        "navigationBarTitleText" : "注册用户",
-		        "app-plus" : {
-		            "titleNView" : false
-		        }
-		    }
-		},
-		{
-		    "path" : "pages/login/login",
-		    "style" : {
-		        "navigationStyle" : "custom",
-		        "navigationBarTitleText" : "登录",
 		        "app-plus" : {
 		            "titleNView" : false
 		        }
@@ -40,22 +45,13 @@
 		{
 		    "path" : "pages/tools/font",
 		    "style" : {
-		        "navigationBarTitleText" : "简繁转换",
-				"navigationBarBackgroundColor":"#F8F8F8"
+		        "navigationBarTitleText" : "简繁转换"
 		    }
 		},
 		{
 		    "path" : "pages/tools/house",
 		    "style" : {
-		        "navigationBarTitleText" : "房贷计算器",
-				"navigationBarBackgroundColor":"#F8F8F8"
-		    }
-		},
-		{
-		    "path" : "pages/me/agreement",
-		    "style": {
-		    	"navigationBarTitleText": "用户协议",
-		    	"navigationStyle": "custom"
+		        "navigationBarTitleText" : "房贷计算器"
 		    }
 		},
 		{
@@ -65,22 +61,30 @@
 			}
 		},
 		{
-		    "path" : "pages/me/aboutMe",
-		    "style": {
-		    	"navigationBarTitleText": "关于我们",
-		    	"navigationStyle": "custom"
-		    }
-		}
-	    ,{
-            "path" : "pages/home/home",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "",
-                "navigationStyle": "custom"
-            }
-            
-        },
-		
+			"path": "pages/login/login",
+			"style": {
+				"navigationBarTitleText": "登录"
+			}
+		},
+		{
+			"path": "pages/login/register",
+			"style": {
+				"navigationBarTitleText": "注册"
+			}
+		},
+		{
+			"path": "pages/me/set",
+			"style": {
+				"navigationBarTitleText": "设置"
+			}
+		},
+		{
+		    "path" : "pages/me/gywm",
+		    "style" : {
+				"navigationBarTitleText": "关于我们"
+			}
+		},
+	    
         {
         	"path" : "pages/index/webview",
         	"style" : 
@@ -92,7 +96,38 @@
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "uni-app",
-		"navigationBarBackgroundColor": "#F8F8F8",
-		"backgroundColor": "#F8F8F8"
+		"navigationBarBackgroundColor": "#FFFFFF",
+		"backgroundColor": "#FFFFFF",
+		"app-plus": {
+		    "titleNView": {
+		    "titleSize": "17px"
+		    }
+		}
+	},
+	"tabBar": {
+		"color": "#aaaaaa",
+		"selectedColor": "#666666",
+		"borderStyle": "black",
+		"backgroundColor": "#ffffff",
+		"list": [
+			{
+		 	"pagePath": "pages/index/index",
+		 	"iconPath": "static/tabBar/index.png",
+		 	"selectedIconPath": "static/tabBar/index_cur.png",
+		 	"text": "首页"
+			},
+			{
+				"pagePath": "pages/home/home",
+				"iconPath": "static/tabBar/shop.png",
+				"selectedIconPath": "static/tabBar/shop_cur.png",
+				"text": "今日语句"
+			},
+			{
+				"pagePath": "pages/index/me",
+				"iconPath": "static/tabBar/me.png",
+				"selectedIconPath": "static/tabBar/me_cur.png",
+				"text": "个人中心"
+			}
+		]
 	}
 }

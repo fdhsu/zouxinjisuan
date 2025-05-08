@@ -1,8 +1,5 @@
 <template>
 <view>
-	<cu-custom bgColor="bg-gradual-blue" :isBack="true">
-		<block slot="content">注册账户</block>
-	</cu-custom>
   <view class="logo">
     <image src="/static/logo/144-144.png"></image>
   </view>
@@ -32,12 +29,6 @@
 </template>
 
 <script>
-// 引入 JSON 文件
-// const manifest = require('@/manifest.json');
-	
-// // 获取 appid
-// const appid = manifest.appid;
-// console.log('当前项目的 appid 是:', appid);
 import { setUserInfo,setToken } from "../../utils/auth";
 export default {
   data() {
@@ -111,7 +102,6 @@ export default {
 		uniCloud.callFunction({
 		  name: 'appregister',
 		  data: {
-		    appid: "__UNI__657F005",
 		    mobile: this.mobile,
 		    password: this.password
 		  }
@@ -168,12 +158,12 @@ export default {
   display: block;
   border-radius: 50%;
   margin: 0 auto;
-  margin-top: 150upx;
+  margin-top: 120upx;
 }
 .login_from{
   width: 80vw;
   margin: 0 auto;
-  margin-top: 10vh;
+  margin-top: 5vh;
 }
 .login_from .codes{
 	display: flex;
@@ -182,14 +172,14 @@ export default {
 	justify-content: space-between;
 }
 .login_from input{
-  height: 80upx;
-  line-height: 80upx;
+  height: 90upx;
+  line-height: 90upx;
   margin-bottom: 60upx;
   background-color: rgba(255, 255, 255, 0.8);
   box-sizing: border-box;
   padding: 0 30upx;
   border-radius: 10upx;
-  font-size: 26upx;
+  font-size: 30upx;
   color: #333;
 }
 .codes input{
@@ -208,15 +198,15 @@ export default {
 }
 .login_btn{
   width: 100%;
-  height: 80upx;
+  height: 90upx;
   margin: 0 auto;
   background-color: rgba(70, 143, 152, 0.8);
   margin-top: 30px;
   text-align: center;
-  line-height: 80upx;
+  line-height: 90upx;
   border-radius: 40upx;
   color: #fff;
-  font-size: 24upx;
+  font-size: 30upx;
 }
 .login_btn:active{
   opacity: 0.9;

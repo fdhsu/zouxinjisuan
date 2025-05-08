@@ -1,9 +1,6 @@
 <!-- 首页 -->
 <template>
 	<view>
-		<cu-custom bgColor="bg-gradual-blue" :isBack="false">
-			<block slot="content">首页</block>
-		</cu-custom>
 		<!-- banner图 -->
 		<view class="uni-padding-wrap">
 			<view class="page-section swiper">

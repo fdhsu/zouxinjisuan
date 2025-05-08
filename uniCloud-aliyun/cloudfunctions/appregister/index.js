@@ -1,5 +1,5 @@
 'use strict';
-const { validateApp, usersCollection } = require('../user/init');
+const { validateApp, usersCollection } = require('utils-common');
 const crypto = require('crypto');
 
 /**
@@ -11,33 +11,17 @@ const crypto = require('crypto');
  */
 exports.main = async (event, context) => {
   try {
-    // 验证应用
-    const app = await validateApp(event.appid);
+   // 验证应用
+   const app = await validateApp(context.APPID);
     
     // 检查手机号是否已存在
     const { data: existingUser } = await usersCollection.where({
-      mobile: event.mobile
+      mobile: event.mobile,
+      appid: context.APPID
     }).get();
     
     if (existingUser.length > 0) {
-      // 如果用户已存在，检查是否属于当前应用
-      const user = existingUser[0];
-      if (user.appid && user.appid.includes(event.appid)) {
-        throw new Error('该手机号已注册');
-      }
-      
-      // 如果用户存在但不属于当前应用，添加到应用
-      await usersCollection.doc(user._id).update({
-        appid: db.command.addToSet(event.appid)
-      });
-      
-      return {
-        code: 200,
-        message: '注册成功',
-        data: {
-          userId: user._id
-        }
-      };
+      throw new Error('该用户已注册');
     }
     
     // 加密密码
@@ -51,6 +35,7 @@ exports.main = async (event, context) => {
       password: encryptedPassword,
       appid: [event.appid],
       status: 0,
+	  register_ip: context.CLIENTIP,
       register_date: new Date(),
       roles: ['user']
     };

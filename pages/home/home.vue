@@ -1,9 +1,5 @@
 <template>
 	<view>
-		<cu-custom bgColor="bg-gradual-blue" :isBack="false">
-			<!-- <block slot="backText">返回</block> -->
-			<block slot="content"> 今日语句</block>
-		</cu-custom>
 		<scroll-view scroll-y class="page">
 			<view class="cu-card case" >
 				<view class=" shadow">

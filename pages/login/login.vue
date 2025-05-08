@@ -1,28 +1,19 @@
 <template>
 <view>
-	<cu-custom bgColor="bg-gradual-blue" :isBack="true">
-		<block slot="content">登录</block>
-	</cu-custom>
   <view class="logo">
     <image src="/static/logo/144-144.png"></image>
   </view>
   <view class="login_from">
       <input placeholder="请输入手机号" v-model="mobile" type="number" maxlength="11" placeholder-style="color: #333"></input>
 	  <input placeholder="密码" v-model="password"  maxlength="20" type="password" placeholder-style="color: #333"></input>
-		
-	   <!-- <checkbox-group @change="checkboxChange">
-	   	<label>
-	   		<checkbox value="readCb" :checked="isReadChk"/>我已阅读并同意
-	   	</label>
-		<navigator open-type="navigate" url="./privacy?url=http://app.uy4.cn/static/upload/app/agreement.html">《用户协议》</navigator>
-		<navigator open-type="navigate" url="./privacy?url=http://app.uy4.cn/static/upload/app/privacy.html">《隐私协议》</navigator>
-	   </checkbox-group> -->
 	   
       <view class="login_btn" @click="onlogin">登录</view>
 	  <view class="register">
 		  <text class="link " @click="navigateToRegister">没有账户，去注册</text>
 	  </view>
-		
+		<view class="list-call" style="color: #666; margin-left:auto;margin-right: auto;padding-top: 30px;text-align: center;">
+			<text class="link" style="font-size: 14px;" @click="openAutoLogin" v-if="os=='app'">本机一键登录</text>  
+		</view>
   </view>
   <!-- #ifdef MP-WEIXIN -->
   <view class="login_from">
@@ -55,11 +46,140 @@ export default {
       isCode: true,
 	
 	  smscode:'',
-	  wxcode: ''
+	  wxcode: '',
+	  showSmsLogin:false,
+	  password: '',
+	  openid:'',
+	  unionid:'',
+	  userinfowx:'',
+	  idfd:1,
+	  fxpid:0,
+	  islogin:false,
+	  isdl:false,
+	  code:'',
+	  anonymousCode:'',
+	  gender:0,
+	  nickName:'',
+	  btnDisbe:false,
+	  autoLogin:false,
+	  secret: 'b2EyMHF6ZDExMTExMTAwMA==',
+	  os:'',
     };
   },
   props: {},
+  onLoad() {
+  	let _this=this
+  	uni.preLogin({
+  		provider: 'univerify',
+  		success(){  //
+  			// 显示一键登录选项
+  			console.log('预登录成功')
+  			_this.autoLogin=true
+  			console.log("this.autoLogin:"+_this.autoLogin)
+  		},
+  		fail(res){  // 预登录失败
+  			console.log(res)
+  		}
+  	})
+  	
+  	this.os = uni.getSystemInfoSync().uniPlatform;
+  	console.log("os:"+this.os)
+  },
   methods: {
+	  //一键登录
+	  openAutoLogin(){
+	  	if(!this.autoLogin){
+	  			uni.showToast({ title: '请打开数据流量',icon:"none" });
+	  			return
+	  	}
+	  	let _self = this;
+	  	uni.login({
+	  		provider: 'univerify',
+	  		univerifyStyle: { // 自定义登录框样式
+	  		//参考`univerifyStyle 数据结构`
+	  		  "icon": {
+	  		        "path": "static/login/144-144.png", // 自定义显示在授权框中的logo，仅支持本地图片 默认显示App logo
+	  		        "width":  "60px",  //图标宽度 默认值：60px
+	  		        "height": "60px"   //图标高度 默认值：60px
+	  		    },
+	  	  },
+	  		success(res){ // 登录成功
+	  			console.log(res);  // {openid:'登录授权唯一标识',access_to.ken:'接口返回的 token'}
+	  			// 在得到access_token后，通过callfunction调用云函数
+	  			uniCloud.callFunction({
+	  			  name: 'toolautologin',
+	  			  data: res.authResult
+	  			}).then(res => {
+	  				console.log("获取号码成功：")
+	  				console.log(res.result.phoneNumber)
+	  				if(res.result.code===0){
+	  						uniCloud.callFunction({
+	  						  name: 'applogreg',
+	  						  data: {
+	  						    mobile: res.result.phoneNumber,
+								password: "aaaaaa"
+	  						  }
+	  						}).then(res => {
+	  						  console.log(res.result);
+	  						  if (res.result.code === 200) {
+	  							console.log(res.result.data)
+								
+	  						    // 保存token和用户信息
+								setToken(res.result.data.token)
+	  							setUserInfo(res.result.data)
+	  							uni.showToast({
+	  								title:'登陆成功'
+	  							})
+	  							// 登录成功，可以关闭一键登录授权界面了
+	  							uni.closeAuthView()
+								uni.switchTab({
+								  url: '/pages/index/me',
+								  success: () => {
+								    console.log('跳转成功');
+								  },
+								  fail: (err) => {
+								    console.log('跳转失败', err);
+								  }
+								});
+	  							//uni.navigateBack(-1)
+	  						  }else{
+	  							  uni.showToast({
+	  							  	title: res.result.message,
+	  							  	icon: 'none'
+	  							  })
+	  						  }
+	  						  uni.hideLoading()
+	  						}).catch(err => {
+	  						  console.error(err);
+	  						  uni.showToast({
+	  						  	title: err.message,
+	  						  	icon: 'none'
+	  						  })
+	  						  uni.hideLoading()
+	  						});
+	  						
+	  				}else{
+	  					uni.showToast({ title: '登录失败',icon:"none" });
+	  				}
+	  			  
+	  			}).catch(err=>{
+	  			  // 处理错误
+	  			  console.log("获取错误："+err)
+	  			})
+	  			
+	  			//
+	  		},
+	  		fail(res){  // 登录失败
+	  			console.log(res)
+	  			if(res.errCode==30002){
+	  				uni.closeAuthView()
+	  			}else{
+	  				uni.showToast({ title: res.errMsg,icon:"none" });
+	  			}
+	  		}
+	  	})
+	  },
+	
 	checkboxChange(e) {
 		// console.log(e)
 		// console.log(e.detail.value)
@@ -156,7 +276,6 @@ export default {
 		uniCloud.callFunction({
 		  name: 'applogin',
 		  data: {
-		    appid: "__UNI__657F005",
 		    mobile: this.mobile,
 		    password: this.password
 		  }
@@ -169,7 +288,15 @@ export default {
 			uni.showToast({
 				title:'登陆成功'
 			})
-			uni.navigateBack(-1)
+			uni.switchTab({
+			  url: '/pages/index/me',
+			  success: () => {
+			    console.log('跳转成功');
+			  },
+			  fail: (err) => {
+			    console.log('跳转失败', err);
+			  }
+			});
 		  }else{
 			  uni.showToast({
 			  	title: res.result.message,
@@ -273,12 +400,12 @@ export default {
   display: block;
   border-radius: 50%;
   margin: 0 auto;
-  margin-top: 150upx;
+  margin-top: 120upx;
 }
 .login_from{
   width: 80vw;
   margin: 0 auto;
-  margin-top: 10vh;
+  margin-top: 5vh;
 }
 .login_from .codes{
 	display: flex;
@@ -287,14 +414,14 @@ export default {
 	justify-content: space-between;
 }
 .login_from input{
-  height: 80upx;
-  line-height: 80upx;
+  height: 90upx;
+  line-height: 90upx;
   margin-bottom: 60upx;
   background-color: rgba(255, 255, 255, 0.8);
   box-sizing: border-box;
   padding: 0 30upx;
   border-radius: 10upx;
-  font-size: 26upx;
+  font-size: 30upx;
   color: #333;
 }
 .codes input{
@@ -325,15 +452,15 @@ export default {
 }
 .login_btn{
   width: 100%;
-  height: 80upx;
+  height: 90upx;
   margin: 0 auto;
   background-color: rgba(70, 143, 152, 0.8);
   margin-top: 30px;
   text-align: center;
-  line-height: 80upx;
+  line-height: 90upx;
   border-radius: 40upx;
   color: #fff;
-  font-size: 24upx;
+  font-size: 30upx;
 }
 .login_btn:active{
   opacity: 0.9;

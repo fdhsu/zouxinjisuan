@@ -1,9 +1,6 @@
 <!-- 个人中心 -->
 <template>
 	<view>
-		<cu-custom bgColor="bg-gradual-blue" :isBack="false">
-			<block slot="content">个人中心</block>
-		</cu-custom>
 	<view class="components-theme">
 		<navigator target="miniProgram"  version='release' hover-class="none">
 			<view class="dong">
@@ -56,25 +53,23 @@
 			</view>
 
 			<block>
-				<view class='text-center'>
-					<!-- <view class="cu-avatar2 round xl margin-right-sm shadow-blur-lg bg-img open-data"
-						style="overflow: hidden;">
-						<image :src="userdata.avatarUrl" v-if="userdata.avatarUrl"></image>
-						<image src="../../static/logo/192-192.png" v-else></image>
-					</view>
-					<view class="padding text-white text-xl text-bold">
-						{{userdata.nickName||'走心计算器'}}
-					</view>
-					 -->
+				<view class='text-center' v-if="!isLogin">
 					<view @click="onLogin" class="cu-avatar2 round xl margin-right-sm shadow-blur-lg bg-img open-data"
 						style="overflow: hidden;">
-						<image :src="userdata.avatarUrl" v-if="userdata.avatarUrl"></image>
-						<image src="../../static/logo/192-192.png" v-else></image>
+						<image src="../../static/logo/192-192.png"></image>
 					</view>
 					<view class="padding text-white text-xl text-bold" @click="onLogin">
-						{{userdata.mobile||'走心计算器'}}
+						去登录
 					</view>
-					
+				</view>
+				<view class='text-center' v-else>
+					<view class="cu-avatar2 round xl margin-right-sm shadow-blur-lg bg-img open-data"
+						style="overflow: hidden;">
+						<image src="../../static/logo/192-192.png"></image>
+					</view>
+					<view class="padding text-white text-xl text-bold" >
+						{{hideMiddleFourDigits(userdata.nickname)||'走心计算器'}}
+					</view>
 				</view>
 			</block>
 			<image
@@ -103,23 +98,12 @@
 					</view>
 				</view>
 			</view>
-
-			<view
-				class="cu-list menu card-menu margin-top-lg margin-bottom-lg shadow-shop bg-white text-black my-radius sm-border">
-				<view class="cu-item">
-					<button class='content cu-btn' @click="goAboutMe">
-						<image src='../../static/me/icon/xiaoxi.png' class='png' mode='aspectFit'></image>
-						<text class='text-lg margin-sm'>关于我们</text>
-					</button>
-				</view>
-				
-			</view>
 			<view
 				class="cu-list menu card-menu margin-top-lg margin-bottom-lg shadow-shop bg-white text-black my-radius sm-border">
 				<view class="cu-item">
 					<button class='content cu-btn' @click="goRecommend">
 							<image src='../../static/me/icon/dengta.png' class='png' mode='aspectFit'></image>
-							<text class='text-lg margin-sm'>走心推荐</text>
+							<text class='text-lg margin-sm'>设置</text>
 						</button>
 				</view>
 			</view>
@@ -135,6 +119,25 @@
 	export default {
 		data() {
 			return {
+				isLogin: false,
+				showSmsLogin:false,
+				username: '',
+				password: '',
+				openid:'',
+				unionid:'',
+				userinfowx:'',
+				idfd:1,
+				fxpid:0,
+				islogin:false,
+				isdl:false,
+				code:'',
+				anonymousCode:'',
+				gender:0,
+				nickName:'',
+				btnDisbe:false,
+				autoLogin:false,
+				secret: 'b2EyMHF6ZDExMTExMTAwMA==',
+				os:'',
 				userdata: {},
 				// Custom: this.Custom,
 				// CustomBar: this.CustomBar,
@@ -202,18 +205,103 @@
 				} else {
 					this.spaceShow = false;
 				}
-			}
+			},
 		},
 		mounted() {
-			  this.userdata = getUserInfo() || {};
+			this.userdata = getUserInfo() || {};
+			// let _this=this
+			// uni.preLogin({
+			// 	provider: 'univerify',
+			// 	success(){  //
+			// 		// 显示一键登录选项
+			// 		console.log('预登录成功')
+			// 		_this.autoLogin=true
+			// 		console.log("this.autoLogin:"+_this.autoLogin)
+			// 	},
+			// 	fail(res){  // 预登录失败
+			// 		console.log(res)
+			// 	}
+			// })
+			
+			// this.os = uni.getSystemInfoSync().uniPlatform;
+			// console.log("os:"+this.os)  
+		},
+		onShow(){
+			 let token = getToken() || "";
+			 console.log('token=='+token)
+			 if(token){
+				this.userdata = getUserInfo() || {};
+				//console.log(this.userdata)
+			 	this.isLogin=true
+			 }else{
+			 	this.isLogin=false
+			 	this.userinfo={}
+			 }
 		},
 		methods: {
+			hideMiddleFourDigits(phoneNumber) {
+			    // 检查手机号是否为11位数字
+			    if (phoneNumber.length === 11 && /^\d+$/.test(phoneNumber)) {
+			        return phoneNumber.substring(0, 3) + '*****' + phoneNumber.substring(8);
+			    } else {
+			        return phoneNumber;
+			    }
+			},
+			//一键登录
+			openAutoLogin(){
+				if(!this.autoLogin){
+						uni.showToast({ title: '请打开数据流量',icon:"none" });
+						return
+				}
+				let _self = this;
+				uni.login({
+					provider: 'univerify',
+					univerifyStyle: { // 自定义登录框样式
+					//参考`univerifyStyle 数据结构`
+					  "icon": {
+					        "path": "static/login/144-144.png", // 自定义显示在授权框中的logo，仅支持本地图片 默认显示App logo
+					        "width":  "60px",  //图标宽度 默认值：60px
+					        "height": "60px"   //图标高度 默认值：60px
+					    },
+				  },
+					success(ures){ // 登录成功
+						console.log(ures);  // {openid:'登录授权唯一标识',access_to.ken:'接口返回的 token'}
+						// 在得到access_token后，通过callfunction调用云函数
+						uniCloud.callFunction({
+						  name: 'toolautologin',
+						  data: ures.authResult
+						}).then(res => {
+							console.log("获取号码：")
+							console.log(res)
+							
+							// if(res.code==200){
+							// 	setUserInfo(res.data)
+							// 	uni.showToast({
+							// 		title:'登陆成功'
+							// 	})
+							// 	this.userdata = res.data;
+							// 	// 登录成功，可以关闭一键登录授权界面了
+							// 	uni.closeAuthView()
+							// }else{
+							// 	uni.showToast({ title: '登录失败',icon:"none" });
+							// }
+						  
+						}).catch(err=>{
+						  // 处理错误
+						  console.log("获取错误："+err)
+						})
+					},
+					fail(res){  // 登录失败
+						console.log(res)
+						if(res.errCode==30002){
+							uni.closeAuthView()
+						}else{
+							uni.showToast({ title: res.errMsg,icon:"none" });
+						}
+					}
+				})
+			},
 			onLogin(){
-				
-				// let token = getToken()
-				// if(getToken()){
-				// 	return
-				// }
 				uni.navigateTo({
 					url:'../login/login'
 				})
@@ -235,21 +323,9 @@
 			showModal(e) {
 				this.modalName = e.currentTarget.dataset.target
 			},
-			
-			goMedal() {
-				uni.navigateTo({
-					url: '../../tn_components/medal'
-				})
-			},
-			// 关于作者
-			goAboutMe() {
-				uni.navigateTo({
-					url: '../me/aboutMe'
-				})
-			},
 			goRecommend(){
 				uni.navigateTo({
-					url: `/pages/index/webview?url=${encodeURIComponent('https://g.51wcity.com/game/random/rBAxV')}`
+					url: '../me/set'
 				})
 			}
 		}
