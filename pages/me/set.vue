@@ -2,7 +2,7 @@
 	<view class="container">		 
 		<view class="list-cell b-b" @click="navTo('/pages/me/gywm')" hover-class="cell-hover" :hover-stay-time="50">
 			<text class="cell-tit">关于我们</text>
-			<image mode="aspectFit" style="width: 30upx; height: 30upx;" src="/static/me/fh2.png">
+			<image mode="aspectFit" style="width: 30upx; height: 30upx;" src="/static/me/fh.png">
 		</view>
 
 		<!-- #ifdef APP-PLUS -->
@@ -11,6 +11,10 @@
 			<text class="cell-tip">{{currentSize}}</text>
 		</view>
 		<!-- #endif -->
+		<!-- <view class="list-cell b-b" @click="navTo('/pages/login/privacy?url=https://beian.miit.gov.cn/#/Integrated/index')" hover-class="cell-hover" :hover-stay-time="50">
+			<text class="cell-tit">备案号</text>
+			<text class="cell-tip">京ICP备XXXXXXXX号-X</text>
+		</view> -->
 		<view class="list-cell log-out-btn" @click="toLogout">
 			<text class="cell-tit">退出登录</text>
 		</view>

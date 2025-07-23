@@ -4,16 +4,18 @@
     <image src="/static/logo/144-144.png"></image>
   </view>
   <view class="login_from">
-      <input placeholder="请输入手机号" v-model="mobile" type="number" maxlength="11" placeholder-style="color: #333"></input>
+      <!-- <input placeholder="请输入手机号" v-model="mobile" type="number" maxlength="11" placeholder-style="color: #333"></input>
 	  <input placeholder="密码" v-model="password"  maxlength="20" type="password" placeholder-style="color: #333"></input>
 	   
       <view class="login_btn" @click="onlogin">登录</view>
 	  <view class="register">
 		  <text class="link " @click="navigateToRegister">没有账户，去注册</text>
-	  </view>
-		<view class="list-call" style="color: #666; margin-left:auto;margin-right: auto;padding-top: 30px;text-align: center;">
-			<text class="link" style="font-size: 14px;" @click="openAutoLogin" v-if="os=='app'">本机一键登录</text>  
-		</view>
+	  </view> -->
+		
+		<view class="login_btn" @click="openAutoLogin" v-if="os=='app'">本机一键登录</view>
+  </view>
+  <view class="list-call common-login">
+  	<text class="link" style="font-size: 14px;" @click="toCommonLogin">其它手机号登录</text> 
   </view>
   <!-- #ifdef MP-WEIXIN -->
   <view class="login_from">
@@ -24,7 +26,7 @@
 </template>
 
 <script>
-// 引入 JSON 文件
+// //引入 JSON 文件
 // const manifest = require('@/manifest.json');
 	
 // // 获取 appid
@@ -44,7 +46,6 @@ export default {
       imgIndex: 0,
 	  codeName: '验证码',
       isCode: true,
-	
 	  smscode:'',
 	  wxcode: '',
 	  showSmsLogin:false,
@@ -86,6 +87,11 @@ export default {
   	console.log("os:"+this.os)
   },
   methods: {
+	  toCommonLogin(){
+		 uni.navigateTo({
+		 	url: '/pages/login/login2'
+		 });
+	  },
 	  //一键登录
 	  openAutoLogin(){
 	  	if(!this.autoLogin){
@@ -98,7 +104,7 @@ export default {
 	  		univerifyStyle: { // 自定义登录框样式
 	  		//参考`univerifyStyle 数据结构`
 	  		  "icon": {
-	  		        "path": "static/login/144-144.png", // 自定义显示在授权框中的logo，仅支持本地图片 默认显示App logo
+	  		        "path": "static/logo/144-144.png", // 自定义显示在授权框中的logo，仅支持本地图片 默认显示App logo
 	  		        "width":  "60px",  //图标宽度 默认值：60px
 	  		        "height": "60px"   //图标高度 默认值：60px
 	  		    },
@@ -384,6 +390,17 @@ export default {
 }
 .register{
 	padding-top: 20px;
+}
+.common-login{
+	color: #666;
+	 margin-left:auto;
+	 margin-right: auto;
+	 padding-top: 30px;
+	 text-align: center;
+	 position: absolute;
+	 bottom:80px;
+	 width:100%;
+	 left:0
 }
 .login{
   height: 100%;

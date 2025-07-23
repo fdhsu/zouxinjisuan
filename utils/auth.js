@@ -3,15 +3,15 @@
  * 操作用户token
  */
 export function setToken(value) {
-  uni.setStorageSync('token', value);
+  uni.setStorageSync('mortgage-token', value);
   console.log('存储用户信息成功');
 }
 export function getToken() {
-  let token = uni.getStorageSync('token');
+  let token = uni.getStorageSync('mortgage-token');
   return token;
 }
 export function removeToken() {
-  uni.removeStorageSync('token');
+  uni.removeStorageSync('mortgage-token');
 }
 /**
  * 操作用户信息
@@ -20,21 +20,21 @@ export function removeToken() {
 export function setUserInfo(value) {
   try {
     let newValue = JSON.stringify(value);
-    uni.setStorageSync('userinfo', newValue);
+    uni.setStorageSync('mortgage-userinfo', newValue);
     console.log('存储用户信息成功');
   } catch (e) {
     return;
   }
 }
 export function getUserInfo() {
-  let userinfo = uni.getStorageSync('userinfo');
+  let userinfo = uni.getStorageSync('mortgage-userinfo');
 //  console.log('userinfo', userinfo)
   if (userinfo) {
     return JSON.parse(userinfo);
   }
 }
 export function removeUserInfo(){
-	uni.removeStorageSync('userinfo');
+	uni.removeStorageSync('mortgage-userinfo');
 }
 /**
  * 项目主题颜色

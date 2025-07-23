@@ -67,6 +67,12 @@
 			}
 		},
 		{
+			"path": "pages/login/login2",
+			"style": {
+				"navigationBarTitleText": "用户登录"
+			}
+		},
+		{
 			"path": "pages/login/register",
 			"style": {
 				"navigationBarTitleText": "注册"

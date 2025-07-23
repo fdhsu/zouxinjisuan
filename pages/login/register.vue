@@ -11,8 +11,8 @@
 	   	<label>
 	   		<checkbox value="readCb" :checked="isReadChk"/>我已阅读并同意
 	   	</label>
-	   	<text class="link" @click="navTo('/pages/login/privacy?url=http://app.uy4.cn/static/upload/app/agreement.html')">《用户协议》</text>
-		<text class="link" @click="navTo('/pages/login/privacy?url=http://app.uy4.cn/static/upload/app/privacy.html')">《隐私协议》</text>
+	   	<text class="link" @click="navTo('/pages/login/privacy?url=http://app.dizengkeji.com/app/agreement.html')">《用户协议》</text>
+		<text class="link" @click="navTo('/pages/login/privacy?url=http://app.dizengkeji.com/app/privacy.html')">《隐私协议》</text>
 	   </checkbox-group>
 	   </view>
       <view class="login_btn" @click="onlogin">注册</view>
@@ -44,7 +44,6 @@ export default {
       imgIndex: 0,
 	  codeName: '验证码',
       isCode: true,
-	
 	  smscode:'',
 	  wxcode: ''
     };
@@ -59,7 +58,7 @@ export default {
 	},
 	navigateToRegister() {
 		uni.navigateTo({
-			url: '/pages/login/login'
+			url: '/pages/login/login2'
 		});
 	},
 	navTo(url){

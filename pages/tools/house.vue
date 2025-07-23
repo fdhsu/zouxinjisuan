@@ -82,7 +82,7 @@
 		<u-modal v-model="showCustomeRate" @confirm="customeConfirm">
 			<view class="slot-content">
 				<view style="padding: 0 30upx;">
-					<u-input v-model="customeRate" type="number" input-align="center" placeholder="请输入贷款利率(%)"></u-input>
+					<u-input v-model="customeRate" type="digit" input-align="center" placeholder="请输入贷款利率(%)"></u-input>
 				</view>
 			</view>
 		</u-modal>

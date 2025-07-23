@@ -1,12 +1,12 @@
 <template>
 	<view class="container">
-		<view class="list-cell  m-t b-b" @click="navTo('/pages/login/privacy?url=http://app.uy4.cn/static/upload/app/agreement.html')" hover-class="cell-hover" :hover-stay-time="50">
+		<view class="list-cell  m-t b-b" @click="navTo('/pages/login/privacy?url=http://app.dizengkeji.com/app/agreement.html')" hover-class="cell-hover" :hover-stay-time="50">
 			<text class="cell-tit">用户协议</text>
-			<image mode="aspectFit" style="width: 30upx; height: 30upx; margin-left: 50upx;float: right;" src="/static/icon/fh.png">
+			<image mode="aspectFit" style="width: 30upx; height: 30upx; margin-left: 50upx;float: right;" src="/static/me/fh.png">
 		</view>
-		<view class="list-cell m-t b-b" @click="navTo('/pages/login/privacy?url=http://app.uy4.cn/static/upload/app/privacy.html')"  hover-class="cell-hover" :hover-stay-time="50">
+		<view class="list-cell m-t b-b" @click="navTo('/pages/login/privacy?url=http://app.dizengkeji.com/app/privacy.html')"  hover-class="cell-hover" :hover-stay-time="50">
 			<text class="cell-tit">隐私协议</text>
-			<image mode="aspectFit" style="width: 30upx; height: 30upx; margin-left: 10upx;" src="/static/icon/fh.png">
+			<image mode="aspectFit" style="width: 30upx; height: 30upx; margin-left: 10upx;" src="/static/me/fh.png">
 		</view>
 
 	</view>

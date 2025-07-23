@@ -1,5 +1,5 @@
 {
-    "name" : "走心计算器",
+    "name" : "走心计算",
     "appid" : "__UNI__657F005",
     "description" : "实用通用型工具",
     "versionName" : "1.0.1",
@@ -18,7 +18,6 @@
             "autoclose" : true,
             "delay" : 0
         },
-        /* 模块配置 */
         "modules" : {
             "OAuth" : {}
         },
@@ -32,22 +31,21 @@
                     "<uses-permission android:name=\"android.permission.VIBRATE\"/>",
                     "<uses-permission android:name=\"android.permission.READ_LOGS\"/>",
                     "<uses-permission android:name=\"android.permission.ACCESS_WIFI_STATE\"/>",
-                    "<uses-feature android:name=\"android.hardware.camera.autofocus\"/>",
                     "<uses-permission android:name=\"android.permission.ACCESS_NETWORK_STATE\"/>",
-                    "<uses-permission android:name=\"android.permission.CAMERA\"/>",
                     "<uses-permission android:name=\"android.permission.GET_ACCOUNTS\"/>",
                     "<uses-permission android:name=\"android.permission.READ_PHONE_STATE\"/>",
                     "<uses-permission android:name=\"android.permission.CHANGE_WIFI_STATE\"/>",
                     "<uses-permission android:name=\"android.permission.WAKE_LOCK\"/>",
                     "<uses-permission android:name=\"android.permission.FLASHLIGHT\"/>",
-                    "<uses-feature android:name=\"android.hardware.camera\"/>",
                     "<uses-permission android:name=\"android.permission.WRITE_SETTINGS\"/>"
                 ],
-                "abiFilters" : [ "arm64-v8a", "x86" ]
+                "abiFilters" : [ "arm64-v8a", "x86" ],
+                "targetSdkVersion" : 30
             },
             /* ios打包配置 */
             "ios" : {
-                "dSYMs" : false
+                "dSYMs" : false,
+                "idfa" : false
             },
             /* SDK配置 */
             "sdkConfigs" : {
@@ -61,29 +59,29 @@
                 //可选，JSON对象，应用图标相关配置
                 "ios" : {
                     //可选，JSON对象，iOS平台图标配置
-                    "appstore" : "", //必填，字符串类型，分辨率1024x1024, 提交app sotre使用的图标路径
+                    "appstore" : "unpackage/res/icons/1024x1024.png", //必填，字符串类型，分辨率1024x1024, 提交app sotre使用的图标路径
                     "iphone" : {
                         //可选，JSON对象，iPhone设备图标配置
-                        "app@2x" : "", //可选，字符串类型，分辨率120x120，程序图标路径
-                        "app@3x" : "", //可选，字符串类型，分辨率180x180，程序图标路径
-                        "spotlight@2x" : "", //可选，字符串类型，分辨率80x80，Spotlight搜索图标路径
-                        "spotlight@3x" : "", //可选，字符串类型，分辨率120x120，Spotlight搜索图标路径
-                        "settings@2x" : "", //可选，字符串类型，分辨率58x58，Settings设置图标路径
-                        "settings@3x" : "", //可选，字符串类型，分辨率87x87，Settings设置图标路径
-                        "notification@2x" : "", //可选，字符串类型，分辨率40x40，通知栏图标路径
-                        "notification@3x" : "" //可选，字符串类型，分辨率60x60，通知栏图标路径
+                        "app@2x" : "unpackage/res/icons/120x120.png", //可选，字符串类型，分辨率120x120，程序图标路径
+                        "app@3x" : "unpackage/res/icons/180x180.png", //可选，字符串类型，分辨率180x180，程序图标路径
+                        "spotlight@2x" : "unpackage/res/icons/80x80.png", //可选，字符串类型，分辨率80x80，Spotlight搜索图标路径
+                        "spotlight@3x" : "unpackage/res/icons/120x120.png", //可选，字符串类型，分辨率120x120，Spotlight搜索图标路径
+                        "settings@2x" : "unpackage/res/icons/58x58.png", //可选，字符串类型，分辨率58x58，Settings设置图标路径
+                        "settings@3x" : "unpackage/res/icons/87x87.png", //可选，字符串类型，分辨率87x87，Settings设置图标路径
+                        "notification@2x" : "unpackage/res/icons/40x40.png", //可选，字符串类型，分辨率40x40，通知栏图标路径
+                        "notification@3x" : "unpackage/res/icons/60x60.png" //可选，字符串类型，分辨率60x60，通知栏图标路径
                     },
                     "ipad" : {
                         //可选，JSON对象，iPad设备图标配置
-                        "app" : "", //可选，字符串类型，分辨率76x76，程序图标图标路径
-                        "app@2x" : "", //可选，字符串类型，分辨率152x152，程序图标图标路径
-                        "proapp@2x" : "", //可选，字符串类型，分辨率167x167，程序图标图标路径
-                        "spotlight" : "", //可选，字符串类型，分辨率40x40，Spotlight搜索图标路径
-                        "spotlight@2x" : "", //可选，字符串类型，分辨率80x80，Spotlight搜索图标路径
-                        "settings" : "", //可选，字符串类型，分辨率29x29，Settings设置图标路径
-                        "settings@2x" : "", //可选，字符串类型，分辨率58x58，Settings设置图标路径
-                        "notification" : "", //可选，字符串类型，分辨率20x20，通知栏图标路径
-                        "notification@2x" : "" //可选，字符串类型，分辨率740x40，通知栏图标路径
+                        "app" : "unpackage/res/icons/76x76.png", //可选，字符串类型，分辨率76x76，程序图标图标路径
+                        "app@2x" : "unpackage/res/icons/152x152.png", //可选，字符串类型，分辨率152x152，程序图标图标路径
+                        "proapp@2x" : "unpackage/res/icons/167x167.png", //可选，字符串类型，分辨率167x167，程序图标图标路径
+                        "spotlight" : "unpackage/res/icons/40x40.png", //可选，字符串类型，分辨率40x40，Spotlight搜索图标路径
+                        "spotlight@2x" : "unpackage/res/icons/80x80.png", //可选，字符串类型，分辨率80x80，Spotlight搜索图标路径
+                        "settings" : "unpackage/res/icons/29x29.png", //可选，字符串类型，分辨率29x29，Settings设置图标路径
+                        "settings@2x" : "unpackage/res/icons/58x58.png", //可选，字符串类型，分辨率58x58，Settings设置图标路径
+                        "notification" : "unpackage/res/icons/20x20.png", //可选，字符串类型，分辨率20x20，通知栏图标路径
+                        "notification@2x" : "unpackage/res/icons/40x40.png" //可选，字符串类型，分辨率740x40，通知栏图标路径
                     }
                 },
                 "android" : {

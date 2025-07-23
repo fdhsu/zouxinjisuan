@@ -68,7 +68,7 @@
 						<image src="../../static/logo/192-192.png"></image>
 					</view>
 					<view class="padding text-white text-xl text-bold" >
-						{{hideMiddleFourDigits(userdata.nickname)||'走心计算器'}}
+						{{hideMiddleFourDigits(userdata.nickname)||'走心计算'}}
 					</view>
 				</view>
 			</block>

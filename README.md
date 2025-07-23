@@ -15,4 +15,4 @@
 
 
 ## 项目App体验版本
-[走心计算器](https://www.pgyer.com/2NSN7Ny8)
+[走心计算](https://www.pgyer.com/2NSN7Ny8)
