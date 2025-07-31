@@ -18,7 +18,7 @@
 		</view>
 
 		<!-- 导航栏 -->
-		<view class="cu-list grid solids-bottom col-2 no-border">
+		<view class="cu-list grid solids-bottom col-3 no-border">
 			<view class="cu-item" v-for="(item, index) in tools" :key="index"
 				:style="[{ animation: 'show ' + ((index + 1) * 0.2 + 1) + 's 1' }]" @click="goTool"
 				:data-mid="item.mid">
@@ -57,15 +57,21 @@
 				pixelRatio: 1,
 				bannerList: [
 					{
-						imageUrl: '../../static/images/b1.png',
-						link: 'https://appweb.yangqianguan.com/v2/activity/flexible?act=BYVddKHQ'
+						imageUrl: '../../static/images/b1.png'
 					},
 					{
-						imageUrl: '../../static/images/b2.png',
-						link: 'https://www.51hicard.com/landingPage/page?code=ry201003&page_name=dx-ry20ml&hfqorigin=hfq150170000216280000&agent=ruiyi&rp_hfq=1s'
+						imageUrl: '../../static/images/b2.png'
 					},
 				],
 				tools: [
+					{
+						cuIcon: 'emoji',
+						color: 'blue',
+						count: 0,
+						badge: 0,
+						mid: '7',
+						name: '育儿补贴计算'
+					},
 					{
 						cuIcon: 'coin',
 						color: 'blue',
@@ -152,7 +158,7 @@
 				if (e.currentTarget.dataset.mid == 7) {
 					console.log(7);
 					uni.navigateTo({
-						url: '../tools/electric'
+						url: '../baby/index'
 					});
 				}
 			},
