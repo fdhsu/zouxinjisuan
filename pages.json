@@ -34,6 +34,12 @@
 		    }
 		},
 		{
+		    "path" : "pages/me/logoff",
+		    "style" : {
+		        "navigationBarTitleText" : "注销用户"
+		    }
+		},
+		{
 		    "path" : "pages/login/register",
 		    "style" : {
 		        "navigationBarTitleText" : "注册用户",
