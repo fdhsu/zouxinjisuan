@@ -8,10 +8,18 @@
 			<text class="cell-tit">注销账号</text>
 			<image mode="aspectFit" style="width: 30upx; height: 30upx;" src="/static/me/fh.png">
 		</view>
+		<view class="list-cell b-b" @click="handleFeed" hover-class="cell-hover" :hover-stay-time="50">
+			<text class="cell-tit">意见反馈</text>
+			<image mode="aspectFit" style="width: 30upx; height: 30upx;" src="/static/me/fh.png">
+		</view>
 		<!-- #ifdef APP-PLUS -->
 		<view class="list-cell b-b" @click="clearStorage" hover-class="cell-hover" :hover-stay-time="50">
 			<text class="cell-tit">清除缓存</text>
 			<text class="cell-tip">{{currentSize}}</text>
+		</view>
+		<view class="list-cell b-b" hover-class="cell-hover" :hover-stay-time="50">
+			<text class="cell-tit">应用版本</text>
+			<text class="cell-tip">{{version}}</text>
 		</view>
 		<!-- #endif -->
 		
@@ -22,16 +30,18 @@
 </template>
 
 <script>
-	import { removeToken,removeUserInfo } from '@/utils/auth';
+	import {getUserInfo, removeToken,removeUserInfo } from '@/utils/auth';
 	import {   mapMutations  } from 'vuex';
 	export default {
 		data() {
 			return {
 				version:'',
-				currentSize:'0KB'
+				currentSize:'0KB',
+				userdata:{},
 			}
 		},
 		onLoad() {
+			this.userdata = getUserInfo() || {};
 			// #ifdef APP-PLUS
 			// 获取本地应用资源版本号
 			plus.runtime.getProperty(plus.runtime.appid, (info) => {
@@ -45,7 +55,22 @@
 		},
 		methods:{
 			...mapMutations(['logout']),
-
+			handleFeed(){
+				if(this.userdata.nickname){
+					this.navTo('/pages/me/feedback')
+				}else{
+					uni.showModal({
+					    content: '请先登录',
+					    success: (e)=>{
+					    	if(e.confirm){
+								uni.navigateTo({
+									url:'../login/login'
+								})
+					    	}
+					    }
+					});
+				}
+			},
 			navTo(url){
 				uni.navigateTo({
 					url:url

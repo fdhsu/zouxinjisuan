@@ -17,7 +17,7 @@
 	   </view>
       <view class="login_btn" @click="onlogin">注册</view>
 	<view class="register">
-		  <text class="link " @click="navigateToRegister">返回登录</text>
+		  <text class="link " @click="navigateTologin">返回登录</text>
 	  </view>
   </view>
   <!-- #ifdef MP-WEIXIN -->
@@ -56,7 +56,7 @@ export default {
 		// console.log(e.detail.value.length > 0)
 		this.isReadChk = e.detail.value.length > 0
 	},
-	navigateToRegister() {
+	navigateTologin() {
 		uni.navigateTo({
 			url: '/pages/login/login2'
 		});
@@ -109,12 +109,12 @@ export default {
 		  console.log(res.result);
 		  if (res.result.code === 200) {
 		    // 保存token和用户信息
-			setToken(res.result.data.token)
-			setToken(res.result.data)
+			//setToken(res.result.data.token)
+			//setToken(res.result.data)
 			uni.showToast({
 				title:'注册成功'
 			})
-			uni.navigateBack(-1)
+			this.navigateTologin()
 		  }else{
 			  uni.showToast({
 			  	title: res.result.message,

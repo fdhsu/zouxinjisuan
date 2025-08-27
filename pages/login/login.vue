@@ -11,11 +11,20 @@
 	  <view class="register">
 		  <text class="link " @click="navigateToRegister">没有账户，去注册</text>
 	  </view> -->
-		
+		<view class="agreement">
+		<checkbox-group @change="checkboxChange">
+			<label>
+				<checkbox value="readCb" :checked="isReadChk"/>我已阅读并同意
+			</label>
+			<text class="link" @click="navTo('/pages/login/privacy?url=http://app.dizengkeji.com/app/agreement.html')">《用户协议》</text>
+				<text class="link" @click="navTo('/pages/login/privacy?url=http://app.dizengkeji.com/app/privacy.html')">《隐私协议》</text>
+		</checkbox-group>
+		</view>
 		<view class="login_btn" @click="openAutoLogin" v-if="os=='app'">本机一键登录</view>
   </view>
   <view class="list-call common-login">
-  	<text class="link" style="font-size: 14px;" @click="toCommonLogin">其它手机号登录</text> 
+  	<text class="link" style="margin-right: 50px;" @click="toCommonLogin">其它手机号登录</text>
+  	<text class="link " @click="navigateToRegister">没有账户，去注册</text>
   </view>
   <!-- #ifdef MP-WEIXIN -->
   <view class="login_from">
@@ -36,7 +45,7 @@ import { setUserInfo,setToken } from "../../utils/auth";
 export default {
   data() {
     return {
-	  isReadChk: true,
+	  isReadChk: false,
       isCanUse: uni.getStorageSync('isCanUse'),
       mobile: '',
 	  password:'',
@@ -87,6 +96,18 @@ export default {
   	console.log("os:"+this.os)
   },
   methods: {
+	  navTo(url){
+	  	uni.navigateTo({
+	  		url:url,
+	  		animationType: 'slide-in-bottom',
+	  	})
+	  },
+	  checkboxChange(e) {
+	  	// console.log(e)
+	  	// console.log(e.detail.value)
+	  	// console.log(e.detail.value.length > 0)
+	  	this.isReadChk = e.detail.value.length > 0
+	  },
 	  toCommonLogin(){
 		 uni.navigateTo({
 		 	url: '/pages/login/login2'
@@ -94,6 +115,13 @@ export default {
 	  },
 	  //一键登录
 	  openAutoLogin(){
+		if (!this.isReadChk) {
+		    uni.showToast({
+		        title: '请先同意协议',
+		         icon: 'none'
+		        });
+		    return;
+		}
 	  	if(!this.autoLogin){
 	  			uni.showToast({ title: '请打开数据流量',icon:"none" });
 	  			return
@@ -185,13 +213,6 @@ export default {
 	  		}
 	  	})
 	  },
-	
-	checkboxChange(e) {
-		// console.log(e)
-		// console.log(e.detail.value)
-		// console.log(e.detail.value.length > 0)
-		this.isReadChk = e.detail.value.length > 0
-	},
 	navigateToRegister() {
 		uni.navigateTo({
 			url: '/pages/login/register'
@@ -387,6 +408,7 @@ export default {
 <style scoped lang="scss">
 .agreement{
 	padding-top: 20px;
+	text-align: center;
 }
 .register{
 	padding-top: 20px;
@@ -444,18 +466,6 @@ export default {
 .codes input{
 	width: 75%;
 }
-.agreement {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    font-size: 30rpx;
-    margin-top: 80rpx;
-    color: #FFA800;
-    text-align: center;
-    height: 40rpx;
-    line-height: 40rpx;
-  }
 .codes view{
 	height: 80upx;
 	line-height: 80upx;

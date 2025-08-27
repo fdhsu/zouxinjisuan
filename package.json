@@ -1,6 +1,6 @@
 {
   "name": "走心计算",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "小工具",
   "main": "main.js",
   "dependencies": {

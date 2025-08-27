@@ -6,7 +6,7 @@
 					<view class="image">
 						<image src="../../static/me/day.jpg" mode="widthFix">
 						</image>
-						<view class="cu-tag shuli" style="right: 24px;">{{getLunarDay.dateStr}}</view>
+						<view class="cu-tag shuli" style="right: 24px;height: 120px;">{{getLunarDay.dateStr}}</view>
 						<view class="cu-tag bg-grey shuli" style="height: 80px;">{{getLunarDay.lunarYear}}</view>
 						<view class="cu-bar">
 						<view :style="mystyle" class="_span">{{date}}</view>

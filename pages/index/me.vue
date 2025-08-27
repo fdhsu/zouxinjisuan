@@ -2,7 +2,7 @@
 <template>
 	<view>
 	<view class="components-theme">
-		<navigator target="miniProgram"  version='release' hover-class="none">
+		<n<!-- avigator target="miniProgram"  version='release' hover-class="none">
 			<view class="dong">
 				<view class="monster">
 					<view class="monster__face">
@@ -25,7 +25,7 @@
 					</view>
 				</view>
 			</view>
-		</navigator>
+		</navigator> -->
 		<!-- 弹窗确认 -->
 		<view class="cu-modal" :class="modalName=='Modal'?'show':''">
 			<view class="cu-dialog" style="padding: 300rpx 0 70rpx;">

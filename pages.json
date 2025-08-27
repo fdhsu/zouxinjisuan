@@ -105,7 +105,12 @@
 				"navigationBarTitleText": "关于我们"
 			}
 		},
-
+		{
+		    "path" : "pages/me/feedback",
+		    "style" : {
+				"navigationBarTitleText": "意见反馈"
+			}
+		},
         {
         	"path" : "pages/index/webview",
         	"style" :
