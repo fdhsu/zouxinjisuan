@@ -10,11 +10,6 @@ import cuCustom from './colorui/components/cu-custom.vue'
 Vue.component('cu-custom',cuCustom);
 
 // 引入全局方法
-import { http } from '@/utils/request';
-import $mHelper from '@/utils/helper';
-
-Vue.prototype.$http = http;
-Vue.prototype.$mHelper = $mHelper;
 Vue.config.productionTip = false
 App.mpType = 'app'
 const app = new Vue({

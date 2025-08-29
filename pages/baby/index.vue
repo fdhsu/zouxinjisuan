@@ -243,7 +243,7 @@ export default {
   color: #fff;
   background-color: #3280fc;
   border-color: #1970fc;
-  padding: 10upx 0;
+  padding: 5upx 0;
 }
 
 .calculate-btn[disabled] {

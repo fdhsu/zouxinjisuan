@@ -18,14 +18,13 @@
 		<view class="logoff_btn" @click="toFeedback">提交反馈</view>
 	</view>
 </template>
-
 <script>
 	import { getUserInfo,removeUserInfo } from '@/utils/auth';
 	export default {
 		data() {
 			return {
-				type:['转换类','账号类'],
-				feedtype:'转换类',
+				type:['功能类','账号类'],
+				feedtype:'功能类',
 				feedinfo:'',
 				userdata:{}
 			}
@@ -77,7 +76,6 @@
 					  })
 					  uni.hideLoading()
 					});
-					
 				}else{
 					uni.showModal({
 					    content: '请先登录',

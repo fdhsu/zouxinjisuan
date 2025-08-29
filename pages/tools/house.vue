@@ -510,7 +510,7 @@
 		padding: 20upx 0;
 	}
 	.calc{
-		background-color: #0076FF;
+		background-color: #0396ff;
 		color: #ffffff;
 		font-size: 30upx;
 		padding: 6upx 0;

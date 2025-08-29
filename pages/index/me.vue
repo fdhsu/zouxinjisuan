@@ -2,30 +2,6 @@
 <template>
 	<view>
 	<view class="components-theme">
-		<n<!-- avigator target="miniProgram"  version='release' hover-class="none">
-			<view class="dong">
-				<view class="monster">
-					<view class="monster__face">
-						<view class="monster__eye avatar-eye avatar-eye--green eye--left">
-							<view class="avatar-eye-pupil pupil--green"><span class="avatar-eye-pupil-blackThing"><span
-										class="avatar-eye-pupil-lightReflection"></span></span></view>
-						</view>
-						<view class="monster__eye avatar-eye avatar-eye--violet eye--right">
-							<view class="avatar-eye-pupil pupil--pink"><span class="avatar-eye-pupil-blackThing"><span
-										class="avatar-eye-pupil-lightReflection"></span></span></view>
-						</view>
-						<view class="monster__noses">
-							<view class="monster__nose"></view>
-							<view class="monster__nose"></view>
-						</view>
-						<view class="monster__mouth">
-							<view class="monster__top"></view>
-							<view class="monster__bottom"></view>
-						</view>
-					</view>
-				</view>
-			</view>
-		</navigator> -->
 		<!-- 弹窗确认 -->
 		<view class="cu-modal" :class="modalName=='Modal'?'show':''">
 			<view class="cu-dialog" style="padding: 300rpx 0 70rpx;">
@@ -51,7 +27,6 @@
 					<view class="star yellow "></view>
 				</view>
 			</view>
-
 			<block>
 				<view class='text-center' v-if="!isLogin">
 					<view @click="onLogin" class="cu-avatar2 round xl margin-right-sm shadow-blur-lg bg-img open-data"
@@ -139,50 +114,34 @@
 				secret: 'b2EyMHF6ZDExMTExMTAwMA==',
 				os:'',
 				userdata: {},
-				// Custom: this.Custom,
-				// CustomBar: this.CustomBar,
 				spaceShow: true,
 				modalName: null,
-				picName: '流星之夜',
+				picName: '幽兰星空',
 				pic: [{
-					link: 'https://cdn.zhoukaiwen.com/zjx_me_bg1.jpeg',
+					link: '../../static/me/zjx_me_bg1.jpg',
 					name: '春天'
 				}, {
-					link: 'https://cdn.zhoukaiwen.com/zjx_me_bg2.jpeg',
-					name: '夏天'
-				}, {
-					link: 'https://cdn.zhoukaiwen.com/zjx_me_bg3.jpeg',
+					link: '../../static/me/zjx_me_bg2.jpg',
 					name: '秋天'
 				}, {
-					link: 'https://cdn.zhoukaiwen.com/zjx_me_bg4.jpeg',
-					name: '冬天'
-				}, {
-					link: 'https://cdn.zhoukaiwen.com/zjx_me_bg5.jpeg',
+					link: '../../static/me/zjx_me_bg3.jpg',
 					name: '幽静'
 				}, {
-					link: 'https://cdn.zhoukaiwen.com/zjx_me_bg6.jpg',
+					link: '../../static/me/zjx_me_bg4.jpg',
 					name: '天空'
 				}],
-				topBackGroupImageIndex: 5,
+				topBackGroupImageIndex: 1,
 				inter: [{
 					title: 'mimicry',
 					name: '活力春天',
 					color: ''
-				}, {
-					title: 'theme',
-					name: '清爽夏日',
-					color: ''
-				}, {
-					title: 'theme',
-					name: '金秋之韵',
-					color: ''
-				}, {
-					title: 'theme',
-					name: '冬日之阳',
-					color: ''
-				}, {
+				},{
 					title: 'theme',
 					name: '幽兰星空',
+					color: ''
+				},{
+					title: 'theme',
+					name: '金秋之韵',
 					color: ''
 				}, {
 					title: 'theme',
@@ -191,15 +150,8 @@
 				}]
 			}
 		},
-		// 分享小程序
-		onShareAppMessage(res) {
-			return {
-				title: '看看这个小程序多好玩～',
-			};
-		},
 		watch: {
 			topBackGroupImageIndex(val) {
-				//console.log(val)
 				if (val == 4 || val == 5) {
 					this.spaceShow = true;
 				} else {
@@ -209,29 +161,12 @@
 		},
 		mounted() {
 			this.userdata = getUserInfo() || {};
-			// let _this=this
-			// uni.preLogin({
-			// 	provider: 'univerify',
-			// 	success(){  //
-			// 		// 显示一键登录选项
-			// 		console.log('预登录成功')
-			// 		_this.autoLogin=true
-			// 		console.log("this.autoLogin:"+_this.autoLogin)
-			// 	},
-			// 	fail(res){  // 预登录失败
-			// 		console.log(res)
-			// 	}
-			// })
-			
-			// this.os = uni.getSystemInfoSync().uniPlatform;
-			// console.log("os:"+this.os)  
 		},
 		onShow(){
 			 let token = getToken() || "";
-			 console.log('token=='+token)
+			 //console.log('token=='+token)
 			 if(token){
 				this.userdata = getUserInfo() || {};
-				//console.log(this.userdata)
 			 	this.isLogin=true
 			 }else{
 			 	this.isLogin=false
@@ -256,8 +191,7 @@
 				let _self = this;
 				uni.login({
 					provider: 'univerify',
-					univerifyStyle: { // 自定义登录框样式
-					//参考`univerifyStyle 数据结构`
+					univerifyStyle: { 
 					  "icon": {
 					        "path": "static/login/144-144.png", // 自定义显示在授权框中的logo，仅支持本地图片 默认显示App logo
 					        "width":  "60px",  //图标宽度 默认值：60px
@@ -265,26 +199,13 @@
 					    },
 				  },
 					success(ures){ // 登录成功
-						console.log(ures);  // {openid:'登录授权唯一标识',access_to.ken:'接口返回的 token'}
-						// 在得到access_token后，通过callfunction调用云函数
+						//console.log(ures);  
 						uniCloud.callFunction({
 						  name: 'toolautologin',
 						  data: ures.authResult
 						}).then(res => {
 							console.log("获取号码：")
 							console.log(res)
-							
-							// if(res.code==200){
-							// 	setUserInfo(res.data)
-							// 	uni.showToast({
-							// 		title:'登陆成功'
-							// 	})
-							// 	this.userdata = res.data;
-							// 	// 登录成功，可以关闭一键登录授权界面了
-							// 	uni.closeAuthView()
-							// }else{
-							// 	uni.showToast({ title: '登录失败',icon:"none" });
-							// }
 						  
 						}).catch(err=>{
 						  // 处理错误
@@ -336,7 +257,6 @@
 	.UCenter-bg {
 		background: #fff;
 		background-size: 100% 100%;
-		/* background-size: cover; */
 		height: 550rpx;
 		display: flex;
 		justify-content: center;
@@ -422,32 +342,26 @@
 		z-index: 1024;
 		box-shadow: 0 1rpx 6rpx rgba(0, 0, 0, 0.35);
 	}
-
 	.my_logo {
 		background: none;
 		padding: 50rpx 0 30rpx 0;
 	}
-
 	.my-radius {
 		border-radius: 12rpx;
 		overflow: hidden
 	}
-
 	.my-icon image {
 		width: 100rpx;
 		height: 100rpx;
 		display: inline-block;
 		margin: 0 auto
 	}
-
 	.my-iconcolor {
 		background: rgba(255, 255, 255, 0.96)
 	}
-
 	.shadow-shop {
 		box-shadow: 0rpx 0rpx 90rpx 0rpx rgba(0, 0, 0, 0.1);
 	}
-
 	.qrcode-img {
 		position: fixed;
 		width: 80rpx;

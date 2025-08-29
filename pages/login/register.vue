@@ -199,7 +199,7 @@ export default {
   width: 100%;
   height: 90upx;
   margin: 0 auto;
-  background-color: rgba(70, 143, 152, 0.8);
+  background-color: #0396ff;
   margin-top: 30px;
   text-align: center;
   line-height: 90upx;
@@ -222,7 +222,7 @@ export default {
   transform: translateX(-50%);
 }
 .link{
-	color: rgba(70, 143, 152, 0.8)
+	color: #0396ff
 }
 .wxLogin view{
   text-align: center;

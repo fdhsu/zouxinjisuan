@@ -439,25 +439,13 @@ export default {
 .codes input{
 	width: 75%;
 }
-// .agreement {
-//     display: flex;
-//     flex-direction: row;
-//     justify-content: center;
-//     align-items: center;
-//     font-size: 30rpx;
-//     margin-top: 80rpx;
-//     color: #FFA800;
-//     text-align: center;
-//     height: 40rpx;
-//     line-height: 40rpx;
-//   }
 .codes view{
 	height: 80upx;
 	line-height: 80upx;
 	width: 130upx;
 	margin-bottom: 60upx;
 	color: #FFFFFF;
-	background-color: rgba(70, 143, 152, 0.8);
+	background-color: #0076FF;
 	text-align: center;
 	font-size: 24upx;
 	border-radius: 10upx;
@@ -466,7 +454,7 @@ export default {
   width: 100%;
   height: 90upx;
   margin: 0 auto;
-  background-color: rgba(70, 143, 152, 0.8);
+  background-color: #0396ff;
   margin-top: 30px;
   text-align: center;
   line-height: 90upx;
@@ -489,7 +477,7 @@ export default {
   transform: translateX(-50%);
 }
 .link{
-	color: rgba(70, 143, 152, 0.8)
+	color: #0396ff
 }
 .wxLogin view{
   text-align: center;

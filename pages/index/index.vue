@@ -2,21 +2,13 @@
 <template>
 	<view>
 		<!-- banner图 -->
-		<view class="uni-padding-wrap">
-			<view class="page-section swiper">
-				<view class="page-section-spacing">
-					<swiper class="swiper" circular="true" indicator-dots="true" autoplay="true" interval="3500" duration="600" :style="{ height: swiperHeight + 'px' }">
-						<swiper-item class="swiper-list" v-for="(item, index) in bannerList" :key="index">
-							<!-- <view class="swiper-item uni-bg-red" @click="handleClick(item)"> -->
-								<view class="swiper-item uni-bg-red">
-								<image class="swiper-img" :src="item.imageUrl" mode="widthFix" @load="onImageLoad"></image>
-							</view>
-						</swiper-item>
-					</swiper>
-				</view>
-			</view>
+		<view class="ad-container">
+		  <swiper class="ad-swiper" circular autoplay interval="3000" duration="500">
+		    <swiper-item v-for="(item, index) in adList" :key="index"  @click="navTo(item.url,'/pages/login/privacy?url='+item.url)">
+		      <image :src="item.icon" mode="aspectFill" class="ad-image"/>
+		    </swiper-item>
+		  </swiper>
 		</view>
-
 		<!-- 导航栏 -->
 		<view class="cu-list grid solids-bottom col-3 no-border">
 			<view class="cu-item" v-for="(item, index) in tools" :key="index"
@@ -35,10 +27,7 @@
 </template>
 
 <script>
-	import request from '@/common/request.js';
-	// 图表
-	import uCharts from "@/components/u-charts/u-charts.js";
-	// import addTip from '../../components/wxcomponents/struggler-uniapp-add-tip/struggler-uniapp-add-tip.vue';
+	import { getBannerAdvertising} from '@/api/home.js'
 	var _self;
 	var canvaWord = null;
 
@@ -48,21 +37,13 @@
 		},
 		data() {
 			return {
-				swiperHeight: 300, // 初始高度，可以设置为默认值
 				duration: 1,
 				scrollTop: 0,
 				old: {
 					scrollTop: 0
 				},
 				pixelRatio: 1,
-				bannerList: [
-					{
-						imageUrl: '../../static/images/b1.png'
-					},
-					{
-						imageUrl: '../../static/images/b2.png'
-					},
-				],
+				adList: [],
 				tools: [
 					{
 						cuIcon: 'emoji',
@@ -93,13 +74,34 @@
 			};
 		},
 		watch: {},
-		mounted() {
-			//console.log(this.projectList);
-			//this.getData();
-			_self = this;
-			//this.getServerData();
+		mounted(){
+			this.initNetworkListener();
+			this.getBanner();
 		},
 		methods: {
+			// 初始化网络监听
+			initNetworkListener() {
+			  uni.getNetworkType({
+			    success: (res) => {
+			      this.isOnline = res.networkType !== 'none';
+			    }
+			  });
+			
+			  uni.onNetworkStatusChange((res) => {
+			    this.isOnline = res.isConnected;
+			    if (res.isConnected) {
+			      this.getBanner();
+			    }
+			  });
+			},
+			getBanner(){
+				getBannerAdvertising().then(res => {
+					//console.log(res)
+					if(res.code=="0000"){
+						this.adList = (res.data||{}).banner_list||[]
+					}
+				})
+			},
 			// 图片加载完成事件
 			onImageLoad(event) {
 			      const { width, height } = event.detail;
@@ -110,38 +112,16 @@
 			      // 设置 swiper 高度
 			      this.swiperHeight = imageHeight;
 			 },
-			handleClick(item) {
-				console.log(item.link)
-			      uni.navigateTo({
-			              url: `/pages/index/webview?url=${encodeURIComponent(item.link)}`
-			      });
-			},
-			async getData() {
-				console.log('数据加载');
-				await this.$http
-					.get('/weixin/v1/api/wx/tool/getHotSearchWordcloud', {})
-					.then(async r => {
-						console.log(r.data);
-						this.cyData.series=[];
-						r.data.forEach(item => {
-							if(this.cyData.series.length<11){
-							this.cyData.series.push({
-								"name": item.keyword,
-								"textSize": item.size/5000
-							});
-							}
-						});
-						console.log(this.cyData.series);
-						_self.showData("canvasData", this.Data);
-					})
-					.catch(err => {
-
-					});
-
-			},
 			scroll: function(e) {
 				console.log(e);
 				this.old.scrollTop = e.detail.scrollTop;
+			},
+			navTo(url,to){
+				if(url){
+					uni.navigateTo({
+						url:to
+					})
+				}
 			},
 			goTool: function(e) {
 				console.log(e.currentTarget.dataset.mid)
@@ -156,7 +136,7 @@
 					});
 				}
 				if (e.currentTarget.dataset.mid == 7) {
-					console.log(7);
+					//console.log(7);
 					uni.navigateTo({
 						url: '../baby/index'
 					});
@@ -166,36 +146,20 @@
 	};
 </script>
 <style lang="scss" scoped>
-	.chartsMain {
-		width: 750rpx;
-		height: 450rpx;
-		padding-top: 15rpx;
-		background: #fff;
-		margin-bottom: 24rpx;
-		border-top: 2rpx solid #f2f2f2;
-
-		.charts {
-			width: 750rpx;
-			height: 450rpx;
-			box-sizing: border-box;
-		}
+	.ad-container {
+	  height: 300rpx;
+	  overflow: hidden;
 	}
-
-	.swiper-box {
-		flex: 1;
+	
+	.ad-swiper {
+	  width: 100%;
+	  height: 100%;
 	}
-
-	.swiper-item {
-		height: 100%;
+	
+	.ad-image {
+	  width: 100%;
+	  height: 100%;
 	}
-
-	/*scroll-view外层*/
-	.skill-sequence-panel-content-wrapper {
-		position: relative;
-		white-space: nowrap;
-		padding: 10rpx 0 10rpx 10rpx;
-	}
-
 	/*左右渐变遮罩*/
 	.hide-content-box {
 		position: absolute;
@@ -204,24 +168,20 @@
 		width: 10px;
 		z-index: 2;
 	}
-
 	.hide-content-box-left {
 		left: 0;
 		background-image: linear-gradient(to left, rgba(255, 255, 255, 0), #f3f3f3 60%);
 	}
-
 	.hide-content-box-right {
 		right: 0;
 		background-image: linear-gradient(to right, rgba(255, 255, 255, 0), #f3f3f3 60%);
 	}
-
 	.kite-classify-scroll {
 		width: 100%;
 		height: 380rpx;
 		overflow: hidden;
 		white-space: nowrap;
 	}
-
 	.kite-classify-cell {
 		display: inline-block;
 		width: 266rpx;
@@ -232,24 +192,12 @@
 		overflow: hidden;
 		box-shadow: 2px 2px 3px rgba(26, 26, 26, 0.2);
 	}
-
-	.nav-li {
-		padding: 40rpx 30rpx;
-		width: 100%;
-		background-image: url(https://s1.ax1x.com/2020/06/27/NyU04x.png);
-		background-size: cover;
-		background-position: center;
-		position: relative;
-		z-index: 1;
-	}
-
 	.nav-name {
 		font-size: 28upx;
 		text-transform: Capitalize;
 		margin-top: 20upx;
 		position: relative;
 	}
-
 	.nav-name::before {
 		content: '';
 		position: absolute;
@@ -273,7 +221,6 @@
 		right: 40rpx;
 		opacity: 0.3;
 	}
-
 	.nav-content {
 		width: 100%;
 		padding: 15rpx;
@@ -281,7 +228,6 @@
 		overflow-wrap: break-word;
 		white-space: normal;
 	}
-
 	.nav-btn {
 		width: 200rpx;
 		height: 60rpx;
@@ -290,37 +236,30 @@
 		line-height: 60rpx;
 		border-radius: 10rpx;
 	}
-
 	.bg-index1 {
 		background-color: #19cf8a;
 		color: #fff;
 	}
-
 	.bg-index2 {
 		background-color: #954ff6;
 		color: #fff;
 	}
-
 	.bg-index3 {
 		background-color: #5177ee;
 		color: #fff;
 	}
-
 	.bg-index4 {
 		background-color: #f49a02;
 		color: #fff;
 	}
-
 	.bg-index5 {
 		background-color: #ff4f94;
 		color: #fff;
 	}
-
 	.bg-index6 {
 		background-color: #7fd02b;
 		color: #fff;
 	}
-
 	.item-name {
 		margin-bottom: 15rpx;
 		display: -webkit-box;
