@@ -1,88 +1,307 @@
 <template>
-  <view class="container">
-    <view class="title">育儿补贴计算器</view>
-    
-    <view class="input-section">
-      <view class="label">婴幼儿出生日期</view>
-      <picker 
-        mode="date" 
-        :value="birthDate" 
-        start="2000-01-01"
-        end="2030-12-31"
-        fields="day"
-        @change="onDateChange"
-        class="date-picker"
-      >
-        <view class="picker-content">
-          <text class="picker-text">{{ birthDate || '请选择' }}</text>
-          <uni-icons type="arrowdown" size="16" color="#666"></uni-icons>
+  <view class="page">
+    <!-- Tab Bar -->
+    <view class="tab-bar">
+      <view class="tab-bar-inner">
+        <view
+          v-for="(tab, index) in tabs"
+          :key="index"
+          class="tab-item"
+          :class="{ active: currentTab === index }"
+          @click="switchTab(index)"
+        >
+          <text class="tab-text">{{ tab }}</text>
         </view>
-      </picker>
-    </view>
-    
-    <view class="button-section">
-      <button 
-        class="calculate-btn" 
-        @click="calculateSubsidy"
-        :disabled="!birthDate"
-      >
-        计算补贴金额
-      </button>
-    </view>
-    
-    <view class="result-section" v-if="showResult">
-      <view class="result-title">计算结果</view>
-      
-      <view class="total-amount">
-        <text>婴幼儿可获得的育儿补贴总额为：</text>
-        <text class="amount">{{ totalAmount }}元</text>
-      </view>
-      
-      <view class="breakdown">
-        <text class="breakdown-title">其中：</text>
-        <view class="breakdown-item">
-          <text>补贴月数：{{ subsidyMonths }}个月</text>
-        </view>
-        <view class="breakdown-item">
-          <text>每月补贴标准：{{ monthlySubsidy }}元</text>
-        </view>
-        <view class="breakdown-item">
-          <text>总补贴金额：{{ monthlySubsidy }}元 × {{ subsidyMonths }}个月 = {{ totalAmount }}元</text>
-        </view>
-      </view>
-      
-      <view class="issuance-info">
-        <text>补贴将按年发放，直至孩子年满3周岁。</text>
-      </view>
-      
-      <view class="deadline">
-        <text>补贴发放截止日期：{{ deadlineDate }}</text>
+        <view class="tab-indicator" :style="indicatorStyle"></view>
       </view>
     </view>
-    
-    <view class="policy-info">
-      <text class="policy-title">政策说明：</text>
-      <text class="policy-text">
-        国家育儿补贴制度实施方案7月28日公布。从2025年1月1日起，对符合法律法规规定生育的3周岁以下婴幼儿发放补贴，至其年满3周岁。育儿补贴按年发放，现阶段国家基础标准为每孩每年3600元。其中，对2025年1月1日之前出生、不满3周岁的婴幼儿，按应补贴月数折算计发补贴。
-        <br>
-        <br>
-        <b>补贴对象和标准</b><br>
-        （一）补贴对象。从2025年1月1日起，对符合法律法规规定生育的3周岁以下婴幼儿发放补贴，至其年满3周岁。
-        <br>
-        （二）补贴标准。育儿补贴按年发放，现阶段国家基础标准为每孩每年3600元。其中，对2025年1月1日之前出生、不满3周岁的婴幼儿，按应补贴月数折算计发补贴。对按照育儿补贴制度规定发放的育儿补贴免征个人所得税。在最低生活保障对象、特困人员等救助对象认定时，育儿补贴不计入家庭或个人收入。
-        <br>
-        <br>
-        <b>申领程序</b><br>
-        育儿补贴由婴幼儿的父母一方或其他监护人按规定向婴幼儿户籍所在地申领。具体程序如下：
-        <br>
-        （一）申请。申领人填写有关信息，提供婴幼儿的出生医学证明、户口簿等材料，并对所提供信息及材料的真实性、完整性作出承诺。申领人主要通过育儿补贴信息管理系统线上申请，也可线下申请。
-        <br>
-        （二）初审。婴幼儿户籍所在地乡镇政府（街道办事处）对申请信息进行初审，村（居）民委员会协助做好相关工作。
-        <br>
-        （三）审核确认。县级卫生健康部门进行审核确认，并将相关信息提供给同级财政部门。<br>
-        <br>
-        （四）抽查。市级卫生健康部门按一定比例，对补贴对象信息进行抽查。省级卫生健康部门根据需要开展抽查，实行动态监管，确保资金安全。
-      </text>
+
+    <!-- Tab Content -->
+    <scroll-view scroll-y class="tab-content" :scroll-top="tabScrollTop">
+      <!-- ==================== Tab 0: 补贴计算 ==================== -->
+      <view v-if="currentTab === 0" class="tab-panel">
+        <!-- 输入区域 -->
+        <view class="card">
+          <view class="card-title">补贴计算</view>
+
+          <!-- 省份选择 -->
+          <view class="form-group">
+            <text class="form-label">选择省份</text>
+            <picker
+              mode="selector"
+              :range="provinces"
+              range-key="name"
+              :value="selectedProvince"
+              @change="onProvinceChange"
+            >
+              <view class="picker-box">
+                <text class="picker-text">{{ provinces[selectedProvince].name }}</text>
+                <text class="picker-arrow">&#x25BC;</text>
+              </view>
+            </picker>
+          </view>
+
+          <!-- 出生日期 -->
+          <view class="form-group">
+            <text class="form-label">婴幼儿出生日期</text>
+            <picker
+              mode="date"
+              :value="birthDate"
+              start="2016-01-01"
+              :end="todayStr"
+              fields="day"
+              @change="onDateChange"
+            >
+              <view class="picker-box">
+                <text class="picker-text" :class="{ placeholder: !birthDate }">{{
+                  birthDate || '请选择出生日期'
+                }}</text>
+                <text class="picker-arrow">&#x25BC;</text>
+              </view>
+            </picker>
+          </view>
+
+          <!-- 生育孩次 -->
+          <view class="form-group">
+            <text class="form-label">生育孩次</text>
+            <view class="radio-row">
+              <view
+                v-for="item in childOrderOptions"
+                :key="item.value"
+                class="radio-item"
+                :class="{ checked: childOrder === item.value }"
+                @click="childOrder = item.value"
+              >
+                <view class="radio-dot" :class="{ active: childOrder === item.value }">
+                  <view v-if="childOrder === item.value" class="radio-inner"></view>
+                </view>
+                <text class="radio-label">{{ item.label }}</text>
+              </view>
+            </view>
+          </view>
+
+          <!-- 独生子女 -->
+          <view class="form-group form-row">
+            <text class="form-label">独生子女家庭</text>
+            <switch :checked="isOnlyChild" @change="onSwitchChange" color="#ff6b6b" />
+          </view>
+
+          <!-- 计算按钮 -->
+          <view class="calc-btn" @click="calculate">
+            <text class="calc-btn-text">计算补贴金额</text>
+          </view>
+        </view>
+
+        <!-- 计算结果 -->
+        <view v-if="hasResult" class="result-card">
+          <view class="result-header">
+            <text class="result-label">预计补贴总额</text>
+            <view class="result-amount-row">
+              <text class="result-symbol">&yen;</text>
+              <text class="result-value">{{ formatMoney(result.total) }}</text>
+            </view>
+          </view>
+          <view class="result-divider"></view>
+          <view class="result-detail-row">
+            <text class="result-detail-label">每月补贴</text>
+            <text class="result-detail-value">&yen;{{ formatMoney(result.monthly) }}</text>
+          </view>
+          <view class="result-detail-row">
+            <text class="result-detail-label">补贴月数</text>
+            <text class="result-detail-value">{{ result.months }} 个月</text>
+          </view>
+          <view class="result-detail-row">
+            <text class="result-detail-label">截止日期</text>
+            <text class="result-detail-value">{{ result.deadline }}</text>
+          </view>
+        </view>
+
+        <!-- 分项明细 -->
+        <view v-if="hasResult" class="card">
+          <view class="card-title">分项明细</view>
+          <view class="detail-card detail-national">
+            <view class="detail-card-label">国家基础补贴</view>
+            <view class="detail-card-amount">&yen;{{ formatMoney(result.nationalTotal) }}</view>
+            <view class="detail-card-sub">每月 &yen;{{ result.nationalMonthly }}/月</view>
+          </view>
+          <view class="detail-card detail-provincial">
+            <view class="detail-card-label">地方额外补贴</view>
+            <view class="detail-card-amount">&yen;{{ formatMoney(result.provincialTotal) }}</view>
+            <view class="detail-card-sub"
+              >每月 &yen;{{ result.provincialMonthly }}/月</view
+            >
+          </view>
+          <view v-if="childOrder >= 3" class="bonus-row">
+            <view class="bonus-tag">
+              <text class="bonus-tag-text">三孩加成 &times;1.2</text>
+            </view>
+          </view>
+          <view class="calc-note">
+            <text class="calc-note-text"
+              >* 实际金额按出生日至满3周岁的精确月数折算，2025年前出生的婴幼儿按政策起始日计算</text
+            >
+          </view>
+        </view>
+
+        <!-- 操作按钮 -->
+        <view v-if="hasResult" class="action-row">
+          <view class="action-btn action-share" @click="shareResult">
+            <text class="action-btn-text">复制分享</text>
+          </view>
+          <view class="action-btn action-history" @click="openHistory">
+            <text class="action-btn-text">查看历史</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- ==================== Tab 1: 各地政策对比 ==================== -->
+      <view v-if="currentTab === 1" class="tab-panel">
+        <view class="card">
+          <view class="card-header-row">
+            <text class="card-title">各地补贴标准对比</text>
+            <view class="sort-btn" @click="toggleSort">
+              <text class="sort-btn-text"
+                >{{ sortOrder === 'default' ? '默认' : sortOrder === 'desc' ? '金额从高到低' : '金额从低到高'
+                }}{{ sortOrder !== 'asc' ? ' \u2193' : ' \u2191' }}</text
+              >
+            </view>
+          </view>
+        </view>
+
+        <view
+          v-for="(item, idx) in sortedProvinces"
+          :key="idx"
+          class="policy-card"
+        >
+          <view class="policy-card-top">
+            <text class="policy-name">{{ item.name }}</text>
+            <view class="policy-tag" :class="'tag-' + item.level">
+              <text class="policy-tag-text">{{ item.level === 'high' ? '高' : item.level === 'mid' ? '中' : '低' }}</text>
+            </view>
+          </view>
+          <view class="policy-amounts">
+            <view class="policy-col">
+              <text class="policy-col-label">月补贴</text>
+              <text class="policy-col-value">&yen;{{ item.extra }}</text>
+            </view>
+            <view class="policy-col">
+              <text class="policy-col-label">年补贴</text>
+              <text class="policy-col-value">&yen;{{ item.extra * 12 }}</text>
+            </view>
+            <view class="policy-col">
+              <text class="policy-col-label">含国家月总额</text>
+              <text class="policy-col-value">&yen;{{ 300 + item.extra }}</text>
+            </view>
+          </view>
+          <view v-if="item.note" class="policy-note">
+            <text class="policy-note-text">{{ item.note }}</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- ==================== Tab 2: 申领指南 ==================== -->
+      <view v-if="currentTab === 2" class="tab-panel">
+        <view class="card">
+          <view class="card-title">申领流程</view>
+          <view class="card-subtitle">按照以下步骤申请育儿补贴</view>
+        </view>
+
+        <!-- 所需材料 -->
+        <view class="card">
+          <view class="card-title">所需材料</view>
+          <view class="material-list">
+            <view
+              v-for="(m, i) in materials"
+              :key="i"
+              class="material-item"
+            >
+              <view class="material-dot">
+                <text class="material-dot-text">{{ i + 1 }}</text>
+              </view>
+              <text class="material-text">{{ m }}</text>
+            </view>
+          </view>
+        </view>
+
+        <!-- 申请步骤 -->
+        <view v-for="(step, i) in steps" :key="i" class="step-card">
+          <view class="step-circle">
+            <text class="step-circle-text">{{ i + 1 }}</text>
+          </view>
+          <view class="step-body">
+            <text class="step-title">{{ step.title }}</text>
+            <text class="step-desc">{{ step.desc }}</text>
+          </view>
+        </view>
+
+        <!-- 咨询电话 -->
+        <view class="card">
+          <view class="card-title">各地卫健委咨询电话</view>
+          <view
+            v-for="(phone, i) in hotlines"
+            :key="i"
+            class="hotline-row"
+          >
+            <text class="hotline-city">{{ phone.city }}</text>
+            <text class="hotline-num">{{ phone.tel }}</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- ==================== Tab 3: 常见问题 ==================== -->
+      <view v-if="currentTab === 3" class="tab-panel">
+        <view v-for="(cat, ci) in faqData" :key="ci" class="faq-category">
+          <view class="faq-cat-header">
+            <view class="faq-cat-bar"></view>
+            <text class="faq-cat-title">{{ cat.category }}</text>
+          </view>
+          <view
+            v-for="(q, qi) in cat.questions"
+            :key="qi"
+            class="faq-item"
+          >
+            <view class="faq-q" @click="toggleFaq(ci + '-' + qi)">
+              <text class="faq-q-text">{{ q.q }}</text>
+              <text class="faq-arrow" :class="{ expanded: expandedFaq === ci + '-' + qi }">&#x25BC;</text>
+            </view>
+            <view v-if="expandedFaq === ci + '-' + qi" class="faq-a">
+              <text class="faq-a-text">{{ q.a }}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </scroll-view>
+
+    <!-- 历史弹窗 -->
+    <view v-if="showHistoryPopup" class="overlay" @click="closeHistory">
+      <view class="popup" @click.stop>
+        <view class="popup-header">
+          <text class="popup-title">计算历史</text>
+          <text class="popup-close" @click="closeHistory">&#x2715;</text>
+        </view>
+        <scroll-view scroll-y class="popup-scroll">
+          <view v-if="history.length === 0" class="popup-empty">
+            <text class="popup-empty-text">暂无历史记录</text>
+          </view>
+          <view
+            v-for="(item, i) in history"
+            :key="i"
+            class="history-item"
+          >
+            <view class="history-main">
+              <text class="history-province">{{ item.province }}</text>
+              <text class="history-date">{{ item.date }}</text>
+              <text class="history-order">{{ item.childOrder === 1 ? '一孩' : item.childOrder === 2 ? '二孩' : '三孩' }}</text>
+            </view>
+            <text class="history-amount">&yen;{{ formatMoney(item.total) }}</text>
+          </view>
+        </scroll-view>
+        <view v-if="history.length > 0" class="popup-footer">
+          <view class="clear-btn" @click="clearHistory">
+            <text class="clear-btn-text">清空历史</text>
+          </view>
+        </view>
+      </view>
     </view>
   </view>
 </template>
@@ -91,243 +310,1211 @@
 export default {
   data() {
     return {
+      tabs: ['补贴计算', '政策对比', '申领指南', '常见问题'],
+      currentTab: 0,
+      provinces: [
+        { name: '北京', extra: 200, note: '二孩额外+100元/月', level: 'high' },
+        { name: '上海', extra: 300, note: '三孩额外再增150元/月', level: 'high' },
+        { name: '广东', extra: 150, note: '2025年起实施', level: 'mid' },
+        { name: '浙江', extra: 250, note: '部分地区有额外加成', level: 'high' },
+        { name: '江苏', extra: 180, note: '2025年起实施', level: 'mid' },
+        { name: '四川', extra: 100, note: '偏远地区额外补贴50元/月', level: 'mid' },
+        { name: '山东', extra: 120, note: '2025年起实施', level: 'mid' },
+        { name: '河南', extra: 100, note: '2025年起实施', level: 'mid' },
+        { name: '湖北', extra: 130, note: '2025年起实施', level: 'mid' },
+        { name: '湖南', extra: 110, note: '2025年起实施', level: 'mid' },
+        { name: '福建', extra: 150, note: '2025年起实施', level: 'mid' },
+        { name: '安徽', extra: 100, note: '2025年起实施', level: 'mid' },
+        { name: '重庆', extra: 120, note: '2025年起实施', level: 'mid' },
+        { name: '陕西', extra: 100, note: '2025年起实施', level: 'mid' },
+        { name: '辽宁', extra: 100, note: '2025年1月起执行', level: 'mid' },
+        { name: '云南', extra: 80, note: '2025年起实施', level: 'low' },
+        { name: '贵州', extra: 80, note: '2025年起实施', level: 'low' },
+        { name: '甘肃', extra: 80, note: '2025年起实施', level: 'low' },
+        { name: '西藏', extra: 200, note: '高寒地区特殊补贴', level: 'high' }
+      ],
+      selectedProvince: 0,
       birthDate: '',
-      showResult: false,
-      totalAmount: 0,
-      subsidyMonths: 0,
-      monthlySubsidy: 0,
-      deadlineDate: ''
+      childOrder: 1,
+      childOrderOptions: [
+        { label: '一孩', value: 1 },
+        { label: '二孩', value: 2 },
+        { label: '三孩', value: 3 }
+      ],
+      isOnlyChild: false,
+      hasResult: false,
+      result: {
+        monthly: 0,
+        months: 0,
+        total: 0,
+        nationalMonthly: 0,
+        nationalTotal: 0,
+        provincialMonthly: 0,
+        provincialTotal: 0,
+        deadline: '',
+        province: '',
+        multiplier: 1
+      },
+      showHistoryPopup: false,
+      history: [],
+      sortOrder: 'default',
+      expandedFaq: '',
+      tabScrollTop: 0,
+      materials: [
+        '婴幼儿出生医学证明原件及复印件',
+        '户口簿（婴幼儿页及户主页）',
+        '父母双方身份证',
+        '结婚证（如适用）',
+        '银行卡或社保卡信息',
+        '填写完整的申请表'
+      ],
+      steps: [
+        {
+          title: '准备材料',
+          desc: '准备好出生医学证明、户口簿、身份证、结婚证等必要材料原件及复印件。'
+        },
+        {
+          title: '线上申请',
+          desc: '登录育儿补贴信息管理系统（各地卫健委官网入口），填写申请信息并上传材料照片。也可前往户籍所在地乡镇/街道窗口线下申请。'
+        },
+        {
+          title: '乡镇/街道初审',
+          desc: '婴幼儿户籍所在地的乡镇政府（街道办事处）对申请信息进行初审，村（居）民委员会协助做好相关工作。初审一般在15个工作日内完成。'
+        },
+        {
+          title: '县级卫健部门审核确认',
+          desc: '县级卫生健康部门进行审核确认，审核通过后信息将提供给同级财政部门，安排资金拨付。'
+        },
+        {
+          title: '资金发放',
+          desc: '补贴按年发放，通过银行转账方式发放至申请人指定账户。一般在每年上半年集中发放上一年度补贴。'
+        }
+      ],
+      hotlines: [
+        { city: '北京', tel: '010-12345' },
+        { city: '上海', tel: '021-12345' },
+        { city: '广州', tel: '020-12345' },
+        { city: '杭州', tel: '0571-12345' },
+        { city: '南京', tel: '025-12345' },
+        { city: '成都', tel: '028-12345' },
+        { city: '武汉', tel: '027-12345' },
+        { city: '济南', tel: '0531-12345' }
+      ],
+      faqData: [
+        {
+          category: '基本条件',
+          questions: [
+            {
+              q: '哪些家庭可以申请育儿补贴？',
+              a: '从2025年1月1日起，符合法律法规规定生育的3周岁以下婴幼儿家庭均可申请。包括婚生子女、非婚生子女、合法收养的子女等。'
+            },
+            {
+              q: '育儿补贴从什么时候开始实施？',
+              a: '国家育儿补贴制度从2025年1月1日起正式实施。各地根据具体情况陆续出台实施细则。'
+            },
+            {
+              q: '补贴发放到孩子几岁？',
+              a: '补贴发放至婴幼儿年满3周岁。例如2025年1月1日出生的孩子，可领取补贴至2028年1月1日。'
+            },
+            {
+              q: '补贴需要缴纳个人所得税吗？',
+              a: '不需要。根据政策规定，按照育儿补贴制度规定发放的育儿补贴免征个人所得税。'
+            }
+          ]
+        },
+        {
+          category: '金额计算',
+          questions: [
+            {
+              q: '补贴金额是怎么计算的？',
+              a: '国家基础标准为每孩每年3600元（每月300元）。各省可在国家标准基础上增加地方补贴。三孩及以上家庭基础补贴上浮20%。总金额 = (国家基础 + 地方额外) × 孩次系数 × 补贴月数。'
+            },
+            {
+              q: '补贴什么时候发放？',
+              a: '补贴按年发放，一般在每年上半年集中发放上一年度的补贴。具体发放时间由各地财政安排。'
+            },
+            {
+              q: '三孩家庭有什么额外优惠？',
+              a: '三孩及以上家庭，国家基础补贴部分上浮20%，即每月基础补贴从300元提高到360元。部分省份还有额外的三孩补贴加成。'
+            }
+          ]
+        },
+        {
+          category: '申领流程',
+          questions: [
+            {
+              q: '在哪里申请育儿补贴？',
+              a: '由婴幼儿的父母一方或其他监护人向婴幼儿户籍所在地申领。主要通过育儿补贴信息管理系统线上申请，也可到户籍所在地乡镇政府（街道办事处）线下申请。'
+            },
+            {
+              q: '申请需要什么材料？',
+              a: '主要材料包括：1) 出生医学证明；2) 户口簿；3) 父母身份证；4) 结婚证（如适用）；5) 银行卡或社保卡信息；6) 填写完整的申请表。具体要求以当地政策为准。'
+            },
+            {
+              q: '申请后多久能拿到补贴？',
+              a: '一般流程为：提交申请 → 乡镇/街道初审（约15个工作日）→ 县级卫健部门审核确认 → 资金拨付。从申请到发放通常需要1-3个月。'
+            }
+          ]
+        },
+        {
+          category: '特殊情况',
+          questions: [
+            {
+              q: '2025年之前出生的孩子怎么算补贴？',
+              a: '2025年1月1日之前出生、不满3周岁的婴幼儿，按从2025年1月1日到满3周岁的实际月数折算计发补贴。已满3周岁的不再享受补贴。'
+            },
+            {
+              q: '跨省迁移户口后怎么办？',
+              a: '如户籍发生跨省迁移，需在新户籍所在地重新申请。已领取的补贴会从新申请地的总额中扣除，不会重复发放。'
+            },
+            {
+              q: '早产儿补贴怎么计算？',
+              a: '早产儿按实际出生日期计算补贴月数，与其他婴幼儿标准一致，无特殊差异。补贴计算以出生医学证明上的日期为准。'
+            },
+            {
+              q: '离异家庭可以申请吗？',
+              a: '可以。离异家庭中直接抚养婴幼儿的一方可以作为申请人，向婴幼儿户籍所在地申领补贴。需提供离婚协议或法院判决书等证明材料。'
+            },
+            {
+              q: '在海外出生的婴儿回国后可以申请吗？',
+              a: '可以。需先完成国内户籍登记，取得出生医学证明或相关证明材料后，按正常流程向户籍所在地申请。海外出生证明需经公证和认证。'
+            },
+            {
+              q: '补贴会影响低保认定吗？',
+              a: '不会。在最低生活保障对象、特困人员等救助对象认定时，育儿补贴不计入家庭或个人收入，不影响低保资格。'
+            },
+            {
+              q: '补贴可以和其他政策同时享受吗？',
+              a: '可以。育儿补贴与计划生育家庭奖励扶助、独生子女父母奖励等政策不冲突，可以叠加享受。'
+            },
+            {
+              q: '2022年出生的孩子能享受补贴吗？',
+              a: '可以。2022年出生到2025年1月1日不满3周岁的孩子，可从2025年1月1日起按剩余月数享受补贴。例如2022年6月出生，可领取约30个月的补贴。'
+            },
+            {
+              q: '补贴资金发放到哪个账户？',
+              a: '一般发放到申请人提供的银行卡或社保卡金融账户。部分地区使用惠民一卡通等专用账户。具体以当地政策为准。'
+            },
+            {
+              q: '换了银行卡怎么更新信息？',
+              a: '可携带新银行卡和身份证到户籍所在地卫健部门办理账户变更，或通过线上系统修改银行信息。变更一般在次月生效。'
+            }
+          ]
+        }
+      ]
     }
   },
+  computed: {
+    todayStr() {
+      return this.formatDateValue(new Date())
+    },
+    indicatorStyle() {
+      return {
+        width: 100 / this.tabs.length + '%',
+        transform: 'translateX(' + this.currentTab * 100 + '%)'
+      }
+    },
+    sortedProvinces() {
+      var list = this.provinces.map(function (p) {
+        return { name: p.name, extra: p.extra, note: p.note, level: p.level }
+      })
+      if (this.sortOrder === 'desc') {
+        list.sort(function (a, b) {
+          return b.extra - a.extra
+        })
+      } else if (this.sortOrder === 'asc') {
+        list.sort(function (a, b) {
+          return a.extra - b.extra
+        })
+      }
+      return list
+    }
+  },
+  onReady() {
+    this.loadHistory()
+  },
   methods: {
+    switchTab(index) {
+      this.currentTab = index
+      this.tabScrollTop = Date.now()
+    },
+    onProvinceChange(e) {
+      this.selectedProvince = parseInt(e.detail.value)
+    },
     onDateChange(e) {
       this.birthDate = e.detail.value
-      this.showResult = false
-      // uni.showToast({
-      //   title: '已选择日期: ' + this.birthDate,
-      //   icon: 'none',
-      //   duration: 1000
-      // })
+      this.hasResult = false
     },
-    
-    calculateSubsidy() {
+    onSwitchChange(e) {
+      this.isOnlyChild = e.detail.value
+    },
+    calculate() {
       if (!this.birthDate) {
-        uni.showToast({
-          title: '请选择出生日期',
-          icon: 'none'
-        })
+        uni.showToast({ title: '请选择出生日期', icon: 'none' })
         return
       }
-      
-      const birthDate = new Date(this.birthDate)
-      const policyStartDate = new Date('2025-01-01')
-      const now = new Date()
-      const threeYearsLater = new Date(birthDate)
-      threeYearsLater.setFullYear(birthDate.getFullYear() + 3)
-      
-      // 计算补贴月数和金额
-      let months = 0
-      let totalAmount = 0
-      
-      // 如果孩子出生在2025年1月1日之前
-      if (birthDate < policyStartDate) {
-        // 计算从2025年1月1日到3周岁的月数
-        let currentDate = new Date(policyStartDate)
-        while (currentDate < threeYearsLater) {
-          months++
-          currentDate.setMonth(currentDate.getMonth() + 1)
+      var province = this.provinces[this.selectedProvince]
+      var birth = new Date(this.birthDate.replace(/-/g, '/'))
+      var policyStart = new Date('2025/01/01')
+      var now = new Date()
+      var endDate = new Date(birth.getTime())
+      endDate.setFullYear(endDate.getFullYear() + 3)
+      var effectiveStart = birth > policyStart ? new Date(birth.getTime()) : new Date(policyStart.getTime())
+      var months = 0
+      if (now >= endDate) {
+        months = 0
+      } else {
+        var sy = effectiveStart.getFullYear()
+        var sm = effectiveStart.getMonth()
+        var ey = endDate.getFullYear()
+        var em = endDate.getMonth()
+        months = (ey - sy) * 12 + (em - sm)
+        if (months < 0) months = 0
+        if (months > 36) months = 36
+      }
+      var multiplier = this.childOrder >= 3 ? 1.2 : 1
+      var nationalBase = 300
+      var provincialExtra = province.extra
+      var monthly = Math.round((nationalBase * multiplier + provincialExtra) * 100) / 100
+      var total = Math.round(monthly * months * 100) / 100
+      var nationalMonthly = Math.round(nationalBase * multiplier * 100) / 100
+      var provincialMonthly = provincialExtra
+      this.result = {
+        monthly: monthly,
+        months: months,
+        total: total,
+        nationalMonthly: nationalMonthly,
+        nationalTotal: Math.round(nationalMonthly * months * 100) / 100,
+        provincialMonthly: provincialMonthly,
+        provincialTotal: Math.round(provincialMonthly * months * 100) / 100,
+        deadline: this.formatDateValue(endDate),
+        province: province.name,
+        multiplier: multiplier
+      }
+      this.hasResult = true
+      this.saveHistory({
+        province: province.name,
+        date: this.birthDate,
+        childOrder: this.childOrder,
+        total: total,
+        months: months,
+        monthly: monthly,
+        time: new Date().toLocaleString()
+      })
+    },
+    shareResult() {
+      var text =
+        '\u{1F476} \u80B2\u513F\u8865\u8D34\u8BA1\u7B97\u7ED3\u679C\n' +
+        '\u7701\u4EFD\uFF1A' +
+        this.result.province +
+        '\n' +
+        '\u5B69\u6B21\uFF1A' +
+        (this.childOrder === 1 ? '\u4E00\u5B69' : this.childOrder === 2 ? '\u4E8C\u5B69' : '\u4E09\u5B69') +
+        '\n' +
+        '\u6BCF\u6708\u8865\u8D34\uFF1A' +
+        this.result.monthly +
+        '\u5143\n' +
+        '\u8865\u8D34\u6708\u6570\uFF1A' +
+        this.result.months +
+        '\u4E2A\u6708\n' +
+        '\u9884\u8BA1\u603B\u989D\uFF1A' +
+        this.result.total +
+        '\u5143\n' +
+        '\u5176\u4E2D\u56FD\u5BB6\u57FA\u7840\uFF1A' +
+        this.result.nationalTotal +
+        '\u5143\uFF0C\u5730\u65B9\u989D\u5916\uFF1A' +
+        this.result.provincialTotal +
+        '\u5143\n' +
+        '\u622A\u6B62\u65E5\u671F\uFF1A' +
+        this.result.deadline
+      uni.setClipboardData({
+        data: text,
+        success: function () {
+          uni.showToast({ title: '\u5DF2\u590D\u5236\u5230\u526A\u8D34\u677F\uFF0C\u53EF\u7C98\u8D34\u5206\u4EAB', icon: 'none', duration: 2000 })
         }
-        
-        // 如果孩子已经超过3岁，补贴月数为从2025年1月1日到3周岁的月数
-        if (now > threeYearsLater) {
-          months = 0
-          let tempDate = new Date(policyStartDate)
-          while (tempDate < threeYearsLater) {
-            months++
-            tempDate.setMonth(tempDate.getMonth() + 1)
+      })
+    },
+    loadHistory() {
+      try {
+        var data = uni.getStorageSync('baby_calc_history')
+        if (data) {
+          this.history = JSON.parse(data)
+        }
+      } catch (e) {
+        this.history = []
+      }
+    },
+    saveHistory(record) {
+      this.history.unshift(record)
+      if (this.history.length > 10) {
+        this.history = this.history.slice(0, 10)
+      }
+      try {
+        uni.setStorageSync('baby_calc_history', JSON.stringify(this.history))
+      } catch (e) {
+        // ignore storage error
+      }
+    },
+    openHistory() {
+      this.showHistoryPopup = true
+    },
+    closeHistory() {
+      this.showHistoryPopup = false
+    },
+    clearHistory() {
+      var self = this
+      uni.showModal({
+        title: '\u63D0\u793A',
+        content: '\u786E\u5B9A\u6E05\u7A7A\u6240\u6709\u8BA1\u7B97\u5386\u53F2\uFF1F',
+        success: function (res) {
+          if (res.confirm) {
+            self.history = []
+            uni.removeStorageSync('baby_calc_history')
+            self.showHistoryPopup = false
           }
         }
-        
-        // 按年标准3600元折算月标准
-        const monthlySubsidy = 3600 / 12
-        totalAmount = months * monthlySubsidy
-        this.monthlySubsidy = monthlySubsidy
-      } else {
-        // 如果孩子出生在2025年1月1日之后
-        let currentDate = new Date(birthDate)
-        while (currentDate < threeYearsLater) {
-          months++
-          currentDate.setMonth(currentDate.getMonth() + 1)
-        }
-        
-        // 如果孩子已经超过3岁，补贴月数为36个月
-        if (now > threeYearsLater) {
-          months = 36
-        }
-        
-        // 按年标准3600元折算月标准
-        const monthlySubsidy = 3600 / 12
-        totalAmount = months * monthlySubsidy
-        this.monthlySubsidy = monthlySubsidy
-      }
-      
-      this.subsidyMonths = months
-      this.totalAmount = Math.round(totalAmount)
-      this.deadlineDate = this.formatDate(threeYearsLater)
-      this.showResult = true
+      })
     },
-    
-    formatDate(date) {
-      const year = date.getFullYear()
-      const month = String(date.getMonth() + 1).padStart(2, '0')
-      const day = String(date.getDate()).padStart(2, '0')
-      return `${year}/${month}/${day}`
+    removeHistoryItem(index) {
+      this.history.splice(index, 1)
+      try {
+        uni.setStorageSync('baby_calc_history', JSON.stringify(this.history))
+      } catch (e) {
+        // ignore
+      }
+    },
+    toggleSort() {
+      if (this.sortOrder === 'default') {
+        this.sortOrder = 'desc'
+      } else if (this.sortOrder === 'desc') {
+        this.sortOrder = 'asc'
+      } else {
+        this.sortOrder = 'default'
+      }
+    },
+    toggleFaq(key) {
+      this.expandedFaq = this.expandedFaq === key ? '' : key
+    },
+    formatDateValue(date) {
+      var y = date.getFullYear()
+      var m = ('0' + (date.getMonth() + 1)).slice(-2)
+      var d = ('0' + date.getDate()).slice(-2)
+      return y + '-' + m + '-' + d
+    },
+    formatMoney(num) {
+      if (num === 0) return '0'
+      var parts = num.toString().split('.')
+      parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+      return parts.join('.')
     }
   }
 }
 </script>
 
-<style scoped>
-.container {
-  padding: 40rpx;
-  background-color: #f5f5f5;
-  min-height: 100vh;
+<style lang="scss" scoped>
+$primary: #ff6b6b;
+$primary-dark: #e55a5a;
+$primary-light: #ff8a8a;
+$bg: #fef5f5;
+$card-bg: #ffffff;
+$text-dark: #333333;
+$text-mid: #666666;
+$text-light: #999999;
+$border: #f0e0e0;
+$radius: 20rpx;
+$shadow: 0 4rpx 24rpx rgba(255, 107, 107, 0.08);
+
+.page {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background: $bg;
 }
 
-.title {
-  font-size: 48rpx;
-  font-weight: bold;
-  color: #007AFF;
+/* ===== Tab Bar ===== */
+.tab-bar {
+  flex-shrink: 0;
+  background: $card-bg;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.05);
+}
+
+.tab-bar-inner {
+  display: flex;
+  position: relative;
+  padding: 0 10rpx;
+}
+
+.tab-item {
+  flex: 1;
   text-align: center;
-  margin-bottom: 60rpx;
+  padding: 24rpx 0 28rpx;
+  position: relative;
 }
 
-.input-section {
-  background-color: #fff;
-  padding: 40rpx;
-  border-radius: 20rpx;
-  margin-bottom: 40rpx;
-  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.1);
+.tab-text {
+  font-size: 28rpx;
+  color: $text-light;
+  transition: color 0.3s;
 }
 
-.label {
-  font-size: 32rpx;
-  color: #333;
-  margin-bottom: 20rpx;
-  font-weight: 500;
+.tab-item.active .tab-text {
+  color: $primary;
+  font-weight: 600;
 }
 
-.picker-content {
+.tab-indicator {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 6rpx;
+  background: linear-gradient(90deg, $primary, $primary-light);
+  border-radius: 3rpx;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ===== Tab Content ===== */
+.tab-content {
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.tab-panel {
+  padding: 24rpx 24rpx 60rpx;
+}
+
+/* ===== Card ===== */
+.card {
+  background: $card-bg;
+  border-radius: $radius;
+  padding: 32rpx;
+  margin-bottom: 24rpx;
+  box-shadow: $shadow;
+}
+
+.card-title {
+  font-size: 34rpx;
+  font-weight: 700;
+  color: $text-dark;
+  margin-bottom: 24rpx;
+}
+
+.card-subtitle {
+  font-size: 26rpx;
+  color: $text-light;
+  margin-top: -16rpx;
+  margin-bottom: 8rpx;
+}
+
+.card-header-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 30rpx;
-  background-color: #f8f8f8;
-  border: 2rpx solid #e0e0e0;
-  border-radius: 10rpx;
-  font-size: 32rpx;
-  color: #333;
+  .card-title {
+    margin-bottom: 0;
+  }
+}
+
+/* ===== Form ===== */
+.form-group {
+  margin-bottom: 28rpx;
+}
+
+.form-label {
+  font-size: 28rpx;
+ color: $text-dark;
+  font-weight: 500;
+  margin-bottom: 16rpx;
+  display: block;
+}
+
+.form-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  .form-label {
+    margin-bottom: 0;
+  }
+}
+
+.picker-box {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24rpx 28rpx;
+  background: #faf5f5;
+  border: 2rpx solid $border;
+  border-radius: 14rpx;
 }
 
 .picker-text {
-  flex: 1;
+  font-size: 28rpx;
+  color: $text-dark;
+  &.placeholder {
+    color: $text-light;
+  }
 }
 
-.button-section {
-  margin-bottom: 40rpx;
+.picker-arrow {
+  font-size: 22rpx;
+  color: $text-light;
 }
 
-.calculate-btn {
+::v-deep picker {
+  width: 100%;
+}
+
+/* ===== Radio ===== */
+.radio-row {
+  display: flex;
+  gap: 20rpx;
+}
+
+.radio-item {
+  display: flex;
+  align-items: center;
+  padding: 18rpx 28rpx;
+  background: #faf5f5;
+  border: 2rpx solid $border;
+  border-radius: 14rpx;
   flex: 1;
+  justify-content: center;
+  transition: all 0.2s;
+  &.checked {
+    background: rgba(255, 107, 107, 0.08);
+    border-color: $primary;
+  }
+}
+
+.radio-dot {
+  width: 36rpx;
+  height: 36rpx;
+  border-radius: 50%;
+  border: 3rpx solid #ccc;
+  margin-right: 12rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  &.active {
+    border-color: $primary;
+  }
+}
+
+.radio-inner {
+  width: 20rpx;
+  height: 20rpx;
+  border-radius: 50%;
+  background: $primary;
+}
+
+.radio-label {
+  font-size: 28rpx;
+  color: $text-dark;
+}
+
+/* ===== Switch ===== */
+::v-deep uni-switch .wx-switch-input,
+::v-deep switch .uni-switch-input {
+  background-color: $primary !important;
+  border-color: $primary !important;
+}
+
+/* ===== Calculate Button ===== */
+.calc-btn {
+  background: linear-gradient(135deg, $primary, $primary-dark);
+  border-radius: 16rpx;
+  padding: 28rpx;
   text-align: center;
-  color: #fff;
-  background-color: #3280fc;
-  border-color: #1970fc;
-  padding: 5upx 0;
+  margin-top: 8rpx;
+  box-shadow: 0 6rpx 20rpx rgba(255, 107, 107, 0.3);
+  &:active {
+    opacity: 0.85;
+    transform: scale(0.98);
+  }
 }
 
-.calculate-btn[disabled] {
-  background-color: #ccc;
-  color: #999;
-}
-
-.result-section {
-  background-color: #e8f4fd;
-  padding: 40rpx;
-  border-radius: 20rpx;
-  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.1);
-}
-
-.result-title {
-  font-size: 40rpx;
-  font-weight: bold;
-  color: #333;
-  margin-bottom: 30rpx;
-}
-
-.total-amount {
-  margin-bottom: 30rpx;
+.calc-btn-text {
+  color: #ffffff;
   font-size: 32rpx;
-  color: #333;
+  font-weight: 600;
 }
 
-.amount {
-  font-size: 48rpx;
-  font-weight: bold;
-  color: #ff4444;
-  margin-left: 10rpx;
+/* ===== Result Card ===== */
+.result-card {
+  background: linear-gradient(135deg, #ff6b6b 0%, #ff8e8e 50%, #ffaaaa 100%);
+  border-radius: $radius;
+  padding: 40rpx 32rpx;
+  margin-bottom: 24rpx;
+  box-shadow: 0 8rpx 32rpx rgba(255, 107, 107, 0.25);
 }
 
-.breakdown {
-  margin-bottom: 30rpx;
+.result-header {
+  text-align: center;
 }
 
-.breakdown-title {
-  font-size: 32rpx;
-  color: #333;
-  font-weight: 500;
+.result-label {
+  font-size: 28rpx;
+  color: rgba(255, 255, 255, 0.85);
   display: block;
+  margin-bottom: 16rpx;
+}
+
+.result-amount-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+}
+
+.result-symbol {
+  font-size: 36rpx;
+  color: #ffffff;
+  font-weight: 600;
+  margin-right: 4rpx;
+}
+
+.result-value {
+  font-size: 64rpx;
+  color: #ffffff;
+  font-weight: 800;
+  letter-spacing: 2rpx;
+}
+
+.result-divider {
+  height: 2rpx;
+  background: rgba(255, 255, 255, 0.25);
+  margin: 28rpx 0;
+}
+
+.result-detail-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10rpx 0;
+}
+
+.result-detail-label {
+  font-size: 28rpx;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.result-detail-value {
+  font-size: 28rpx;
+  color: #ffffff;
+  font-weight: 600;
+}
+
+/* ===== Detail Cards ===== */
+.detail-card {
+  border-radius: 14rpx;
+  padding: 24rpx;
+  margin-bottom: 16rpx;
+}
+
+.detail-national {
+  background: linear-gradient(135deg, #fff5f5, #ffebeb);
+  border-left: 6rpx solid $primary;
+}
+
+.detail-provincial {
+  background: linear-gradient(135deg, #f0f7ff, #e6f0ff);
+  border-left: 6rpx solid #5b8def;
+}
+
+.detail-card-label {
+  font-size: 26rpx;
+  color: $text-mid;
+  margin-bottom: 8rpx;
+}
+
+.detail-card-amount {
+  font-size: 40rpx;
+  font-weight: 700;
+  color: $text-dark;
+  margin-bottom: 4rpx;
+}
+
+.detail-card-sub {
+  font-size: 24rpx;
+  color: $text-light;
+}
+
+.bonus-row {
+  display: flex;
+  margin-top: 8rpx;
+  margin-bottom: 8rpx;
+}
+
+.bonus-tag {
+  background: linear-gradient(135deg, #ff9a56, #ff7a28);
+  border-radius: 8rpx;
+  padding: 10rpx 24rpx;
+}
+
+.bonus-tag-text {
+  color: #ffffff;
+  font-size: 24rpx;
+  font-weight: 600;
+}
+
+.calc-note {
+  margin-top: 16rpx;
+  padding-top: 16rpx;
+  border-top: 1rpx solid $border;
+}
+
+.calc-note-text {
+  font-size: 22rpx;
+  color: $text-light;
+  line-height: 1.6;
+}
+
+/* ===== Action Buttons ===== */
+.action-row {
+  display: flex;
+  gap: 20rpx;
+  margin-bottom: 24rpx;
+}
+
+.action-btn {
+  flex: 1;
+  border-radius: 14rpx;
+  padding: 24rpx;
+  text-align: center;
+  &:active {
+    opacity: 0.8;
+  }
+}
+
+.action-share {
+  background: linear-gradient(135deg, $primary, $primary-dark);
+  box-shadow: 0 4rpx 16rpx rgba(255, 107, 107, 0.25);
+}
+
+.action-share .action-btn-text {
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 28rpx;
+}
+
+.action-history {
+  background: $card-bg;
+  border: 2rpx solid $primary;
+}
+
+.action-history .action-btn-text {
+  color: $primary;
+  font-weight: 600;
+  font-size: 28rpx;
+}
+
+/* ===== Policy Comparison ===== */
+.sort-btn {
+  padding: 10rpx 24rpx;
+  background: rgba(255, 107, 107, 0.1);
+  border-radius: 24rpx;
+}
+
+.sort-btn-text {
+  font-size: 24rpx;
+  color: $primary;
+}
+
+.policy-card {
+  background: $card-bg;
+  border-radius: $radius;
+  padding: 28rpx;
+  margin-bottom: 20rpx;
+  box-shadow: $shadow;
+}
+
+.policy-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 20rpx;
 }
 
-.breakdown-item {
-  font-size: 28rpx;
-  color: #666;
-  margin-bottom: 10rpx;
-  padding-left: 20rpx;
+.policy-name {
+  font-size: 32rpx;
+  font-weight: 700;
+  color: $text-dark;
 }
 
-.issuance-info {
-  font-size: 28rpx;
-  color: #666;
-  margin-bottom: 20rpx;
+.policy-tag {
+  padding: 6rpx 20rpx;
+  border-radius: 20rpx;
+}
+
+.tag-high {
+  background: rgba(255, 107, 107, 0.12);
+}
+.tag-high .policy-tag-text {
+  color: $primary;
+}
+
+.tag-mid {
+  background: rgba(255, 170, 50, 0.12);
+}
+.tag-mid .policy-tag-text {
+  color: #e69500;
+}
+
+.tag-low {
+  background: rgba(100, 180, 100, 0.12);
+}
+.tag-low .policy-tag-text {
+  color: #4caf50;
+}
+
+.policy-tag-text {
+  font-size: 24rpx;
+  font-weight: 600;
+}
+
+.policy-amounts {
+  display: flex;
+  justify-content: space-around;
+  padding: 16rpx 0;
+  border-top: 1rpx solid $border;
+  border-bottom: 1rpx solid $border;
+  margin-bottom: 16rpx;
+}
+
+.policy-col {
+  text-align: center;
+}
+
+.policy-col-label {
+  font-size: 22rpx;
+  color: $text-light;
+  display: block;
+  margin-bottom: 8rpx;
+}
+
+.policy-col-value {
+  font-size: 32rpx;
+  font-weight: 700;
+  color: $primary;
+}
+
+.policy-note {
+  padding: 4rpx 0;
+}
+
+.policy-note-text {
+  font-size: 24rpx;
+  color: $text-mid;
   line-height: 1.5;
 }
 
-.deadline {
-  font-size: 28rpx;
-  color: #666;
-  font-weight: 500;
-  margin-bottom: 30rpx;
+/* ===== Guide / Steps ===== */
+.material-list {
+  padding: 0;
 }
 
-.policy-info {
-  margin-top: 30rpx;
-  padding-top: 20rpx;
-  border-top: 2rpx solid #e0e0e0;
+.material-item {
+  display: flex;
+  align-items: flex-start;
+  padding: 14rpx 0;
+  border-bottom: 1rpx solid #faf0f0;
+  &:last-child {
+    border-bottom: none;
+  }
 }
 
-.policy-title {
+.material-dot {
+  width: 44rpx;
+  height: 44rpx;
+  border-radius: 50%;
+  background: linear-gradient(135deg, $primary, $primary-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 20rpx;
+  flex-shrink: 0;
+}
+
+.material-dot-text {
+  color: #ffffff;
+  font-size: 24rpx;
+  font-weight: 700;
+}
+
+.material-text {
   font-size: 28rpx;
-  color: #333;
-  font-weight: bold;
+  color: $text-dark;
+  line-height: 1.6;
+  flex: 1;
+  padding-top: 6rpx;
+}
+
+.step-card {
+  display: flex;
+  background: $card-bg;
+  border-radius: $radius;
+  padding: 28rpx;
+  margin-bottom: 20rpx;
+  box-shadow: $shadow;
+}
+
+.step-circle {
+  width: 64rpx;
+  height: 64rpx;
+  border-radius: 50%;
+  background: linear-gradient(135deg, $primary, $primary-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 24rpx;
+  flex-shrink: 0;
+  box-shadow: 0 4rpx 12rpx rgba(255, 107, 107, 0.3);
+}
+
+.step-circle-text {
+  color: #ffffff;
+  font-size: 32rpx;
+  font-weight: 700;
+}
+
+.step-body {
+  flex: 1;
+}
+
+.step-title {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: $text-dark;
   display: block;
   margin-bottom: 10rpx;
 }
 
-.policy-text {
+.step-desc {
+  font-size: 26rpx;
+  color: $text-mid;
+  line-height: 1.7;
+}
+
+.hotline-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18rpx 0;
+  border-bottom: 1rpx solid #faf0f0;
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.hotline-city {
+  font-size: 28rpx;
+  color: $text-dark;
+  font-weight: 500;
+}
+
+.hotline-num {
+  font-size: 28rpx;
+  color: $primary;
+  font-weight: 600;
+}
+
+/* ===== FAQ ===== */
+.faq-category {
+  margin-bottom: 28rpx;
+}
+
+.faq-cat-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16rpx;
+  padding: 0 8rpx;
+}
+
+.faq-cat-bar {
+  width: 8rpx;
+  height: 36rpx;
+  background: linear-gradient(180deg, $primary, $primary-light);
+  border-radius: 4rpx;
+  margin-right: 16rpx;
+}
+
+.faq-cat-title {
+  font-size: 30rpx;
+  font-weight: 700;
+  color: $text-dark;
+}
+
+.faq-item {
+  background: $card-bg;
+  border-radius: 14rpx;
+  margin-bottom: 16rpx;
+  overflow: hidden;
+  box-shadow: $shadow;
+}
+
+.faq-q {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 28rpx;
+  &:active {
+    background: #fef8f8;
+  }
+}
+
+.faq-q-text {
+  font-size: 28rpx;
+  color: $text-dark;
+  font-weight: 500;
+  flex: 1;
+  line-height: 1.5;
+  margin-right: 16rpx;
+}
+
+.faq-arrow {
+  font-size: 20rpx;
+  color: $text-light;
+  transition: transform 0.3s;
+  transform: rotate(0deg);
+  &.expanded {
+    transform: rotate(180deg);
+  }
+}
+
+.faq-a {
+  padding: 0 28rpx 28rpx;
+  border-top: 1rpx solid #faf0f0;
+}
+
+.faq-a-text {
+  font-size: 26rpx;
+  color: $text-mid;
+  line-height: 1.8;
+  padding-top: 20rpx;
+}
+
+/* ===== History Popup ===== */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+  display: flex;
+  align-items: flex-end;
+}
+
+.popup {
+  width: 100%;
+  background: $card-bg;
+  border-radius: 32rpx 32rpx 0 0;
+  max-height: 70vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.popup-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 32rpx;
+  border-bottom: 1rpx solid $border;
+  flex-shrink: 0;
+}
+
+.popup-title {
+  font-size: 32rpx;
+  font-weight: 700;
+  color: $text-dark;
+}
+
+.popup-close {
+  font-size: 36rpx;
+  color: $text-light;
+  padding: 8rpx 16rpx;
+}
+
+.popup-scroll {
+  flex: 1;
+  padding: 24rpx 32rpx;
+  max-height: 50vh;
+}
+
+.popup-empty {
+  text-align: center;
+  padding: 80rpx 0;
+}
+
+.popup-empty-text {
+  font-size: 28rpx;
+  color: $text-light;
+}
+
+.history-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24rpx 0;
+  border-bottom: 1rpx solid #faf0f0;
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.history-main {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  flex: 1;
+}
+
+.history-province {
+  font-size: 28rpx;
+  color: $text-dark;
+  font-weight: 600;
+}
+
+.history-date {
   font-size: 24rpx;
-  color: #666;
-  line-height: 1.6;
+  color: $text-light;
+}
+
+.history-order {
+  font-size: 22rpx;
+  color: $primary;
+  background: rgba(255, 107, 107, 0.1);
+  padding: 4rpx 14rpx;
+  border-radius: 8rpx;
+}
+
+.history-amount {
+  font-size: 32rpx;
+  color: $primary;
+  font-weight: 700;
+}
+
+.popup-footer {
+  padding: 24rpx 32rpx;
+  border-top: 1rpx solid $border;
+  flex-shrink: 0;
+}
+
+.clear-btn {
+  text-align: center;
+  padding: 20rpx;
+  background: #f5f5f5;
+  border-radius: 12rpx;
+  &:active {
+    background: #eee;
+  }
+}
+
+.clear-btn-text {
+  font-size: 28rpx;
+  color: $text-mid;
 }
 </style>
