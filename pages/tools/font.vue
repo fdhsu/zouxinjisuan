@@ -150,7 +150,7 @@
 			<view class="card">
 				<view class="toggle-row">
 					<text class="toggle-label">转换时应用自定义词库</text>
-					<switch :checked="useCustomDict" @change="useCustomDict = $event.detail.value" color="#19be6b" />
+					<u-switch v-model="useCustomDict" activeColor="#2B7DE9" inactiveColor="#d0d0d0" size="44" />
 				</view>
 			</view>
 

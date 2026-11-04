@@ -83,7 +83,7 @@
           <!-- 独生子女 -->
           <view class="form-group form-row">
             <text class="form-label">独生子女家庭</text>
-            <switch :checked="isOnlyChild" @change="onSwitchChange" color="#ff6b6b" />
+            <u-switch v-model="isOnlyChild" activeColor="#2B7DE9" inactiveColor="#d0d0d0" size="44" />
           </view>
 
           <!-- 计算按钮 -->
@@ -545,9 +545,6 @@ export default {
       this.birthDate = e.detail.value
       this.hasResult = false
     },
-    onSwitchChange(e) {
-      this.isOnlyChild = e.detail.value
-    },
     calculate() {
       if (!this.birthDate) {
         uni.showToast({ title: '请选择出生日期', icon: 'none' })
@@ -916,11 +913,6 @@ $shadow: 0 4rpx 24rpx rgba(255, 107, 107, 0.08);
 }
 
 /* ===== Switch ===== */
-::v-deep uni-switch .wx-switch-input,
-::v-deep switch .uni-switch-input {
-  background-color: $primary !important;
-  border-color: $primary !important;
-}
 
 /* ===== Calculate Button ===== */
 .calc-btn {

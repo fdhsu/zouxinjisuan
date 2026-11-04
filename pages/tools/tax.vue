@@ -232,7 +232,7 @@
 				<view class="card-title">附加税费</view>
 				<view class="form-row switch-row" v-for="(s, i) in vat.surcharges" :key="i">
 					<text class="form-label">{{ s.label }}</text>
-					<switch :checked="s.enabled" @change="onVatSurcharge(i, $event)" :color="'#27AE60'" />
+					<u-switch v-model="s.enabled" @change="calcVAT" activeColor="#2B7DE9" inactiveColor="#d0d0d0" size="44" />
 				</view>
 				<view class="form-row" v-if="vat.surcharges[0].enabled">
 					<text class="form-label">城建税税率</text>
@@ -614,11 +614,6 @@ export default {
 
 		onVatRateChange() {
 			this.vat.rateIdx = 0;
-		},
-
-		onVatSurcharge(idx, e) {
-			this.vat.surcharges[idx].enabled = e.detail.value;
-			this.calcVAT();
 		},
 
 		calcVAT() {

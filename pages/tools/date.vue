@@ -31,7 +31,7 @@
 				</view>
 				<view class="form-row switch-row">
 					<text class="form-label">包含结束日</text>
-					<switch :checked="diffInclusive" @change="diffInclusive = $event.detail.value; calcDiff()" :color="'#E74C3C'" />
+					<u-switch v-model="diffInclusive" @change="calcDiff" activeColor="#2B7DE9" inactiveColor="#d0d0d0" size="44" />
 				</view>
 			</view>
 
