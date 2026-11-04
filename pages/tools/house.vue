@@ -630,6 +630,15 @@
 
 <script>
 import { formatMoney, toast as _toast } from '@/utils/helpers.js';
+import {
+  calcEqualInstallment,
+  calcEqualPrincipalMonth,
+  genEqualInstallmentDetail,
+  genEqualPrincipalDetail,
+  calcTotalInterest,
+  calcRemainPrincipal,
+  calcPaidInterest,
+} from '@/utils/mortgage-calc.js';
 export default {
 	data() {
 		return {
@@ -740,76 +749,7 @@ export default {
 	},
 
 	methods: {
-		// ========== 核心计算函数 ==========
-
-		// 等额本息月供
-		calcEqualInstallment(principal, annualRate, months) {
-			const r = annualRate / 12;
-			if (r === 0) return principal / months;
-			return principal * r * Math.pow(1 + r, months) / (Math.pow(1 + r, months) - 1);
-		},
-
-		// 等额本金第k月还款额 (k从0开始)
-		calcEqualPrincipalMonth(principal, annualRate, months, k) {
-			const r = annualRate / 12;
-			const monthlyPrincipal = principal / months;
-			const remain = principal - monthlyPrincipal * k;
-			return monthlyPrincipal + remain * r;
-		},
-
-		// 生成等额本息明细
-		genEqualInstallmentDetail(principal, annualRate, months) {
-			const r = annualRate / 12;
-			const payment = this.calcEqualInstallment(principal, r === 0 ? 0 : annualRate, months);
-			const list = [];
-			let remain = principal;
-			for (let k = 0; k < months; k++) {
-				const interest = remain * r;
-				const prin = payment - interest;
-				remain -= prin;
-				if (remain < 0) remain = 0;
-				list.push({
-					month: k + 1,
-					payment: payment.toFixed(2),
-					principal: prin.toFixed(2),
-					interest: interest.toFixed(2),
-					remain: remain.toFixed(2),
-				});
-			}
-			return list;
-		},
-
-		// 生成等额本金明细
-		genEqualPrincipalDetail(principal, annualRate, months) {
-			const r = annualRate / 12;
-			const list = [];
-			const monthlyPrincipal = principal / months;
-			for (let k = 0; k < months; k++) {
-				const remain = principal - monthlyPrincipal * k;
-				const interest = remain * r;
-				const payment = monthlyPrincipal + interest;
-				const newRemain = remain - monthlyPrincipal;
-				list.push({
-					month: k + 1,
-					payment: payment.toFixed(2),
-					principal: monthlyPrincipal.toFixed(2),
-					interest: interest.toFixed(2),
-					remain: (newRemain < 0 ? 0 : newRemain).toFixed(2),
-				});
-			}
-			return list;
-		},
-
-		// 计算总利息
-		calcTotalInterest(principal, annualRate, months, method) {
-			if (method === 0) {
-				const mp = this.calcEqualInstallment(principal, annualRate, months);
-				return mp * months - principal;
-			} else {
-				const r = annualRate / 12;
-				return principal * r * (months + 1) / 2;
-			}
-		},
+		formatMoney: formatMoney,
 
 		// ========== Tab 1: 贷款计算 ==========
 
@@ -827,25 +767,25 @@ export default {
 				if (amount <= 0) { _toast('请输入商业贷款金额'); return; }
 				totalPrincipal = amount * 10000;
 				detailList = this.method === 0
-					? this.genEqualInstallmentDetail(totalPrincipal, rate, months)
-					: this.genEqualPrincipalDetail(totalPrincipal, rate, months);
+					? genEqualInstallmentDetail(totalPrincipal, rate, months)
+					: genEqualPrincipalDetail(totalPrincipal, rate, months);
 			} else if (this.loanType === 1) {
 				if (gjjAmount <= 0) { _toast('请输入公积金贷款金额'); return; }
 				totalPrincipal = gjjAmount * 10000;
 				detailList = this.method === 0
-					? this.genEqualInstallmentDetail(totalPrincipal, gjjRate, months)
-					: this.genEqualPrincipalDetail(totalPrincipal, gjjRate, months);
+					? genEqualInstallmentDetail(totalPrincipal, gjjRate, months)
+					: genEqualPrincipalDetail(totalPrincipal, gjjRate, months);
 			} else {
 				if (amount <= 0 || gjjAmount <= 0) { _toast('请输入商贷和公积金贷款金额'); return; }
 				const syPrincipal = amount * 10000;
 				const gjjPrincipal = gjjAmount * 10000;
 				totalPrincipal = syPrincipal + gjjPrincipal;
 				const syDetail = this.method === 0
-					? this.genEqualInstallmentDetail(syPrincipal, rate, months)
-					: this.genEqualPrincipalDetail(syPrincipal, rate, months);
+					? genEqualInstallmentDetail(syPrincipal, rate, months)
+					: genEqualPrincipalDetail(syPrincipal, rate, months);
 				const gjjDetail = this.method === 0
-					? this.genEqualInstallmentDetail(gjjPrincipal, gjjRate, months)
-					: this.genEqualPrincipalDetail(gjjPrincipal, gjjRate, months);
+					? genEqualInstallmentDetail(gjjPrincipal, gjjRate, months)
+					: genEqualPrincipalDetail(gjjPrincipal, gjjRate, months);
 				for (let i = 0; i < months; i++) {
 					detailList.push({
 						month: i + 1,
@@ -857,14 +797,14 @@ export default {
 				}
 			}
 
-			const totalInterest = this.calcTotalInterest(totalPrincipal, this.loanType === 1 ? gjjRate : (this.loanType === 2 ? rate : rate), months, this.method);
+			const totalInterest = calcTotalInterest(totalPrincipal, this.loanType === 1 ? gjjRate : (this.loanType === 2 ? rate : rate), months, this.method);
 			// 组合贷款需要分别计算
 			let finalTotalInterest;
 			if (this.loanType === 2) {
 				const syPrincipal = amount * 10000;
 				const gjjPrincipal = gjjAmount * 10000;
-				const syInterest = this.calcTotalInterest(syPrincipal, rate, months, this.method);
-				const gjjInterest = this.calcTotalInterest(gjjPrincipal, gjjRate, months, this.method);
+				const syInterest = calcTotalInterest(syPrincipal, rate, months, this.method);
+				const gjjInterest = calcTotalInterest(gjjPrincipal, gjjRate, months, this.method);
 				finalTotalInterest = syInterest + gjjInterest;
 			} else {
 				finalTotalInterest = totalInterest;
@@ -874,7 +814,7 @@ export default {
 
 			let monthPayment, lastMonthPayment;
 			if (this.method === 0) {
-				monthPayment = this.calcEqualInstallment(totalPrincipal, this.loanType === 1 ? gjjRate : rate, months);
+				monthPayment = calcEqualInstallment(totalPrincipal, this.loanType === 1 ? gjjRate : rate, months);
 				lastMonthPayment = monthPayment;
 			} else {
 				if (this.loanType === 2) {
@@ -886,8 +826,8 @@ export default {
 				} else {
 					const p = this.loanType === 0 ? amount * 10000 : gjjAmount * 10000;
 					const rt = this.loanType === 0 ? rate : gjjRate;
-					monthPayment = this.calcEqualPrincipalMonth(p, rt, months, 0);
-					lastMonthPayment = this.calcEqualPrincipalMonth(p, rt, months, months - 1);
+					monthPayment = calcEqualPrincipalMonth(p, rt, months, 0);
+					lastMonthPayment = calcEqualPrincipalMonth(p, rt, months, months - 1);
 				}
 			}
 
@@ -937,7 +877,7 @@ export default {
 			let remainAfterM;
 			if (this.early.method === 0) {
 				// 等额本息
-				const payment = this.calcEqualInstallment(principal, rate, months);
+				const payment = calcEqualInstallment(principal, rate, months);
 				if (r === 0) {
 					remainAfterM = principal - (principal / months) * paidM;
 				} else {
@@ -956,13 +896,13 @@ export default {
 			}
 
 			// 原方案总利息
-			const originalTotalInterest = this.calcTotalInterest(principal, rate, months, this.early.method);
+			const originalTotalInterest = calcTotalInterest(principal, rate, months, this.early.method);
 
 			// 已付利息
 			let paidInterest;
 			if (this.early.method === 0) {
 				// 等额本息已付利息
-				const payment = this.calcEqualInstallment(principal, rate, months);
+				const payment = calcEqualInstallment(principal, rate, months);
 				let paidPr = 0;
 				let tmpRemain = principal;
 				for (let i = 0; i < paidM; i++) {
@@ -990,7 +930,7 @@ export default {
 				// 缩短年限（月供基本不变）
 				if (this.early.method === 0) {
 					// 等额本息：保持原月供不变，计算新期限
-					const payment = this.calcEqualInstallment(principal, rate, months);
+					const payment = calcEqualInstallment(principal, rate, months);
 					if (r === 0) {
 						const newK = Math.ceil(newRemain / (principal / months));
 						newTermDisplay = newK + '个月（' + (newK / 12).toFixed(1) + '年）';
@@ -1035,7 +975,7 @@ export default {
 				// 减少月供（期限不变）
 				if (this.early.method === 0) {
 					// 等额本息：期限不变，重新计算月供
-					const newPayment = this.calcEqualInstallment(newRemain, rate, remainMonths);
+					const newPayment = calcEqualInstallment(newRemain, rate, remainMonths);
 					newMonthPayment = newPayment.toFixed(2);
 					let totalIntRemain = newPayment * remainMonths - newRemain;
 					newTotalInterest = paidInterest + totalIntRemain;
@@ -1061,9 +1001,9 @@ export default {
 			// 原月供
 			let oldMonthPayment;
 			if (this.early.method === 0) {
-				oldMonthPayment = this.calcEqualInstallment(principal, rate, months);
+				oldMonthPayment = calcEqualInstallment(principal, rate, months);
 			} else {
-				oldMonthPayment = this.calcEqualPrincipalMonth(principal, rate, months, paidM);
+				oldMonthPayment = calcEqualPrincipalMonth(principal, rate, months, paidM);
 			}
 
 			this.earlyResult = {
@@ -1106,11 +1046,11 @@ export default {
 
 				let monthPayment, totalInterest, totalRepay;
 				if (s.method === 0) {
-					monthPayment = this.calcEqualInstallment(principal, rate, months);
+					monthPayment = calcEqualInstallment(principal, rate, months);
 					totalInterest = monthPayment * months - principal;
 					totalRepay = monthPayment * months;
 				} else {
-					monthPayment = this.calcEqualPrincipalMonth(principal, rate, months, 0);
+					monthPayment = calcEqualPrincipalMonth(principal, rate, months, 0);
 					const r = rate / 12;
 					totalInterest = principal * r * (months + 1) / 2;
 					totalRepay = principal + totalInterest;
