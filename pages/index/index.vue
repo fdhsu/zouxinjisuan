@@ -12,7 +12,7 @@
 		</view>
 
 		<!-- ========== 主内容区 ========== -->
-		<scroll-view class="main-scroll" scroll-y :style="{height:scrollHeight+'px'}">
+		<view class="main-content">
 
 			<!-- 我的收藏 -->
 			<view class="section-card" v-if="favoriteTools.length>0">
@@ -64,7 +64,7 @@
 				</view>
 			</view>
 			<view style="height:40rpx;"></view>
-		</scroll-view>
+		</view>
 
 		<!-- ========== 新手引导 ========== -->
 		<view v-if="showGuide" class="guide-overlay" @click="nextGuideStep">
@@ -95,7 +95,6 @@ import { getBannerAdvertising } from '@/api/home.js';
 export default {
 	data() {
 		return {
-			scrollHeight: 600,
 			bannerHeight: 0,
 			adList: [],
 			isOnline: true,
@@ -164,7 +163,6 @@ export default {
 		}
 	},
 	mounted() {
-		this.initSystemInfo();
 		this.loadFavorites();
 		this.initNetworkListener();
 		this.getBanner();
@@ -173,22 +171,6 @@ export default {
 		});
 	},
 	methods: {
-		initSystemInfo() {
-			var sys = uni.getSystemInfoSync();
-			this.systemHeight = sys.windowHeight || 812;
-			var navBarH = 44;
-			var bannerH = this.adList.length > 0 ? (this.bannerHeight || 160) : 0;
-			var self = this;
-			this.$nextTick(function() {
-				uni.createSelectorQuery().in(self).select('.main-scroll').boundingClientRect(function(rect) {
-					if (rect) {
-						self.scrollHeight = self.systemHeight - navBarH - bannerH;
-					} else {
-						self.scrollHeight = self.systemHeight - navBarH - bannerH;
-					}
-				}).exec();
-			});
-		},
 		guidePositions() {
 			var hw = this.systemHeight > 700 ? 375 : 320;
 			var tabH = 55;
@@ -277,11 +259,6 @@ export default {
 			getBannerAdvertising().then(function(res) {
 				if (res.code == '0000') {
 					self.adList = (res.data || {}).banner_list || [];
-					if (self.adList.length > 0) {
-						self.$nextTick(function() {
-							self.initSystemInfo();
-						});
-					}
 				}
 			});
 		},
@@ -290,7 +267,6 @@ export default {
 			var sys = uni.getSystemInfoSync();
 			var h = (d.height / d.width) * sys.windowWidth;
 			this.bannerHeight = Math.min(h, 200);
-			this.initSystemInfo();
 		},
 		navTo(url, to) {
 			if (url) uni.navigateTo({ url: to });
@@ -312,6 +288,7 @@ $radius: 24rpx;
 	min-height: 100vh;
 	background-color: $bg;
 	position: relative;
+	padding-bottom: 20rpx;
 }
 
 /* ===== 顶部 Banner ===== */
@@ -386,7 +363,7 @@ $radius: 24rpx;
 
 /* ===== 底部信息 ===== */
 .footer-section {
-	padding: 40rpx 32rpx 20rpx;
+	padding: 40rpx 32rpx 120rpx;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
