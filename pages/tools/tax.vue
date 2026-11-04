@@ -702,8 +702,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/common/tool-styles.scss';
-
 $primary: #27AE60;
 $primary-light: #2ecc71;
 $bg: #F2F5FA;
@@ -712,6 +710,8 @@ $text-sec: #666;
 $text-light: #999;
 $border: #f0f0f5;
 $radius: 20rpx;
+
+@import '@/common/tool-styles.scss';
 
 .tax-page { min-height: 100vh; background: $bg; padding-bottom: 60rpx; }
 .tab-content { padding: 24rpx; }

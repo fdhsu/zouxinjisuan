@@ -497,8 +497,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/common/tool-styles.scss';
-
 $primary: #E74C3C;
 $primary-light: #e74c3c;
 $bg: #F2F5FA;
@@ -507,6 +505,8 @@ $text-sec: #666;
 $text-light: #999;
 $border: #f0f0f5;
 $radius: 20rpx;
+
+@import '@/common/tool-styles.scss';
 
 .date-page { min-height: 100vh; background: $bg; padding-bottom: 60rpx; }
 .tab-content { padding: 24rpx; }
