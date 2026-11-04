@@ -629,6 +629,7 @@
 </template>
 
 <script>
+import { formatMoney, toast as _toast } from '@/utils/helpers.js';
 export default {
 	data() {
 		return {
@@ -823,19 +824,19 @@ export default {
 			let detailList = [];
 
 			if (this.loanType === 0) {
-				if (amount <= 0) { this.toast('请输入商业贷款金额'); return; }
+				if (amount <= 0) { _toast('请输入商业贷款金额'); return; }
 				totalPrincipal = amount * 10000;
 				detailList = this.method === 0
 					? this.genEqualInstallmentDetail(totalPrincipal, rate, months)
 					: this.genEqualPrincipalDetail(totalPrincipal, rate, months);
 			} else if (this.loanType === 1) {
-				if (gjjAmount <= 0) { this.toast('请输入公积金贷款金额'); return; }
+				if (gjjAmount <= 0) { _toast('请输入公积金贷款金额'); return; }
 				totalPrincipal = gjjAmount * 10000;
 				detailList = this.method === 0
 					? this.genEqualInstallmentDetail(totalPrincipal, gjjRate, months)
 					: this.genEqualPrincipalDetail(totalPrincipal, gjjRate, months);
 			} else {
-				if (amount <= 0 || gjjAmount <= 0) { this.toast('请输入商贷和公积金贷款金额'); return; }
+				if (amount <= 0 || gjjAmount <= 0) { _toast('请输入商贷和公积金贷款金额'); return; }
 				const syPrincipal = amount * 10000;
 				const gjjPrincipal = gjjAmount * 10000;
 				totalPrincipal = syPrincipal + gjjPrincipal;
@@ -923,10 +924,10 @@ export default {
 			const paidM = parseInt(this.early.paidMonths) || 0;
 			const prepay = parseFloat(this.early.prepayAmount) * 10000 || 0;
 
-			if (amount <= 0) { this.toast('请输入原贷款总额'); return; }
-			if (paidM <= 0) { this.toast('请输入已还月数'); return; }
-			if (prepay <= 0) { this.toast('请输入提前还款金额'); return; }
-			if (paidM >= months) { this.toast('已还月数不能超过贷款期限'); return; }
+			if (amount <= 0) { _toast('请输入原贷款总额'); return; }
+			if (paidM <= 0) { _toast('请输入已还月数'); return; }
+			if (prepay <= 0) { _toast('请输入提前还款金额'); return; }
+			if (paidM >= months) { _toast('已还月数不能超过贷款期限'); return; }
 
 			const principal = amount * 10000;
 			const r = rate / 12;
@@ -950,7 +951,7 @@ export default {
 
 			const newRemain = remainAfterM - prepay;
 			if (newRemain <= 0) {
-				this.toast('提前还款金额已超过剩余本金');
+				_toast('提前还款金额已超过剩余本金');
 				return;
 			}
 
@@ -996,7 +997,7 @@ export default {
 						newTotalInterest = paidInterest + 0; // 无利息
 					} else {
 						if (payment <= newRemain * r) {
-							this.toast('月供不足以覆盖利息，请调整参数');
+							_toast('月供不足以覆盖利息，请调整参数');
 							return;
 						}
 						const newK = Math.ceil(-Math.log(1 - newRemain * r / payment) / Math.log(1 + r));
@@ -1126,7 +1127,7 @@ export default {
 			}
 
 			if (results.length === 0) {
-				this.toast('请至少填写一个方案的贷款金额');
+				_toast('请至少填写一个方案的贷款金额');
 				return;
 			}
 
@@ -1151,7 +1152,7 @@ export default {
 			const rate = parseFloat(this.assess.rateDisplay) / 100 || 0;
 			const months = this.assess.period * 12;
 
-			if (income <= 0) { this.toast('请输入家庭月收入'); return; }
+			if (income <= 0) { _toast('请输入家庭月收入'); return; }
 
 			const maxPayment = income * ratio;
 			const actualRatio = income > 0 ? (maxPayment / income * 100) : 0;
@@ -1225,16 +1226,7 @@ export default {
 
 		// ========== 工具方法 ==========
 
-		toast(msg) {
-			uni.showToast({ title: msg, icon: 'none', duration: 2000 });
-		},
-
-		formatMoney(num) {
-			if (!num && num !== 0) return '0';
-			const parts = num.toString().split('.');
-			parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-			return parts.join('.');
-		},
+		formatMoney: formatMoney,
 	},
 };
 </script>

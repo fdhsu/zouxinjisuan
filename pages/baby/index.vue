@@ -307,6 +307,7 @@
 </template>
 
 <script>
+import { formatMoney, formatDate } from '@/utils/helpers.js';
 export default {
   data() {
     return {
@@ -506,7 +507,7 @@ export default {
   },
   computed: {
     todayStr() {
-      return this.formatDateValue(new Date())
+      return this.formatDate(new Date())
     },
     indicatorStyle() {
       return {
@@ -584,7 +585,7 @@ export default {
         nationalTotal: Math.round(nationalMonthly * months * 100) / 100,
         provincialMonthly: provincialMonthly,
         provincialTotal: Math.round(provincialMonthly * months * 100) / 100,
-        deadline: this.formatDateValue(endDate),
+        deadline: this.formatDate(endDate),
         province: province.name,
         multiplier: multiplier
       }
@@ -692,18 +693,8 @@ export default {
     toggleFaq(key) {
       this.expandedFaq = this.expandedFaq === key ? '' : key
     },
-    formatDateValue(date) {
-      var y = date.getFullYear()
-      var m = ('0' + (date.getMonth() + 1)).slice(-2)
-      var d = ('0' + date.getDate()).slice(-2)
-      return y + '-' + m + '-' + d
-    },
-    formatMoney(num) {
-      if (num === 0) return '0'
-      var parts = num.toString().split('.')
-      parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-      return parts.join('.')
-    }
+    formatDate: formatDate,
+    formatMoney: formatMoney
   }
 }
 </script>

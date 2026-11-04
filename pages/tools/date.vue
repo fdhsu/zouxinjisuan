@@ -260,6 +260,7 @@
 
 <script>
 const { getLunar } = require('@/components/chinese_lunar_calendar/lunar_calendar.js');
+import { fmt0 as fmt } from '@/utils/helpers.js';
 
 export default {
 	data() {
@@ -300,10 +301,6 @@ export default {
 		this.calcTodayLunar();
 	},
 	methods: {
-		fmt(n) {
-			return Number(n).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-		},
-
 		getWeekday(dateStr) {
 			var d = new Date(dateStr);
 			return '星期' + this.weekdays[d.getDay()];
@@ -342,14 +339,14 @@ export default {
 
 			this.diffResult = {
 				show: true,
-				days: this.fmt(days),
+				days: fmt(days),
 				weeks: weeks,
 				extraDays: extraDays,
 				months: months,
 				extraDays2: extraDays2,
 				years: years,
 				extraDays3: extraDays3,
-				hours: this.fmt(hours)
+				hours: fmt(hours)
 			};
 		},
 
@@ -417,7 +414,7 @@ export default {
 
 			this.countdownResult = {
 				show: true,
-				days: this.fmt(days),
+				days: fmt(days),
 				direction: direction,
 				weekday: this.getWeekday(this.countdownTarget),
 				months: months,

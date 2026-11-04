@@ -280,6 +280,7 @@
 
 <script>
 import * as opencc from 'opencc-js';
+import { formatDateTime } from '@/utils/helpers.js';
 
 export default {
 	data() {
@@ -650,15 +651,7 @@ export default {
 			}
 		},
 
-		formatTime: function(date) {
-			var y = date.getFullYear();
-			var m = String(date.getMonth() + 1).padStart(2, '0');
-			var d = String(date.getDate()).padStart(2, '0');
-			var h = String(date.getHours()).padStart(2, '0');
-			var min = String(date.getMinutes()).padStart(2, '0');
-			var s = String(date.getSeconds()).padStart(2, '0');
-			return y + '-' + m + '-' + d + ' ' + h + ':' + min + ':' + s;
-		},
+		formatTime: formatDateTime,
 
 		toggleHistory: function(idx) {
 			this.expandedHistory = this.expandedHistory === idx ? -1 : idx;

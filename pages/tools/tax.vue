@@ -408,6 +408,7 @@
 </template>
 
 <script>
+import { fmt2 as fmt } from '@/utils/helpers.js';
 export default {
 	data() {
 		return {
@@ -510,10 +511,7 @@ export default {
 		}
 	},
 	methods: {
-		fmt(n) {
-			if (n === 0 || n === undefined || n === null || isNaN(n)) return '0.00';
-			return Number(n).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-		},
+		fmt: fmt,
 
 		getBracket(taxable) {
 			for (var i = 0; i < this.taxBrackets.length; i++) {
