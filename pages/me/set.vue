@@ -31,7 +31,6 @@
 
 <script>
 	import {getUserInfo, removeToken,removeUserInfo } from '@/utils/auth';
-	import {   mapMutations  } from 'vuex';
 	export default {
 		data() {
 			return {
@@ -54,7 +53,6 @@
 			//this.$app.recordVisitLog()
 		},
 		methods:{
-			...mapMutations(['logout']),
 			handleFeed(){
 				console.log(this.userdata)
 				if(this.userdata.nickname){

@@ -20,7 +20,6 @@
 
 <script>
 	import {  getUserInfo, removeToken,removeUserInfo} from '@/utils/auth';
-	import { mapMutations} from 'vuex';
 	export default {
 		data() {
 			return {
