@@ -128,16 +128,16 @@ export default {
 				{
 					name: '文字工具',
 					tools: [
-						{ id: 'font_convert', name: '繁简转换', icon: '\uD83D\uDD24', bgColor: '#2B7DE9', color: '#2B7DE9', url: '../tools/font', placeholder: false },
-						{ id: 'word_count', name: '字数统计', icon: '\uD83D\uDCDD', bgColor: '#F5A623', color: '#F5A623', url: '', placeholder: true },
-						{ id: 'pinyin', name: '拼音转换', icon: '\uD83D\uDD21', bgColor: '#1ABC9C', color: '#1ABC9C', url: '', placeholder: true }
+						{ id: 'font_convert', name: '繁简转换', icon: '\uD83D\uDD04', bgColor: '#2B7DE9', color: '#2B7DE9', url: '../tools/font', placeholder: false },
+						{ id: 'word_count', name: '字数统计', icon: '\uD83D\uDCCA', bgColor: '#F5A623', color: '#F5A623', url: '', placeholder: true },
+						{ id: 'pinyin', name: '拼音转换', icon: '\uD83D\uDCAC', bgColor: '#1ABC9C', color: '#1ABC9C', url: '', placeholder: true }
 					]
 				},
 				{
 					name: '生活工具',
 					tools: [
-						{ id: 'date_calc', name: '日期计算器', icon: '\uD83D\uDCC5', bgColor: '#E74C3C', color: '#E74C3C', url: '', placeholder: true },
-						{ id: 'unit_convert', name: '单位换算', icon: '\uD83D\uDCF1', bgColor: '#27AE60', color: '#27AE60', url: '', placeholder: true },
+						{ id: 'date_calc', name: '日期计算器', icon: '\uD83D\uDCC5', bgColor: '#E74C3C', color: '#E74C3C', url: '../tools/date', placeholder: false },
+						{ id: 'unit_convert', name: '单位换算', icon: '\uD83D\uDCCF', bgColor: '#27AE60', color: '#27AE60', url: '', placeholder: true },
 						{ id: 'bmi', name: 'BMI计算', icon: '\u2696\uFE0F', bgColor: '#9B59B6', color: '#9B59B6', url: '', placeholder: true },
 						{ id: 'color_convert', name: '颜色转换器', icon: '\uD83C\uDFA8', bgColor: '#2B7DE9', color: '#2B7DE9', url: '', placeholder: true }
 					]

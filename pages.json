@@ -76,6 +76,12 @@
 			}
 		},
 		{
+			"path" : "pages/tools/date",
+			"style" : {
+				"navigationBarTitleText" : "日期计算器"
+			}
+		},
+		{
 			"path": "pages/login/privacy",
 			"style": {
 				"navigationBarTitleText": "隐私协议"
