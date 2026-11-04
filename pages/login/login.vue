@@ -4,13 +4,6 @@
     <image src="/static/logo/144-144.png"></image>
   </view>
   <view class="login_from">
-      <!-- <input placeholder="请输入手机号" v-model="mobile" type="number" maxlength="11" placeholder-style="color: #333"></input>
-	  <input placeholder="密码" v-model="password"  maxlength="20" type="password" placeholder-style="color: #333"></input>
-	   
-      <view class="login_btn" @click="onlogin">登录</view>
-	  <view class="register">
-		  <text class="link " @click="navigateToRegister">没有账户，去注册</text>
-	  </view> -->
 		<view class="agreement">
 		<checkbox-group @change="checkboxChange">
 			<label>
@@ -144,8 +137,8 @@ export default {
 	  			  name: 'toolautologin',
 	  			  data: res.authResult
 	  			}).then(res => {
-	  				console.log("获取号码成功：")
-	  				console.log(res.result.phoneNumber)
+	  				//console.log("获取号码成功：")
+	  				//console.log(res.result.phoneNumber)
 	  				if(res.result.code===0){
 	  						uniCloud.callFunction({
 	  						  name: 'applogreg',
@@ -156,7 +149,7 @@ export default {
 	  						}).then(res => {
 	  						  console.log(res.result);
 	  						  if (res.result.code === 200) {
-	  							console.log(res.result.data)
+	  							//console.log(res.result.data)
 								
 	  						    // 保存token和用户信息
 								setToken(res.result.data.token)

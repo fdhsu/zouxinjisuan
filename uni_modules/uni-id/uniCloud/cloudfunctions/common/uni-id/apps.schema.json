@@ -1,0 +1,58 @@
+{
+  "bsonType": "object",
+  "required": ["appid", "name"],
+  "permission": {
+    "read": true,
+    "create": "auth.uid != null",
+    "update": "auth.uid != null",
+    "delete": "auth.uid != null"
+  },
+  "properties": {
+    "name": {
+      "bsonType": "string",
+      "title": "应用名称",
+      "trim": "both"
+    },
+    "appid": {
+      "bsonType": "string",
+      "title": "应用ID",
+      "trim": "both"
+    },
+    "app_mark": {
+      "bsonType": "string",
+      "title": "应用备注",
+      "trim": "both"
+    },
+    "status": {
+      "bsonType": "int",
+      "title": "状态",
+      "defaultValue": 1,
+      "enum": [{
+        "value": 0,
+        "text": "禁用"
+      }, {
+        "value": 1,
+        "text": "启用"
+      }]
+    },
+    "create_time": {
+      "bsonType": "timestamp",
+      "title": "创建时间",
+      "defaultValue": {
+        "$env": "now"
+      }
+    },
+    "update_time": {
+      "bsonType": "timestamp",
+      "title": "更新时间",
+      "defaultValue": {
+        "$env": "now"
+      }
+    },
+    "secret_key": {
+      "bsonType": "string",
+      "title": "应用密钥",
+      "trim": "both"
+    }
+  }
+}

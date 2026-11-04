@@ -1,0 +1,8 @@
+{
+  "name": "toolautologin",
+  "dependencies": {},
+  "extensions": {
+    "uni-cloud-jql": {},
+    "uni-cloud-verify": {}
+  }
+}

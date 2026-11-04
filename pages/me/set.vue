@@ -56,6 +56,7 @@
 		methods:{
 			...mapMutations(['logout']),
 			handleFeed(){
+				console.log(this.userdata)
 				if(this.userdata.nickname){
 					this.navTo('/pages/me/feedback')
 				}else{
@@ -86,15 +87,6 @@
 							removeUserInfo();
 				    		setTimeout(()=>{
 				    			uni.navigateBack();
-								// uni.switchTab({
-								//       url: '/pages/index/tabbar',
-								//       success: () => {
-								//         console.log('跳转成功');
-								//       },
-								//       fail: (err) => {
-								//         console.log('跳转失败', err);
-								//       }
-								//     });
 				    		}, 200)
 				    	}
 				    }

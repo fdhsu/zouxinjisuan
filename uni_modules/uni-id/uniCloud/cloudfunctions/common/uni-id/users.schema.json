@@ -1,0 +1,56 @@
+{
+  "bsonType": "object",
+  "required": [],
+  "permission": {
+    "read": "auth.uid != null",
+    "create": false,
+    "update": false,
+    "delete": false
+  },
+  "properties": {
+    "appid": {
+      "bsonType": "array",
+      "title": "所属应用",
+      "items": {
+        "bsonType": "string"
+      }
+    },
+    "status": {
+      "bsonType": "int",
+      "title": "状态",
+      "defaultValue": 0,
+      "enum": [{
+        "value": 0,
+        "text": "正常"
+      }, {
+        "value": 1,
+        "text": "禁用"
+      }]
+    },
+	"last_login_date": {
+	  "bsonType": "string",
+	  "title": "最后登录时间",
+	  "defaultValue": {
+	    "$env": "now"
+	  }
+	},
+	"last_login_ip": {
+	  "bsonType": "string",
+	  "title": "最后登录IP",
+	  "trim": "both"
+	},
+	"register_date": {
+	  "bsonType": "string",
+	  "title": "注册时间",
+	  "defaultValue": {
+	    "$env": "now"
+	  }
+	},
+	"register_ip": {
+	  "bsonType": "string",
+	  "title": "注册IP",
+	  "trim": "both"
+	}
+    // 其他系统字段会自动包含，无需重复定义
+  }
+}

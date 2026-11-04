@@ -1,0 +1,7 @@
+{
+  "name": "applogout",
+  "dependencies": {},
+  "extensions": {
+    "uni-cloud-jql": {}
+  }
+}

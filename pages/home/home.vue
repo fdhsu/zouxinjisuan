@@ -73,7 +73,7 @@
 				        "愿你每天都充满阳光与笑容，生活如花般绚烂多彩~",
 				        "祝你未来更加辉煌灿烂，所有的努力都能收获丰硕的果实~",
 						"愿你在人生的旅途中，始终心怀善意，收获满满的幸福与感动~",
-						    "祝你每一天都充满新的希望，生活如星辰般闪耀，未来更加美好~"
+						"祝你每一天都充满新的希望，生活如星辰般闪耀，未来更加美好~"
 				]
 			}
 		},
@@ -82,7 +82,7 @@
 			this.getLunarDay = getLunar(this.year, this.month, this.date)
 			this.dateStr=(this.year+"."+this.month+"."+this.date+" "+weeks[this.day]);
 			this.mystyle='--content:'+"'"+this.date+"'";
-			console.log(this.date);
+			//console.log(this.date);
 		},
 		methods: {
 

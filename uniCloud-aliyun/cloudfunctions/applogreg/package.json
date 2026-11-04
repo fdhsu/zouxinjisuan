@@ -1,0 +1,10 @@
+{
+  "name": "applogreg",
+  "dependencies": {
+    "utils-common": "file:../common/utils-common"
+  },
+  "extensions": {
+    "uni-cloud-jql": {},
+    "uni-cloud-verify": {}
+  }
+}
