@@ -149,7 +149,12 @@ export default {
 		guideSpacerH() {
 			var pos = this.guidePositions();
 			if (this.guideStep >= pos.length) return 200;
-			return Math.max(pos[this.guideStep].top - 10, 20);
+			var top = pos[this.guideStep].top - 10;
+			// 最后一步预留卡片高度，避免贴近底部
+			if (this.guideStep === pos.length - 1) {
+				top = Math.max(top - 180, 80);
+			}
+			return Math.max(top, 20);
 		},
 		guideDotTop() {
 			var pos = this.guidePositions();
