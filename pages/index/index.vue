@@ -147,14 +147,11 @@ export default {
 	},
 	computed: {
 		guideSpacerH() {
-			var pos = this.guidePositions();
-			if (this.guideStep >= pos.length) return 200;
-			var top = pos[this.guideStep].top - 10;
-			// 最后一步预留卡片高度，避免贴近底部
-			if (this.guideStep === pos.length - 1) {
-				top = Math.max(top - 180, 80);
-			}
-			return Math.max(top, 20);
+			// 三张卡片作为一组，居中显示在屏幕中央
+			var cardH = 150, gap = 0;
+			var totalH = 3 * cardH + 2 * gap;
+			var startY = Math.round((this.systemHeight - totalH) / 2);
+			return startY + this.guideStep * (cardH + gap);
 		},
 		guideDotTop() {
 			var pos = this.guidePositions();
@@ -436,7 +433,7 @@ $radius: 24rpx;
 	50% { box-shadow: 0 0 36rpx 12rpx rgba(43,125,233,0.6); }
 }
 .guide-card {
-	margin: 24rpx 48rpx 0;
+	margin: 0 48rpx;
 	background: #fff;
 	border-radius: 24rpx;
 	padding: 40rpx 36rpx;
