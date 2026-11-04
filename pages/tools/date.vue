@@ -500,10 +500,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '@/common/tool-styles.scss';
+
 $primary: #E74C3C;
 $primary-light: #e74c3c;
 $bg: #F2F5FA;
-$card-bg: #fff;
 $text: #1a1a2e;
 $text-sec: #666;
 $text-light: #999;
@@ -511,38 +512,17 @@ $border: #f0f0f5;
 $radius: 20rpx;
 
 .date-page { min-height: 100vh; background: $bg; padding-bottom: 60rpx; }
-
-/* Tab Bar */
-.tab-bar { display: flex; background: #fff; padding: 0 8rpx; box-shadow: 0 2rpx 8rpx rgba(0,0,0,0.04); position: sticky; top: 0; z-index: 100; }
-.tab-bar-item { flex: 1; text-align: center; padding: 24rpx 0 20rpx; position: relative; }
-.tab-bar-item.active .tab-bar-text { color: $primary; font-weight: 700; }
-.tab-bar-text { font-size: 26rpx; color: $text-sec; }
-.tab-bar-indicator { position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 48rpx; height: 6rpx; background: $primary; border-radius: 3rpx; }
-
 .tab-content { padding: 24rpx; }
 
-/* Card */
-.card { background: $card-bg; border-radius: $radius; padding: 28rpx; margin-bottom: 24rpx; box-shadow: 0 2rpx 12rpx rgba(0,0,0,0.04); }
-.card-title { font-size: 30rpx; font-weight: 700; color: $text; margin-bottom: 24rpx; padding-left: 16rpx; border-left: 6rpx solid $primary; }
+/* Page-specific overrides */
+.result-card { background: linear-gradient(135deg, $primary, #c0392b); box-shadow: 0 8rpx 24rpx rgba(231,76,60,0.25); }
 
-/* Form */
-.form-row { display: flex; align-items: center; justify-content: space-between; padding: 18rpx 0; border-bottom: 1rpx solid $border; &:last-child { border-bottom: none; } }
-.form-label { font-size: 28rpx; color: $text-sec; flex-shrink: 0; margin-right: 16rpx; }
 .input-wrap { display: flex; align-items: center; flex: 1; justify-content: flex-end; }
-.form-input { width: 260rpx; text-align: right; font-size: 28rpx; color: $text; padding: 8rpx 0; }
 
-/* Picker */
 .picker-wrap { display: flex; align-items: center; flex: 1; justify-content: flex-end; }
 .picker-text { font-size: 28rpx; color: $text; }
 .picker-arrow { font-size: 20rpx; color: $text-light; margin-left: 8rpx; }
 
-/* Segmented Control */
-.seg-control { display: flex; background: #f5f5f5; border-radius: 12rpx; padding: 4rpx; }
-.seg-item { flex: 1; padding: 12rpx 16rpx; border-radius: 10rpx; text-align: center; &.active { background: #fff; box-shadow: 0 2rpx 8rpx rgba(0,0,0,0.08); } }
-.seg-text { font-size: 24rpx; color: $text-sec; &.active { color: $primary; font-weight: 600; } }
-
-/* Result Card */
-.result-card { background: linear-gradient(135deg, $primary, #c0392b); border-radius: $radius; padding: 32rpx 28rpx; margin-bottom: 24rpx; color: #fff; box-shadow: 0 8rpx 24rpx rgba(231,76,60,0.25); }
 .result-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24rpx; }
 .result-title { font-size: 30rpx; font-weight: 700; }
 .result-tag { font-size: 24rpx; opacity: 0.85; background: rgba(255,255,255,0.2); padding: 6rpx 16rpx; border-radius: 20rpx; }
@@ -554,17 +534,14 @@ $radius: 20rpx;
 .result-row-label { font-size: 26rpx; opacity: 0.85; }
 .result-row-value { font-size: 26rpx; font-weight: 600; }
 
-/* Lunar Display */
 .lunar-display { text-align: center; margin-bottom: 24rpx; }
 .lunar-big { font-size: 48rpx; font-weight: 700; }
 
-/* Today Lunar */
 .today-lunar { padding: 8rpx 0; }
 .today-row { display: flex; justify-content: space-between; padding: 16rpx 0; border-bottom: 1rpx solid $border; &:last-child { border-bottom: none; } }
 .today-label { font-size: 28rpx; color: $text-sec; }
 .today-value { font-size: 28rpx; color: $text; font-weight: 600; }
 
-/* Countdown List */
 .countdown-list { }
 .countdown-item { display: flex; align-items: center; padding: 20rpx 0; border-bottom: 1rpx solid $border; &:last-child { border-bottom: none; } }
 .countdown-info { flex: 1; }

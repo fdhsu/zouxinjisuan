@@ -704,10 +704,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '@/common/tool-styles.scss';
+
 $primary: #27AE60;
 $primary-light: #2ecc71;
 $bg: #F2F5FA;
-$card-bg: #fff;
 $text: #1a1a2e;
 $text-sec: #666;
 $text-light: #999;
@@ -715,40 +716,17 @@ $border: #f0f0f5;
 $radius: 20rpx;
 
 .tax-page { min-height: 100vh; background: $bg; padding-bottom: 60rpx; }
-
-/* Tab Bar */
-.tab-bar { display: flex; background: #fff; padding: 0 8rpx; box-shadow: 0 2rpx 8rpx rgba(0,0,0,0.04); position: sticky; top: 0; z-index: 100; }
-.tab-bar-item { flex: 1; text-align: center; padding: 24rpx 0 20rpx; position: relative; }
-.tab-bar-item.active .tab-bar-text { color: $primary; font-weight: 700; }
-.tab-bar-text { font-size: 26rpx; color: $text-sec; }
-.tab-bar-indicator { position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 48rpx; height: 6rpx; background: $primary; border-radius: 3rpx; }
-
 .tab-content { padding: 24rpx; }
 
-/* Card */
-.card { background: $card-bg; border-radius: $radius; padding: 28rpx; margin-bottom: 24rpx; box-shadow: 0 2rpx 12rpx rgba(0,0,0,0.04); }
-.card-title { font-size: 30rpx; font-weight: 700; color: $text; margin-bottom: 24rpx; padding-left: 16rpx; border-left: 6rpx solid $primary; }
+/* Page-specific overrides */
+.result-card { box-shadow: 0 8rpx 24rpx rgba(39,174,96,0.25); }
 
-/* Form */
-.form-row { display: flex; align-items: center; justify-content: space-between; padding: 18rpx 0; border-bottom: 1rpx solid $border; &:last-child { border-bottom: none; } }
-.form-label { font-size: 28rpx; color: $text-sec; flex-shrink: 0; margin-right: 16rpx; }
 .input-wrap { display: flex; align-items: center; flex: 1; justify-content: flex-end; }
-.form-input { width: 260rpx; text-align: right; font-size: 28rpx; color: $text; padding: 8rpx 0; }
 .unit { font-size: 26rpx; color: $text-light; margin-left: 8rpx; flex-shrink: 0; }
 .deduction-hint { padding: 16rpx 0 0; }
 .hint-text { font-size: 22rpx; color: $text-light; }
 
-/* Segmented Control */
-.seg-control { display: flex; background: #f5f5f5; border-radius: 12rpx; padding: 4rpx; &.wrap { flex-wrap: wrap; gap: 8rpx; } }
-.seg-item { flex: 1; padding: 12rpx 16rpx; border-radius: 10rpx; text-align: center; &.active { background: #fff; box-shadow: 0 2rpx 8rpx rgba(0,0,0,0.08); } }
-.seg-text { font-size: 24rpx; color: $text-sec; &.active { color: $primary; font-weight: 600; } }
-
-/* Switch Row */
-.switch-row { }
-
-/* Result Card */
-.result-card { background: linear-gradient(135deg, $primary, $primary-light); border-radius: $radius; padding: 32rpx 28rpx; margin-bottom: 24rpx; color: #fff; box-shadow: 0 8rpx 24rpx rgba(39,174,96,0.25); }
-.compare-card { background: $card-bg; border-radius: $radius; padding: 28rpx; margin-bottom: 24rpx; box-shadow: 0 2rpx 12rpx rgba(0,0,0,0.04); }
+.compare-card { background: #fff; border-radius: $radius; padding: 28rpx; margin-bottom: 24rpx; box-shadow: 0 2rpx 12rpx rgba(0,0,0,0.04); }
 .result-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24rpx; }
 .result-title { font-size: 30rpx; font-weight: 700; }
 .result-tag { font-size: 24rpx; opacity: 0.85; background: rgba(255,255,255,0.2); padding: 6rpx 16rpx; border-radius: 20rpx; }
@@ -762,11 +740,9 @@ $radius: 20rpx;
 .result-detail { margin-top: 16rpx; background: rgba(255,255,255,0.1); border-radius: 12rpx; padding: 12rpx 20rpx; }
 .detail-row { display: flex; justify-content: space-between; padding: 8rpx 0; font-size: 24rpx; opacity: 0.85; }
 
-/* Warning */
 .warning-box { margin-top: 16rpx; padding: 16rpx 20rpx; background: rgba(255,255,255,0.2); border-radius: 12rpx; }
 .warning-text { font-size: 24rpx; }
 
-/* Compare */
 .compare-row { display: flex; align-items: center; padding: 20rpx 0; border-bottom: 1rpx solid $border; &:last-of-type { border-bottom: none; } }
 .compare-label { flex: 1; font-size: 28rpx; color: $text-sec; }
 .compare-value { font-size: 30rpx; font-weight: 700; color: $text; margin-right: 16rpx; }
@@ -774,7 +750,6 @@ $radius: 20rpx;
 .compare-save { margin-top: 16rpx; padding: 16rpx; background: #f0faf4; border-radius: 12rpx; text-align: center; }
 .compare-save-text { font-size: 26rpx; color: $primary; font-weight: 600; }
 
-/* Table */
 .table-wrap { border: 1rpx solid $border; border-radius: 12rpx; overflow: hidden; }
 .table-header { display: flex; background: #f8f9fa; padding: 16rpx 0; border-bottom: 1rpx solid $border; }
 .table-row { display: flex; padding: 14rpx 0; border-bottom: 1rpx solid $border; &::last-child { border-bottom: none; } }
@@ -782,15 +757,12 @@ $radius: 20rpx;
 .col-rate { color: $primary; font-weight: 600; }
 .table-header .col-level, .table-header .col-range, .table-header .col-rate, .table-header .col-deduction { font-weight: 600; color: $text; }
 
-/* Blind spot table */
 .blind-table { border: 1rpx solid $border; border-radius: 12rpx; overflow: hidden; }
 .bt-col1, .bt-col2 { flex: 1; text-align: center; font-size: 24rpx; color: $text-sec; }
 
-/* Corp table */
 .ct-col1, .ct-col2, .ct-col3 { flex: 1; text-align: center; font-size: 24rpx; color: $text-sec; }
 .ct-col2 { color: $primary; font-weight: 600; }
 
-/* Policy */
 .policy-list { padding: 0 8rpx; }
 .policy-item { display: flex; align-items: center; padding: 14rpx 0; }
 .policy-dot { width: 40rpx; height: 40rpx; border-radius: 50%; background: $primary; color: #fff; font-size: 24rpx; font-weight: 700; display: flex; align-items: center; justify-content: center; margin-right: 16rpx; flex-shrink: 0; }
@@ -798,7 +770,6 @@ $radius: 20rpx;
 .highlight-box { margin-top: 20rpx; padding: 20rpx; background: #f0faf4; border-radius: 12rpx; border-left: 6rpx solid $primary; }
 .highlight-text { font-size: 26rpx; color: $primary; font-weight: 600; line-height: 1.6; }
 
-/* Tip */
 .tip-box { margin-top: 20rpx; padding: 20rpx; background: #fff8e1; border-radius: 12rpx; border-left: 6rpx solid #ffc107; }
 .tip-text { font-size: 24rpx; color: #795548; line-height: 1.6; }
 </style>
