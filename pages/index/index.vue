@@ -1,31 +1,40 @@
-<!-- 首页 - 首页 -->
+<!-- 首页 -->
 <template>
 	<view class="page-container">
-		<!-- ========== 我的收藏 ========== -->
-		<scroll-view v-if="favoriteTools.length>0" class="favorite-section" scroll-x :show-scrollbar="false">
-			<view class="favorite-inner">
-				<view class="section-title">
-					<view class="title-bar"></view>
-					<text class="title-text">我的收藏</text>
-				</view>
-				<view class="favorite-scroll-area">
-					<view class="favorite-card" v-for="(item,idx) in favoriteTools" :key="'fav'+idx"
-						@click="navigateTool(item)" @longpress.stop="toggleFavorite(item)">
-						<view class="fav-icon-wrap" :style="{background:item.bgColor}">
-							<text class="fav-emoji">{{item.icon}}</text>
-						</view>
-						<text class="fav-name">{{item.name}}</text>
-					</view>
-				</view>
-			</view>
-		</scroll-view>
+		<!-- ========== Banner 顶部 ========== -->
+		<view class="banner-section" v-if="adList.length>0">
+			<swiper class="banner-swiper" circular autoplay :interval="3000" :duration="500" :style="{height:bannerHeight+'px'}">
+				<swiper-item v-for="(item,index) in adList" :key="index"
+					@click="navTo(item.url,'/pages/login/privacy?url='+item.url)">
+					<image :src="item.icon" mode="aspectFill" class="banner-image" @load="onBannerLoad"/>
+				</swiper-item>
+			</swiper>
+		</view>
 
 		<!-- ========== 主内容区 ========== -->
 		<scroll-view class="main-scroll" scroll-y :style="{height:scrollHeight+'px'}">
-			<view class="category-block" v-for="(cat,ci) in categories" :key="'cat'+ci">
-				<view class="section-title">
-					<view class="title-bar"></view>
-					<text class="title-text">{{cat.name}}</text>
+
+			<!-- 我的收藏 -->
+			<view class="section-card" v-if="favoriteTools.length>0">
+				<view class="card-header">
+					<text class="card-title">我的收藏</text>
+				</view>
+				<view class="tool-grid">
+					<view class="tool-cell" v-for="(item,idx) in favoriteTools" :key="'fav'+idx"
+						@click="navigateTool(item)" @longpress.stop="toggleFavorite(item)"
+						:hover-class="'tool-cell-hover'" :hover-stay-time="150">
+						<view class="tool-icon-box" :style="{background:item.bgColor}">
+							<text class="tool-emoji">{{item.icon}}</text>
+						</view>
+						<text class="tool-label">{{item.name}}</text>
+					</view>
+				</view>
+			</view>
+
+			<!-- 分类工具卡片 -->
+			<view class="section-card" v-for="(cat,ci) in categories" :key="'cat'+ci">
+				<view class="card-header">
+					<text class="card-title">{{cat.name}}</text>
 				</view>
 				<view class="tool-grid">
 					<view class="tool-cell" v-for="(tool,ti) in cat.tools" :key="'t'+ti"
@@ -40,22 +49,10 @@
 				</view>
 			</view>
 
-			<!-- Banner 广告位 -->
-			<view class="ad-wrapper" v-if="adList.length>0">
-				<view class="ad-container" :style="{height:swiperHeight+'px'}">
-					<swiper class="ad-swiper" circular autoplay :interval="3000" :duration="500">
-						<swiper-item v-for="(item,index) in adList" :key="index"
-							@click="navTo(item.url,'/pages/login/privacy?url='+item.url)">
-							<image :src="item.icon" mode="aspectFill" class="ad-image" @load="onImageLoad"/>
-						</swiper-item>
-					</swiper>
-				</view>
-			</view>
-
 			<!-- 底部信息 -->
 			<view class="footer-section">
 				<view class="footer-row">
-					<text class="footer-version">走心计算 v2.0.0</text>
+					<text class="footer-version">走心计算 v2.1.0</text>
 					<view class="footer-divider"></view>
 					<view class="offline-badge">
 						<text class="offline-dot">&#x2714;</text>
@@ -99,7 +96,7 @@ export default {
 	data() {
 		return {
 			scrollHeight: 600,
-			swiperHeight: 100,
+			bannerHeight: 0,
 			adList: [],
 			isOnline: true,
 			favoriteTools: [],
@@ -180,13 +177,14 @@ export default {
 			var sys = uni.getSystemInfoSync();
 			this.systemHeight = sys.windowHeight || 812;
 			var navBarH = 44;
+			var bannerH = this.adList.length > 0 ? (this.bannerHeight || 160) : 0;
 			var self = this;
 			this.$nextTick(function() {
-				uni.createSelectorQuery().in(self).select('.favorite-section').boundingClientRect(function(rect) {
+				uni.createSelectorQuery().in(self).select('.main-scroll').boundingClientRect(function(rect) {
 					if (rect) {
-						self.scrollHeight = self.systemHeight - navBarH - rect.height;
+						self.scrollHeight = self.systemHeight - navBarH - bannerH;
 					} else {
-						self.scrollHeight = self.systemHeight - navBarH;
+						self.scrollHeight = self.systemHeight - navBarH - bannerH;
 					}
 				}).exec();
 			});
@@ -279,14 +277,20 @@ export default {
 			getBannerAdvertising().then(function(res) {
 				if (res.code == '0000') {
 					self.adList = (res.data || {}).banner_list || [];
+					if (self.adList.length > 0) {
+						self.$nextTick(function() {
+							self.initSystemInfo();
+						});
+					}
 				}
 			});
 		},
-		onImageLoad(event) {
+		onBannerLoad(event) {
 			var d = event.detail;
 			var sys = uni.getSystemInfoSync();
 			var h = (d.height / d.width) * sys.windowWidth;
-			this.swiperHeight = Math.min(h, 120);
+			this.bannerHeight = Math.min(h, 200);
+			this.initSystemInfo();
 		},
 		navTo(url, to) {
 			if (url) uni.navigateTo({ url: to });
@@ -296,79 +300,50 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+$primary: #2B7DE9;
+$bg: #F2F5FA;
+$card-bg: #fff;
+$text: #1a1a2e;
+$text-sec: #555;
+$text-light: #999;
+$radius: 24rpx;
+
 .page-container {
 	min-height: 100vh;
-	background-color: #F2F5FA;
+	background-color: $bg;
 	position: relative;
 }
 
-/* ===== 我的收藏 ===== */
-.favorite-section {
+/* ===== 顶部 Banner ===== */
+.banner-section {
 	width: 100%;
-	height: 180rpx;
-	background: #fff;
-	white-space: nowrap;
-	border-bottom: 1rpx solid #f0f0f5;
+	overflow: hidden;
+	border-radius: 0 0 24rpx 24rpx;
 }
-.favorite-inner {
-	display: inline-block;
-	padding: 16rpx 0 16rpx 32rpx;
-	height: 100%;
-}
-.favorite-scroll-area {
-	display: inline-flex;
-	align-items: center;
-	gap: 20rpx;
-	padding-right: 32rpx;
-	height: 120rpx;
-}
-.favorite-card {
-	display: inline-flex;
-	flex-direction: column;
-	align-items: center;
-	min-width: 130rpx;
-	padding: 12rpx 16rpx;
-	background: #f8f9fe;
-	border-radius: 16rpx;
-	flex-shrink: 0;
-}
-.fav-icon-wrap {
-	width: 64rpx;
-	height: 64rpx;
-	border-radius: 50%;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	margin-bottom: 8rpx;
-}
-.fav-emoji { font-size: 32rpx; filter: brightness(0) invert(1); }
-.fav-name { font-size: 22rpx; color: #555; white-space: nowrap; }
+.banner-swiper { width: 100%; }
+.banner-image { width: 100%; height: 100%; }
 
-/* ===== 分类标题 ===== */
-.section-title {
-	display: flex;
-	align-items: center;
-	padding: 28rpx 32rpx 16rpx;
+/* ===== 分类卡片 ===== */
+.section-card {
+	background: $card-bg;
+	border-radius: $radius;
+	margin: 24rpx 24rpx 0;
+	padding: 28rpx 20rpx 20rpx;
+	box-shadow: 0 2rpx 12rpx rgba(0,0,0,0.04);
 }
-.title-bar {
-	width: 6rpx;
-	height: 30rpx;
-	background: #2B7DE9;
-	border-radius: 3rpx;
-	margin-right: 14rpx;
+.card-header {
+	padding: 0 12rpx 20rpx;
 }
-.title-text {
-	font-size: 30rpx;
+.card-title {
+	font-size: 32rpx;
 	font-weight: 700;
-	color: #1a1a2e;
+	color: $text;
 }
 
 /* ===== 工具网格 ===== */
-.category-block { padding-bottom: 8rpx; }
 .tool-grid {
 	display: flex;
 	flex-wrap: wrap;
-	padding: 0 20rpx;
 }
 .tool-cell {
 	width: 25%;
@@ -377,50 +352,37 @@ export default {
 	align-items: center;
 	padding: 16rpx 0;
 	position: relative;
-	border-radius: 16rpx;
 }
 .tool-cell-hover {
-	background: rgba(0,0,0,0.03);
 	opacity: 0.85;
 }
 .tool-icon-box {
 	width: 96rpx;
 	height: 96rpx;
-	border-radius: 50%;
+	border-radius: 22rpx;
 	display: flex;
 	align-items: center;
 	justify-content: center;
 	margin-bottom: 12rpx;
 	box-shadow: 0 4rpx 12rpx rgba(0,0,0,0.1);
 }
-.tool-emoji { font-size: 42rpx; filter: brightness(0) invert(1); }
+.tool-emoji { font-size: 44rpx; filter: brightness(0) invert(1); }
 .tool-label {
 	font-size: 24rpx;
-	color: #444;
+	color: $text-sec;
 	text-align: center;
-	max-width: 140rpx;
+	max-width: 150rpx;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
 }
 .fav-star {
 	position: absolute;
-	top: 10rpx;
-	right: 24rpx;
+	top: 8rpx;
+	right: 20rpx;
 	font-size: 20rpx;
 	color: #f59e0b;
 }
-
-/* ===== 广告 ===== */
-.ad-wrapper {
-	padding: 24rpx 32rpx;
-}
-.ad-container {
-	overflow: hidden;
-	border-radius: 16rpx;
-}
-.ad-swiper { width: 100%; height: 100%; }
-.ad-image { width: 100%; height: 100%; }
 
 /* ===== 底部信息 ===== */
 .footer-section {
