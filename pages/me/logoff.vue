@@ -19,7 +19,9 @@
 </template>
 
 <script>
-	import {  getUserInfo, removeToken,removeUserInfo} from '@/utils/auth';
+	import { getUserInfo, removeToken, removeUserInfo } from '@/utils/auth';
+	import { logoffAccount } from '@/api/user.js';
+	import { toast } from '@/utils/helpers.js';
 	export default {
 		data() {
 			return {
@@ -28,27 +30,15 @@
 			};
 		},
 		onLoad(){
-			//this.$app.recordVisitLog()
 		},
 		methods:{
 			checkboxChange(e) {
 				this.isReadChk = e.detail.value.length > 0
 			},
-			navTo(url){
-				uni.navigateTo({
-					url:url,
-					animationType: 'slide-in-bottom',
-				})
-			},
-			navsTo(url){
-				uni.navigateTo({
-					url:url
-				})
-			},
 			clearUser(){
-				removeToken()
+				removeToken();
 				removeUserInfo();
-				setTimeout(()=>{
+				setTimeout(() => {
 					uni.navigateBack();
 					uni.switchTab({
 					      url: '/pages/index/me',
@@ -59,52 +49,37 @@
 					        console.log('跳转失败', err);
 					      }
 					    });
-				}, 200)
+				}, 200);
 			},
 			toLogOff(){
 				if (!this.isReadChk) {
-				    uni.showToast({
-				        title: '请先勾选注销须知',
-				        icon: 'none'
-				    });
+				    toast('请先勾选注销须知');
 				    return;
-				} 
+				}
 				this.userdata = getUserInfo() || {};
-				console.log(JSON.stringify(this.userdata))
+				console.log(JSON.stringify(this.userdata));
 				uni.showModal({
 				    content: '确定要注销账号吗？',
-				    success: (e)=>{
+				    success: (e) => {
 				    	if(e.confirm){
 							if(this.userdata.nickname){
-								
-							uniCloud.callFunction({
-							  name: 'applogoff',
-							  data: {
-							    mobile: this.userdata.nickname
-							  }
-							}).then(res => {
-								uni.hideLoading()
-							  console.log(res.result);
-							  if (res.result.code === 200) {
-							    this.clearUser();
-							  }else{
-								  uni.showToast({
-								  	title: res.result.message,
-								  	icon: 'none'
-								  })
-							  }
-							  uni.hideLoading()
-							}).catch(err => {
-								uni.hideLoading()
-							  console.error(err);
-							  uni.showToast({
-							  	title: err.message,
-							  	icon: 'none'
-							  })
-							
-							});
-							
-				    		}else{
+								logoffAccount(this.userdata.nickname)
+									.then(res => {
+										uni.hideLoading();
+									  console.log(res.result);
+									  if (res.result.code === 200) {
+									    this.clearUser();
+									  } else {
+										  toast(res.result.message);
+									  }
+									  uni.hideLoading();
+									})
+									.catch(err => {
+										uni.hideLoading();
+									  console.error(err);
+									  toast(err.message);
+									});
+				    		} else {
 				    			this.clearUser();
 				    		}
 				    	}

@@ -19,7 +19,9 @@
 	</view>
 </template>
 <script>
-	import { getUserInfo,removeUserInfo } from '@/utils/auth';
+	import { getUserInfo, removeUserInfo } from '@/utils/auth';
+	import { submitFeedback } from '@/api/user.js';
+	import { navTo, toast } from '@/utils/helpers.js';
 	export default {
 		data() {
 			return {
@@ -44,51 +46,33 @@
 			//反馈
 			toFeedback(){
 				if(this.userdata.nickname){
-					uniCloud.callFunction({
-					  name: 'feedback',
-					  data: {
-					    mobile: this.userdata.nickname,
-						feedtype: this.feedtype,
-						feedinfo: this.feedinfo
-					  }
-					}).then(res => {
-					  console.log(res.result);
-					  if (res.result.code === 200) {
-						  uni.showToast({
-						  	title: "提交成功，感谢您的反馈",
-						  	icon: 'none'
-						  })
-						uni.navigateTo({
-							url:"/pages/me/set"
+					submitFeedback(this.userdata.nickname, this.feedtype, this.feedinfo)
+						.then(res => {
+						  console.log(res.result);
+						  if (res.result.code === 200) {
+							  toast('提交成功，感谢您的反馈');
+							  navTo('/pages/me/set');
+						  } else {
+							  toast(res.result.message);
+						  }
+						  uni.hideLoading();
 						})
-					  }else{
-						  uni.showToast({
-						  	title: res.result.message,
-						  	icon: 'none'
-						  })
-					  }
-					  uni.hideLoading()
-					}).catch(err => {
-					  console.error(err);
-					  uni.showToast({
-					  	title: err.message,
-					  	icon: 'none'
-					  })
-					  uni.hideLoading()
-					});
-				}else{
+						.catch(err => {
+						  console.error(err);
+						  toast(err.message);
+						  uni.hideLoading();
+						});
+				} else {
 					uni.showModal({
 					    content: '请先登录',
-					    success: (e)=>{
+					    success: (e) => {
 					    	if(e.confirm){
-								uni.navigateTo({
-									url:'../login/login'
-								})
+								navTo('/pages/login/login');
 					    	}
 					    }
 					});
 				}
-			}			
+			}
 		}
 	}
 </script>
