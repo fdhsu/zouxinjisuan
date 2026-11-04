@@ -70,6 +70,12 @@
 		    }
 		},
 		{
+			"path" : "pages/tools/tax",
+			"style" : {
+				"navigationBarTitleText" : "税费计算器"
+			}
+		},
+		{
 			"path": "pages/login/privacy",
 			"style": {
 				"navigationBarTitleText": "隐私协议"

@@ -1,27 +1,6 @@
 <!-- 首页 - 首页 -->
 <template>
 	<view class="page-container">
-		<!-- ========== 顶部品牌搜索栏 ========== -->
-		<view class="header-section">
-			<view class="status-bar" :style="{ height: statusBarHeight + 'px' }"></view>
-			<view class="search-bar">
-				<view class="search-input">
-					<text class="search-icon">&#x1F50D;</text>
-					<input
-						class="search-field"
-						v-model="searchText"
-						placeholder="搜索你需要的工具"
-						placeholder-style="color:#b0b4c0"
-						confirm-type="search"
-					/>
-					<text v-if="searchText" class="clear-btn" @click.stop="searchText=''">&#x2715;</text>
-				</view>
-				<view class="notify-icon" @click="onNotify">
-					<text class="notify-bell">&#x1F514;</text>
-				</view>
-			</view>
-		</view>
-
 		<!-- ========== 我的收藏 ========== -->
 		<scroll-view v-if="favoriteTools.length>0" class="favorite-section" scroll-x :show-scrollbar="false">
 			<view class="favorite-inner">
@@ -43,7 +22,7 @@
 
 		<!-- ========== 主内容区 ========== -->
 		<scroll-view class="main-scroll" scroll-y :style="{height:scrollHeight+'px'}">
-			<view class="category-block" v-for="(cat,ci) in filteredCategories" :key="'cat'+ci">
+			<view class="category-block" v-for="(cat,ci) in categories" :key="'cat'+ci">
 				<view class="section-title">
 					<view class="title-bar"></view>
 					<text class="title-text">{{cat.name}}</text>
@@ -59,11 +38,6 @@
 						<text v-if="isFavorited(tool)" class="fav-star">&#9733;</text>
 					</view>
 				</view>
-			</view>
-
-			<view v-if="searchText&&filteredCategories.length===0" class="empty-search">
-				<text class="empty-icon">&#x1F50D;</text>
-				<text class="empty-text">没有找到「{{searchText}}」相关工具</text>
 			</view>
 
 			<!-- Banner 广告位 -->
@@ -124,9 +98,7 @@ import { getBannerAdvertising } from '@/api/home.js';
 export default {
 	data() {
 		return {
-			statusBarHeight: 0,
 			scrollHeight: 600,
-			searchText: '',
 			swiperHeight: 100,
 			adList: [],
 			isOnline: true,
@@ -134,8 +106,8 @@ export default {
 			showGuide: false,
 			guideStep: 0,
 			guideSteps: [
-				{ text: '搜索你需要的工具', target: 'search' },
 				{ text: '丰富的计算工具，分类清晰', target: 'tools' },
+				{ text: '长按可收藏常用工具', target: 'favorite' },
 				{ text: '管理收藏和设置', target: 'me' }
 			],
 			systemHeight: 812,
@@ -143,56 +115,41 @@ export default {
 				{
 					name: '财务计算',
 					tools: [
-						{ id: 'mortgage', name: '房贷计算器', icon: '\uD83C\uDFE0', bgColor: '#EEF2FF', color: '#4F46E5', url: '../tools/house', placeholder: false },
-						{ id: 'calculator', name: '简易计算器', icon: '\uD83E\uDDEE', bgColor: '#FFF7ED', color: '#EA580C', url: '../tools/electric', placeholder: false },
-						{ id: 'tax', name: '税费计算器', icon: '\uD83D\uDCB0', bgColor: '#ECFDF5', color: '#059669', url: '', placeholder: true },
-						{ id: 'deposit', name: '存款利息计算', icon: '\uD83C\uDFE6', bgColor: '#FEF2F2', color: '#DC2626', url: '', placeholder: true }
+						{ id: 'mortgage', name: '房贷计算器', icon: '\uD83C\uDFE0', bgColor: '#2B7DE9', color: '#2B7DE9', url: '../tools/house', placeholder: false },
+						{ id: 'calculator', name: '简易计算器', icon: '\uD83E\uDDEE', bgColor: '#F5A623', color: '#F5A623', url: '../tools/electric', placeholder: false },
+						{ id: 'tax', name: '税费计算器', icon: '\uD83D\uDCB0', bgColor: '#27AE60', color: '#27AE60', url: '../tools/tax', placeholder: false },
+						{ id: 'deposit', name: '存款利息计算', icon: '\uD83C\uDFE6', bgColor: '#E74C3C', color: '#E74C3C', url: '', placeholder: true }
 					]
 				},
 				{
 					name: '育儿助手',
 					tools: [
-						{ id: 'baby_subsidy', name: '育儿补贴计算', icon: '\uD83D\uDC76', bgColor: '#FDF2F8', color: '#DB2777', url: '../baby/index', placeholder: false },
-						{ id: 'pregnancy', name: '孕期计算器', icon: '\uD83E\uDD30', bgColor: '#F5F3FF', color: '#7C3AED', url: '', placeholder: true },
-						{ id: 'vaccine', name: '疫苗接种提醒', icon: '\uD83D\uDC89', bgColor: '#ECFEFF', color: '#0891B2', url: '', placeholder: true }
+						{ id: 'baby_subsidy', name: '育儿补贴计算', icon: '\uD83D\uDC76', bgColor: '#E74C3C', color: '#E74C3C', url: '../baby/index', placeholder: false },
+						{ id: 'pregnancy', name: '孕期计算器', icon: '\uD83E\uDD30', bgColor: '#9B59B6', color: '#9B59B6', url: '', placeholder: true },
+						{ id: 'vaccine', name: '疫苗接种提醒', icon: '\uD83D\uDC89', bgColor: '#1ABC9C', color: '#1ABC9C', url: '', placeholder: true }
 					]
 				},
 				{
 					name: '文字工具',
 					tools: [
-						{ id: 'font_convert', name: '繁简转换', icon: '\uD83D\uDD24', bgColor: '#EEF2FF', color: '#4338CA', url: '../tools/font', placeholder: false },
-						{ id: 'word_count', name: '字数统计', icon: '\uD83D\uDCDD', bgColor: '#FFFBEB', color: '#D97706', url: '', placeholder: true },
-						{ id: 'pinyin', name: '拼音转换', icon: '\uD83D\uDD21', bgColor: '#F0FDFA', color: '#0D9488', url: '', placeholder: true }
+						{ id: 'font_convert', name: '繁简转换', icon: '\uD83D\uDD24', bgColor: '#2B7DE9', color: '#2B7DE9', url: '../tools/font', placeholder: false },
+						{ id: 'word_count', name: '字数统计', icon: '\uD83D\uDCDD', bgColor: '#F5A623', color: '#F5A623', url: '', placeholder: true },
+						{ id: 'pinyin', name: '拼音转换', icon: '\uD83D\uDD21', bgColor: '#1ABC9C', color: '#1ABC9C', url: '', placeholder: true }
 					]
 				},
 				{
 					name: '生活工具',
 					tools: [
-						{ id: 'date_calc', name: '日期计算器', icon: '\uD83D\uDCC5', bgColor: '#FFF1F2', color: '#E11D48', url: '', placeholder: true },
-						{ id: 'unit_convert', name: '单位换算', icon: '\uD83D\uDCF1', bgColor: '#F7FEE7', color: '#65A30D', url: '', placeholder: true },
-						{ id: 'bmi', name: 'BMI计算', icon: '\u2696\uFE0F', bgColor: '#FAF5FF', color: '#9333EA', url: '', placeholder: true },
-						{ id: 'color_convert', name: '颜色转换器', icon: '\uD83C\uDFA8', bgColor: '#EFF6FF', color: '#2563EB', url: '', placeholder: true }
+						{ id: 'date_calc', name: '日期计算器', icon: '\uD83D\uDCC5', bgColor: '#E74C3C', color: '#E74C3C', url: '', placeholder: true },
+						{ id: 'unit_convert', name: '单位换算', icon: '\uD83D\uDCF1', bgColor: '#27AE60', color: '#27AE60', url: '', placeholder: true },
+						{ id: 'bmi', name: 'BMI计算', icon: '\u2696\uFE0F', bgColor: '#9B59B6', color: '#9B59B6', url: '', placeholder: true },
+						{ id: 'color_convert', name: '颜色转换器', icon: '\uD83C\uDFA8', bgColor: '#2B7DE9', color: '#2B7DE9', url: '', placeholder: true }
 					]
 				}
 			]
 		};
 	},
 	computed: {
-		filteredCategories() {
-			if (!this.searchText.trim()) return this.categories;
-			var kw = this.searchText.trim().toLowerCase();
-			var res = [];
-			for (var i = 0; i < this.categories.length; i++) {
-				var cat = this.categories[i];
-				var matched = cat.tools.filter(function(t) {
-					return t.name.toLowerCase().indexOf(kw) !== -1;
-				});
-				if (matched.length > 0) {
-					res.push({ name: cat.name, tools: matched });
-				}
-			}
-			return res;
-		},
 		guideSpacerH() {
 			var pos = this.guidePositions();
 			if (this.guideStep >= pos.length) return 200;
@@ -221,16 +178,15 @@ export default {
 	methods: {
 		initSystemInfo() {
 			var sys = uni.getSystemInfoSync();
-			this.statusBarHeight = sys.statusBarHeight || 20;
 			this.systemHeight = sys.windowHeight || 812;
-			var headerH = this.statusBarHeight + 56;
+			var navBarH = 44;
 			var self = this;
 			this.$nextTick(function() {
 				uni.createSelectorQuery().in(self).select('.favorite-section').boundingClientRect(function(rect) {
 					if (rect) {
-						self.scrollHeight = self.systemHeight - headerH - rect.height;
+						self.scrollHeight = self.systemHeight - navBarH - rect.height;
 					} else {
-						self.scrollHeight = self.systemHeight - headerH;
+						self.scrollHeight = self.systemHeight - navBarH;
 					}
 				}).exec();
 			});
@@ -239,8 +195,8 @@ export default {
 			var hw = this.systemHeight > 700 ? 375 : 320;
 			var tabH = 55;
 			return [
-				{ top: this.statusBarHeight + 14, left: '48%' },
-				{ top: hw * 0.42, left: '48%' },
+				{ top: hw * 0.35, left: '48%' },
+				{ top: hw * 0.55, left: '30%' },
 				{ top: this.systemHeight - tabH - 30, left: '83%' }
 			];
 		},
@@ -305,9 +261,6 @@ export default {
 				uni.navigateTo({ url: tool.url });
 			}
 		},
-		onNotify() {
-			uni.showToast({ title: '暂无新消息', icon: 'none' });
-		},
 		goFeedback() {
 			uni.navigateTo({ url: '../me/feedback' });
 		},
@@ -345,55 +298,9 @@ export default {
 <style lang="scss" scoped>
 .page-container {
 	min-height: 100vh;
-	background-color: #f5f6fa;
+	background-color: #F2F5FA;
 	position: relative;
 }
-
-/* ===== 顶部搜索栏 ===== */
-.header-section {
-	background: linear-gradient(145deg, #4a6cf7 0%, #6366f1 50%, #8b5cf6 100%);
-	padding-bottom: 20rpx;
-}
-.status-bar { width: 100%; }
-.search-bar {
-	display: flex;
-	align-items: center;
-	padding: 0 28rpx 0 32rpx;
-	height: 80rpx;
-}
-.search-input {
-	flex: 1;
-	display: flex;
-	align-items: center;
-	background: rgba(255,255,255,0.92);
-	border-radius: 40rpx;
-	padding: 0 28rpx;
-	height: 64rpx;
-}
-.search-icon { font-size: 28rpx; margin-right: 12rpx; opacity: 0.5; }
-.search-field {
-	flex: 1;
-	font-size: 28rpx;
-	color: #333;
-	height: 64rpx;
-}
-.clear-btn {
-	font-size: 24rpx;
-	color: #999;
-	padding: 8rpx;
-	margin-left: 8rpx;
-}
-.notify-icon {
-	margin-left: 24rpx;
-	width: 64rpx;
-	height: 64rpx;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	border-radius: 50%;
-	background: rgba(255,255,255,0.15);
-}
-.notify-bell { font-size: 30rpx; }
 
 /* ===== 我的收藏 ===== */
 .favorite-section {
@@ -428,13 +335,13 @@ export default {
 .fav-icon-wrap {
 	width: 64rpx;
 	height: 64rpx;
-	border-radius: 16rpx;
+	border-radius: 50%;
 	display: flex;
 	align-items: center;
 	justify-content: center;
 	margin-bottom: 8rpx;
 }
-.fav-emoji { font-size: 32rpx; }
+.fav-emoji { font-size: 32rpx; filter: brightness(0) invert(1); }
 .fav-name { font-size: 22rpx; color: #555; white-space: nowrap; }
 
 /* ===== 分类标题 ===== */
@@ -446,7 +353,7 @@ export default {
 .title-bar {
 	width: 6rpx;
 	height: 30rpx;
-	background: linear-gradient(180deg, #4a6cf7, #8b5cf6);
+	background: #2B7DE9;
 	border-radius: 3rpx;
 	margin-right: 14rpx;
 }
@@ -477,15 +384,16 @@ export default {
 	opacity: 0.85;
 }
 .tool-icon-box {
-	width: 88rpx;
-	height: 88rpx;
-	border-radius: 22rpx;
+	width: 96rpx;
+	height: 96rpx;
+	border-radius: 50%;
 	display: flex;
 	align-items: center;
 	justify-content: center;
 	margin-bottom: 12rpx;
+	box-shadow: 0 4rpx 12rpx rgba(0,0,0,0.1);
 }
-.tool-emoji { font-size: 40rpx; }
+.tool-emoji { font-size: 42rpx; filter: brightness(0) invert(1); }
 .tool-label {
 	font-size: 24rpx;
 	color: #444;
@@ -502,16 +410,6 @@ export default {
 	font-size: 20rpx;
 	color: #f59e0b;
 }
-
-/* ===== 空搜索 ===== */
-.empty-search {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	padding: 100rpx 0;
-}
-.empty-icon { font-size: 64rpx; opacity: 0.3; }
-.empty-text { font-size: 28rpx; color: #999; margin-top: 20rpx; }
 
 /* ===== 广告 ===== */
 .ad-wrapper {
@@ -583,15 +481,15 @@ export default {
 	height: 48rpx;
 	border-radius: 50%;
 	border: 4rpx solid rgba(255,255,255,0.9);
-	background: rgba(74,108,247,0.3);
-	box-shadow: 0 0 20rpx 6rpx rgba(74,108,247,0.4);
+	background: rgba(43,125,233,0.3);
+	box-shadow: 0 0 20rpx 6rpx rgba(43,125,233,0.4);
 	transform: translate(-50%, -50%);
 	z-index: 10;
 	animation: guidePulse 1.5s ease-in-out infinite;
 }
 @keyframes guidePulse {
-	0%, 100% { box-shadow: 0 0 20rpx 6rpx rgba(74,108,247,0.4); }
-	50% { box-shadow: 0 0 36rpx 12rpx rgba(74,108,247,0.6); }
+	0%, 100% { box-shadow: 0 0 20rpx 6rpx rgba(43,125,233,0.4); }
+	50% { box-shadow: 0 0 36rpx 12rpx rgba(43,125,233,0.6); }
 }
 .guide-card {
 	margin: 24rpx 48rpx 0;
@@ -603,7 +501,7 @@ export default {
 }
 .guide-step-tag {
 	display: inline-flex;
-	background: linear-gradient(135deg, #4a6cf7, #8b5cf6);
+	background: linear-gradient(135deg, #2B7DE9, #5BA3F5);
 	border-radius: 20rpx;
 	padding: 4rpx 18rpx;
 	margin-bottom: 20rpx;
@@ -630,7 +528,7 @@ export default {
 	color: #999;
 }
 .guide-btn {
-	background: linear-gradient(135deg, #4a6cf7, #8b5cf6);
+	background: linear-gradient(135deg, #2B7DE9, #5BA3F5);
 	border-radius: 32rpx;
 	padding: 12rpx 40rpx;
 }
