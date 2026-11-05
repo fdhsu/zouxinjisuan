@@ -24,7 +24,7 @@
 						@click="navigateTool(item)" @longpress.stop="toggleFavorite(item)"
 						:hover-class="'tool-cell-hover'" :hover-stay-time="150">
 						<view class="tool-icon-box" :style="{background:item.bgColor}">
-							<text class="tool-emoji">{{item.icon}}</text>
+							<image :src="item.icon" class="tool-icon-img" mode="aspectFit"/>
 						</view>
 						<text class="tool-label">{{item.name}}</text>
 					</view>
@@ -41,7 +41,7 @@
 						@click="onToolTap(tool)" @longpress.stop="toggleFavorite(tool)"
 						:hover-class="'tool-cell-hover'" :hover-stay-time="150">
 						<view class="tool-icon-box" :style="{background:tool.bgColor}">
-							<text class="tool-emoji">{{tool.icon}}</text>
+							<image :src="tool.icon" class="tool-icon-img" mode="aspectFit"/>
 						</view>
 						<text class="tool-label">{{tool.name}}</text>
 						<text v-if="isFavorited(tool)" class="fav-star">&#9733;</text>
@@ -111,35 +111,35 @@ export default {
 				{
 					name: '财务计算',
 					tools: [
-						{ id: 'mortgage', name: '房贷计算器', icon: '\uD83C\uDFE0', bgColor: '#2B7DE9', color: '#2B7DE9', url: '../tools/house', placeholder: false },
-						{ id: 'calculator', name: '简易计算器', icon: '\uD83E\uDDEE', bgColor: '#F5A623', color: '#F5A623', url: '../tools/electric', placeholder: false },
-						{ id: 'tax', name: '税费计算器', icon: '\uD83D\uDCB0', bgColor: '#27AE60', color: '#27AE60', url: '../tools/tax', placeholder: false },
-						{ id: 'deposit', name: '存款利息计算', icon: '\uD83C\uDFE6', bgColor: '#E74C3C', color: '#E74C3C', url: '', placeholder: true }
+						{ id: 'mortgage', name: '房贷计算器', icon: '/static/icons/mortgage.png', bgColor: '#2B7DE9', color: '#2B7DE9', url: '../tools/house', placeholder: false },
+						{ id: 'calculator', name: '简易计算器', icon: '/static/icons/calculator.png', bgColor: '#F5A623', color: '#F5A623', url: '../tools/electric', placeholder: false },
+						{ id: 'tax', name: '税费计算器', icon: '/static/icons/tax.png', bgColor: '#27AE60', color: '#27AE60', url: '../tools/tax', placeholder: false },
+						{ id: 'deposit', name: '存款利息计算', icon: '/static/icons/deposit.png', bgColor: '#E74C3C', color: '#E74C3C', url: '', placeholder: true }
 					]
 				},
 				{
 					name: '育儿助手',
 					tools: [
-						{ id: 'baby_subsidy', name: '育儿补贴计算', icon: '\uD83D\uDC76', bgColor: '#E74C3C', color: '#E74C3C', url: '../baby/index', placeholder: false },
-						{ id: 'pregnancy', name: '孕期计算器', icon: '\uD83E\uDD30', bgColor: '#9B59B6', color: '#9B59B6', url: '', placeholder: true },
-						{ id: 'vaccine', name: '疫苗接种提醒', icon: '\uD83D\uDC89', bgColor: '#1ABC9C', color: '#1ABC9C', url: '', placeholder: true }
+						{ id: 'baby_subsidy', name: '育儿补贴计算', icon: '/static/icons/baby_subsidy.png', bgColor: '#E74C3C', color: '#E74C3C', url: '../baby/index', placeholder: false },
+						{ id: 'pregnancy', name: '孕期计算器', icon: '/static/icons/pregnancy.png', bgColor: '#9B59B6', color: '#9B59B6', url: '', placeholder: true },
+						{ id: 'vaccine', name: '疫苗接种提醒', icon: '/static/icons/vaccine.png', bgColor: '#1ABC9C', color: '#1ABC9C', url: '', placeholder: true }
 					]
 				},
 				{
 					name: '文字工具',
 					tools: [
-						{ id: 'font_convert', name: '繁简转换', icon: '\uD83D\uDD04', bgColor: '#2B7DE9', color: '#2B7DE9', url: '../tools/font', placeholder: false },
-						{ id: 'word_count', name: '字数统计', icon: '\uD83D\uDCCA', bgColor: '#F5A623', color: '#F5A623', url: '', placeholder: true },
-						{ id: 'pinyin', name: '拼音转换', icon: '\uD83D\uDCAC', bgColor: '#1ABC9C', color: '#1ABC9C', url: '', placeholder: true }
+						{ id: 'font_convert', name: '繁简转换', icon: '/static/icons/font_convert.png', bgColor: '#2B7DE9', color: '#2B7DE9', url: '../tools/font', placeholder: false },
+						{ id: 'word_count', name: '字数统计', icon: '/static/icons/word_count.png', bgColor: '#F5A623', color: '#F5A623', url: '', placeholder: true },
+						{ id: 'pinyin', name: '拼音转换', icon: '/static/icons/pinyin.png', bgColor: '#1ABC9C', color: '#1ABC9C', url: '', placeholder: true }
 					]
 				},
 				{
 					name: '生活工具',
 					tools: [
-						{ id: 'date_calc', name: '日期计算器', icon: '\uD83D\uDCC5', bgColor: '#E74C3C', color: '#E74C3C', url: '../tools/date', placeholder: false },
-						{ id: 'unit_convert', name: '单位换算', icon: '\uD83D\uDCCF', bgColor: '#27AE60', color: '#27AE60', url: '', placeholder: true },
-						{ id: 'bmi', name: 'BMI计算', icon: '\u2696\uFE0F', bgColor: '#9B59B6', color: '#9B59B6', url: '', placeholder: true },
-						{ id: 'color_convert', name: '颜色转换器', icon: '\uD83C\uDFA8', bgColor: '#2B7DE9', color: '#2B7DE9', url: '', placeholder: true }
+						{ id: 'date_calc', name: '日期计算器', icon: '/static/icons/date_calc.png', bgColor: '#E74C3C', color: '#E74C3C', url: '../tools/date', placeholder: false },
+						{ id: 'unit_convert', name: '单位换算', icon: '/static/icons/unit_convert.png', bgColor: '#27AE60', color: '#27AE60', url: '', placeholder: true },
+						{ id: 'bmi', name: 'BMI计算', icon: '/static/icons/bmi.png', bgColor: '#9B59B6', color: '#9B59B6', url: '', placeholder: true },
+						{ id: 'color_convert', name: '颜色转换器', icon: '/static/icons/color_convert.png', bgColor: '#2B7DE9', color: '#2B7DE9', url: '', placeholder: true }
 					]
 				}
 			]
@@ -206,6 +206,29 @@ export default {
 			if (data) {
 				try { this.favoriteTools = JSON.parse(data); } catch(e) { this.favoriteTools = []; }
 			}
+			// 兼容旧版emoji图标，迁移为图片路径
+			var emojiMap = {
+				'\uD83C\uDFE0': '/static/icons/mortgage.png',
+				'\uD83E\uDDEE': '/static/icons/calculator.png',
+				'\uD83D\uDCB0': '/static/icons/tax.png',
+				'\uD83C\uDFE6': '/static/icons/deposit.png',
+				'\uD83D\uDC76': '/static/icons/baby_subsidy.png',
+				'\uD83E\uDD30': '/static/icons/pregnancy.png',
+				'\uD83D\uDC89': '/static/icons/vaccine.png',
+				'\uD83D\uDD04': '/static/icons/font_convert.png',
+				'\uD83D\uDCCA': '/static/icons/word_count.png',
+				'\uD83D\uDCAC': '/static/icons/pinyin.png',
+				'\uD83D\uDCC5': '/static/icons/date_calc.png',
+				'\uD83D\uDCCF': '/static/icons/unit_convert.png',
+				'\u2696\uFE0F': '/static/icons/bmi.png',
+				'\uD83C\uDFA8': '/static/icons/color_convert.png'
+			};
+			var changed = false;
+			for (var i = 0; i < this.favoriteTools.length; i++) {
+				var old = this.favoriteTools[i].icon;
+				if (emojiMap[old]) { this.favoriteTools[i].icon = emojiMap[old]; changed = true; }
+			}
+			if (changed) this.saveFavorites();
 		},
 		saveFavorites() {
 			uni.setStorageSync('favoriteTools', JSON.stringify(this.favoriteTools));
@@ -345,7 +368,7 @@ $radius: 24rpx;
 	margin-bottom: 12rpx;
 	box-shadow: 0 4rpx 12rpx rgba(0,0,0,0.1);
 }
-.tool-emoji { font-size: 44rpx; filter: brightness(0) invert(1); }
+.tool-icon-img { width: 52rpx; height: 52rpx; }
 .tool-label {
 	font-size: 24rpx;
 	color: $text-sec;
