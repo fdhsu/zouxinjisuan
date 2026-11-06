@@ -39,7 +39,7 @@
 		{
 		    "path" : "pages/tools/electric",
 		    "style" : {
-		        "navigationBarTitleText" : "简易计算器"
+		        "navigationBarTitleText" : "科学计算器"
 		    }
 		},
 		{

@@ -112,7 +112,7 @@ export default {
 					name: '财务计算',
 					tools: [
 						{ id: 'mortgage', name: '房贷计算器', icon: '/static/icons/mortgage.png', bgColor: '#2B7DE9', color: '#2B7DE9', url: '../tools/house', placeholder: false },
-						{ id: 'calculator', name: '简易计算器', icon: '/static/icons/calculator.png', bgColor: '#F5A623', color: '#F5A623', url: '../tools/electric', placeholder: false },
+						{ id: 'calculator', name: '科学计算器', icon: '/static/icons/calculator.png', bgColor: '#F5A623', color: '#F5A623', url: '../tools/electric', placeholder: false },
 						{ id: 'tax', name: '税费计算器', icon: '/static/icons/tax.png', bgColor: '#27AE60', color: '#27AE60', url: '../tools/tax', placeholder: false },
 						{ id: 'deposit', name: '存款利息计算', icon: '/static/icons/deposit.png', bgColor: '#E74C3C', color: '#E74C3C', url: '', placeholder: true }
 					]
