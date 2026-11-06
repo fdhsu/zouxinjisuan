@@ -124,7 +124,7 @@ var unitData = {
 			{ name: '平方厘米 (cm²)', factor: 0.0001 },
 			{ name: '平方米 (m²)', factor: 1 },
 			{ name: '平方千米 (km²)', factor: 1000000 },
-			{ name: '亩', factor: 666.667 },
+			{ name: '亩', factor: 2000/3 },
 			{ name: '公顷', factor: 10000 },
 			{ name: '平方英尺 (ft²)', factor: 0.0929 },
 			{ name: '平方码 (yd²)', factor: 0.8361 }
@@ -139,7 +139,7 @@ var unitData = {
 			{ name: '立方米 (m³)', factor: 1000 },
 			{ name: '加仑(US)', factor: 3.7854 },
 			{ name: '加仑(UK)', factor: 4.5461 },
-			{ name: '毫升', factor: 0.001 }
+			
 		]
 	},
 	speed: {
@@ -147,7 +147,7 @@ var unitData = {
 		base: '米/秒',
 		units: [
 			{ name: '米/秒 (m/s)', factor: 1 },
-			{ name: '千米/时 (km/h)', factor: 0.2778 },
+			{ name: '千米/时 (km/h)', factor: 1/3.6 },
 			{ name: '英里/时 (mph)', factor: 0.44704 },
 			{ name: '节 (kn)', factor: 0.51444 },
 			{ name: '马赫 (Ma)', factor: 343 }

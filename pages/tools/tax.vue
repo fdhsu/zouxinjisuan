@@ -668,7 +668,7 @@ export default {
 			var subAdj = parseFloat(this.corp.adjustSub) || 0;
 			var exempt = parseFloat(this.corp.exemptIncome) || 0;
 			var taxable = revenue - cost + addAdj - subAdj - exempt;
-			if (taxable <= 0 && revenue <= 0) {
+			if (taxable <= 0) {
 				this.corpResult = { show: false, taxable: 0, tax: 0, rate: 0, reduction: 0, afterTax: 0 };
 				return;
 			}

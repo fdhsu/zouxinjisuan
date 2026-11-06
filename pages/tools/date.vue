@@ -548,4 +548,18 @@ $radius: 20rpx;
 .countdown-days-num { font-size: 36rpx; font-weight: 700; display: block; }
 .countdown-days-unit { font-size: 22rpx; color: $text-light; }
 .countdown-delete { font-size: 28rpx; color: $text-light; padding: 12rpx; }
+.result-actions {
+	padding: 0 24rpx 20rpx;
+}
+.btn-save {
+	background: linear-gradient(135deg, #2B7DE9, #5BA3F5);
+	border-radius: 16rpx;
+	padding: 20rpx 0;
+	text-align: center;
+}
+.btn-save-text {
+	color: #fff;
+	font-size: 28rpx;
+	font-weight: bold;
+}
 </style>
