@@ -125,23 +125,15 @@ export default {
 						{ id: 'vaccine', name: '疫苗接种提醒', icon: '/static/icons/vaccine.png', bgColor: '#1ABC9C', color: '#1ABC9C', url: '../tools/vaccine', placeholder: false }
 					]
 				},
-				{
-					name: '文字工具',
-					tools: [
-						{ id: 'font_convert', name: '繁简转换', icon: '/static/icons/font_convert.png', bgColor: '#2B7DE9', color: '#2B7DE9', url: '../tools/font', placeholder: false },
-						{ id: 'word_count', name: '字数统计', icon: '/static/icons/word_count.png', bgColor: '#F5A623', color: '#F5A623', url: '', placeholder: true },
-						{ id: 'pinyin', name: '拼音转换', icon: '/static/icons/pinyin.png', bgColor: '#1ABC9C', color: '#1ABC9C', url: '', placeholder: true }
-					]
-				},
-				{
-					name: '生活工具',
-					tools: [
-						{ id: 'date_calc', name: '日期计算器', icon: '/static/icons/date_calc.png', bgColor: '#E74C3C', color: '#E74C3C', url: '../tools/date', placeholder: false },
-						{ id: 'unit_convert', name: '单位换算', icon: '/static/icons/unit_convert.png', bgColor: '#27AE60', color: '#27AE60', url: '../tools/unit', placeholder: false },
-						{ id: 'bmi', name: 'BMI计算', icon: '/static/icons/bmi.png', bgColor: '#9B59B6', color: '#9B59B6', url: '../tools/bmi', placeholder: false },
-						{ id: 'color_convert', name: '颜色转换器', icon: '/static/icons/color_convert.png', bgColor: '#2B7DE9', color: '#2B7DE9', url: '', placeholder: true }
-					]
-				}
+					{
+						name: '实用工具',
+						tools: [
+							{ id: 'font_convert', name: '繁简转换', icon: '/static/icons/font_convert.png', bgColor: '#2B7DE9', color: '#2B7DE9', url: '../tools/font', placeholder: false },
+							{ id: 'date_calc', name: '日期计算器', icon: '/static/icons/date_calc.png', bgColor: '#E74C3C', color: '#E74C3C', url: '../tools/date', placeholder: false },
+							{ id: 'unit_convert', name: '单位换算', icon: '/static/icons/unit_convert.png', bgColor: '#27AE60', color: '#27AE60', url: '../tools/unit', placeholder: false },
+							{ id: 'bmi', name: 'BMI计算', icon: '/static/icons/bmi.png', bgColor: '#9B59B6', color: '#9B59B6', url: '../tools/bmi', placeholder: false }
+						]
+					}
 			]
 		};
 	},
