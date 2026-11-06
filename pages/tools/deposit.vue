@@ -205,6 +205,7 @@
 </template>
 
 <script>
+import Decimal from 'decimal.js';
 import { formatMoney, toast } from '@/utils/helpers.js';
 
 export default {
@@ -281,13 +282,13 @@ export default {
 			}
 			var months = this.zzPeriodOptions[this.zz.periodIdx].months;
 			var years = months / 12;
-			var interest = amount * (rate / 100) * years;
-			var total = amount + interest;
+			var interest = new Decimal(amount).mul(new Decimal(rate).div(100)).mul(new Decimal(years));
+			var total = new Decimal(amount).add(interest);
 			this.zzResult = {
 				show: true,
-				principal: Math.round(amount * 100) / 100,
-				interest: Math.round(interest * 100) / 100,
-				total: Math.round(total * 100) / 100
+				principal: Number(new Decimal(amount).toFixed(2)),
+				interest: Number(interest.toFixed(2)),
+				total: Number(total.toFixed(2))
 			};
 		},
 
@@ -307,16 +308,16 @@ export default {
 				return;
 			}
 			var months = this.zlPeriodOptions[this.zl.periodIdx].months;
-			var monthlyRate = rate / 100 / 12;
+			var monthlyRate = new Decimal(rate).div(100).div(12);
 			// 零存整取公式: 本息 = 月存额×月数 + 月存额×(月数+1)/2×月利率
-			var totalInput = monthly * months;
-			var interest = monthly * (months + 1) / 2 * monthlyRate;
-			var total = totalInput + interest;
+			var totalInput = new Decimal(monthly).mul(new Decimal(months));
+			var interest = new Decimal(monthly).mul(new Decimal(months).plus(1)).div(2).mul(monthlyRate);
+			var total = totalInput.add(interest);
 			this.zlResult = {
 				show: true,
-				totalInput: Math.round(totalInput * 100) / 100,
-				interest: Math.round(interest * 100) / 100,
-				total: Math.round(total * 100) / 100
+				totalInput: Number(totalInput.toFixed(2)),
+				interest: Number(interest.toFixed(2)),
+				total: Number(total.toFixed(2))
 			};
 		},
 
@@ -329,13 +330,13 @@ export default {
 				this.hqResult = { show: false, principal: 0, interest: 0, total: 0 };
 				return;
 			}
-			var interest = amount * (rate / 100) * days / 365;
-			var total = amount + interest;
+			var interest = new Decimal(amount).mul(new Decimal(rate).div(100)).mul(new Decimal(days)).div(365);
+			var total = new Decimal(amount).add(interest);
 			this.hqResult = {
 				show: true,
-				principal: Math.round(amount * 100) / 100,
-				interest: Math.round(interest * 100) / 100,
-				total: Math.round(total * 100) / 100
+				principal: Number(new Decimal(amount).toFixed(2)),
+				interest: Number(interest.toFixed(2)),
+				total: Number(total.toFixed(2))
 			};
 		}
 	}

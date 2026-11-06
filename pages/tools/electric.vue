@@ -301,6 +301,10 @@ export default {
 				case 'string':
 					if (that.complete) {
 						that.number = '0';
+						that.numberOne = '';
+						that.numberTwo = '';
+						that.symbol = '';
+						that.moreAdd = false;
 						that.complete = false;
 					}
 					if (that.symbol) {
@@ -400,7 +404,7 @@ export default {
 				} else if (that.symbol == '^') {
 					result = num1.pow(num2);
 				} else if (that.symbol == '%') {
-					result = num1.div(100);
+					result = num1.mul(num2).div(100);
 				} else {
 					result = new Decimal(that.number);
 				}
