@@ -31,6 +31,7 @@
 
 <script>
 	import {getUserInfo, removeToken,removeUserInfo } from '@/utils/auth';
+	import { navTo } from '@/utils/helpers.js';
 	export default {
 		data() {
 			return {
@@ -56,7 +57,7 @@
 			handleFeed(){
 				console.log(this.userdata)
 				if(this.userdata.nickname){
-					this.navTo('/pages/me/feedback')
+					navTo('/pages/me/feedback')
 				}else{
 					uni.showModal({
 					    content: '请先登录',
@@ -69,11 +70,6 @@
 					    }
 					});
 				}
-			},
-			navTo(url){
-				uni.navigateTo({
-					url:url
-				})
 			},
 			//退出登录
 			toLogout(){

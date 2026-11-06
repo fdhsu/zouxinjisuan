@@ -1,3 +1,12 @@
+// ─── 公共变量（各工具页面共用，勿删） ───
+$primary: #2B7DE9;
+$primary-light: #EEF4FF;
+$radius: 24rpx;
+$text-main: #333;
+$text-sec: #888;
+$bg: #F5F5FA;
+$card-bg: #fff;
+
 // 工具页面公共样式
 // 各页面通过覆盖 $primary、$bg 等变量实现主题差异化
 

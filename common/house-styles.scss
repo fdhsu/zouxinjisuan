@@ -1,0 +1,645 @@
+// ─── house.vue 页面样式（从 pages/tools/house.vue 提取） ───
+
+// 变量定义
+$primary: #2979ff;
+$primary-dark: #1a5fc9;
+$primary-light: #e8f0fe;
+$bg: #f4f6fa;
+$card-bg: #ffffff;
+$text-primary: #1a1a2e;
+$text-secondary: #666680;
+$text-hint: #9999aa;
+$border: #eaeaf0;
+$radius: 16rpx;
+$radius-sm: 10rpx;
+$success: #66bb6a;
+$warning: #ff9800;
+$danger: #f44336;
+
+.mortgage-page {
+	min-height: 100vh;
+	background: $bg;
+	padding-bottom: 60rpx;
+}
+
+/* ========== Tab Bar ========== */
+.tab-bar {
+	display: flex;
+	background: #fff;
+	padding: 0 10rpx;
+	box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.06);
+	position: sticky;
+	top: 0;
+	z-index: 100;
+}
+.tab-bar-item {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding: 24rpx 0 20rpx;
+	position: relative;
+}
+.tab-bar-text {
+	font-size: 28rpx;
+	color: $text-secondary;
+	transition: all 0.3s;
+}
+.tab-bar-item.active .tab-bar-text {
+	color: $primary;
+	font-weight: 600;
+}
+.tab-bar-indicator {
+	width: 40rpx;
+	height: 6rpx;
+	border-radius: 3rpx;
+	background: $primary;
+	margin-top: 8rpx;
+}
+
+/* ========== Tab Content ========== */
+.tab-content {
+	padding: 24rpx;
+}
+
+/* ========== Cards ========== */
+.card {
+	background: $card-bg;
+	border-radius: $radius;
+	padding: 32rpx;
+	margin-bottom: 24rpx;
+	box-shadow: 0 4rpx 24rpx rgba(0, 0, 0, 0.05);
+}
+.card-title {
+	font-size: 32rpx;
+	font-weight: 700;
+	color: $text-primary;
+	margin-bottom: 28rpx;
+	padding-left: 16rpx;
+	border-left: 6rpx solid $primary;
+}
+
+/* ========== Form ========== */
+.form-row {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 22rpx 0;
+	border-bottom: 1rpx solid $border;
+}
+.form-row:last-child {
+	border-bottom: none;
+}
+.form-label {
+	font-size: 28rpx;
+	color: $text-primary;
+	flex-shrink: 0;
+	margin-right: 20rpx;
+}
+.input-suffix-wrap {
+	display: flex;
+	align-items: center;
+	flex: 1;
+	justify-content: flex-end;
+}
+.form-input {
+	text-align: right;
+	font-size: 28rpx;
+	color: $text-primary;
+	flex: 1;
+	min-width: 0;
+}
+.input-suffix {
+	font-size: 26rpx;
+	color: $text-hint;
+	margin-left: 10rpx;
+	flex-shrink: 0;
+}
+.picker-value {
+	display: flex;
+	align-items: center;
+}
+.picker-value text {
+	font-size: 28rpx;
+	color: $text-primary;
+}
+.arrow {
+	font-size: 28rpx;
+	color: $text-hint;
+	margin-left: 10rpx;
+}
+.placeholder {
+	color: #ccc;
+}
+
+/* ========== Segmented Control ========== */
+.seg-control {
+	display: flex;
+	background: #f0f2f5;
+	border-radius: $radius-sm;
+	padding: 4rpx;
+}
+.seg-item {
+	padding: 12rpx 24rpx;
+	border-radius: 8rpx;
+	transition: all 0.3s;
+}
+.seg-item.active {
+	background: $primary;
+	box-shadow: 0 2rpx 8rpx rgba($primary, 0.3);
+}
+.seg-text {
+	font-size: 24rpx;
+	color: $text-secondary;
+	white-space: nowrap;
+}
+.seg-text.active {
+	color: #fff;
+	font-weight: 600;
+}
+
+/* ========== LPR Card ========== */
+.lpr-card {
+	background: linear-gradient(135deg, $primary 0%, #5b9eff 100%);
+	border-radius: $radius;
+	padding: 32rpx;
+	margin-bottom: 24rpx;
+	box-shadow: 0 8rpx 32rpx rgba($primary, 0.25);
+}
+.lpr-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 24rpx;
+}
+.lpr-title {
+	font-size: 30rpx;
+	font-weight: 700;
+	color: #fff;
+}
+.lpr-date {
+	font-size: 22rpx;
+	color: rgba(255, 255, 255, 0.75);
+}
+.lpr-body {
+	display: flex;
+	align-items: center;
+}
+.lpr-item {
+	flex: 1;
+	text-align: center;
+}
+.lpr-label {
+	font-size: 24rpx;
+	color: rgba(255, 255, 255, 0.8);
+	display: block;
+	margin-bottom: 10rpx;
+}
+.lpr-value {
+	font-size: 48rpx;
+	font-weight: 800;
+	color: #fff;
+}
+.lpr-divider {
+	width: 2rpx;
+	height: 70rpx;
+	background: rgba(255, 255, 255, 0.25);
+}
+
+/* ========== Buttons ========== */
+.btn-primary {
+	background: linear-gradient(135deg, $primary 0%, #5b9eff 100%);
+	border-radius: 48rpx;
+	padding: 26rpx 0;
+	text-align: center;
+	margin-bottom: 24rpx;
+	box-shadow: 0 8rpx 24rpx rgba($primary, 0.3);
+}
+.btn-primary-text {
+	color: #fff;
+	font-size: 32rpx;
+	font-weight: 600;
+}
+.btn-outline {
+	border: 2rpx solid $primary;
+	border-radius: 40rpx;
+	padding: 16rpx 40rpx;
+	text-align: center;
+}
+.btn-outline-text {
+	color: $primary;
+	font-size: 26rpx;
+}
+
+/* ========== Result Card ========== */
+.result-card {
+	background: $card-bg;
+	border-radius: $radius;
+	padding: 36rpx 32rpx;
+	margin-bottom: 24rpx;
+	box-shadow: 0 4rpx 24rpx rgba(0, 0, 0, 0.06);
+}
+.result-hero {
+	text-align: center;
+	padding: 36rpx 0 44rpx;
+	background: linear-gradient(135deg, #f0f6ff 0%, #e8f0fe 100%);
+	border-radius: $radius-sm;
+	margin-bottom: 28rpx;
+}
+.result-hero-label {
+	font-size: 26rpx;
+	color: $text-secondary;
+	display: block;
+	margin-bottom: 14rpx;
+}
+.result-hero-value {
+	font-size: 64rpx;
+	font-weight: 800;
+	color: $primary;
+	display: block;
+	line-height: 1.2;
+}
+.result-hero-sub {
+	font-size: 24rpx;
+	color: $text-hint;
+	display: block;
+	margin-top: 10rpx;
+}
+.result-grid {
+	display: flex;
+	justify-content: space-between;
+	margin-bottom: 28rpx;
+}
+.result-grid-item {
+	flex: 1;
+	text-align: center;
+	padding: 16rpx 8rpx;
+}
+.result-grid-label {
+	font-size: 22rpx;
+	color: $text-hint;
+	display: block;
+	margin-bottom: 10rpx;
+}
+.result-grid-value {
+	font-size: 34rpx;
+	font-weight: 700;
+	color: $text-primary;
+	display: block;
+}
+.result-grid-item.highlight .result-grid-value {
+	color: $danger;
+}
+.result-grid-unit {
+	font-size: 22rpx;
+	color: $text-hint;
+	display: block;
+	margin-top: 4rpx;
+}
+.result-actions {
+	display: flex;
+	justify-content: space-around;
+	padding-top: 24rpx;
+	border-top: 1rpx solid $border;
+}
+
+/* ========== Detail Table ========== */
+.detail-section {
+	margin-top: 28rpx;
+	padding-top: 24rpx;
+	border-top: 1rpx solid $border;
+}
+.detail-title {
+	margin-bottom: 20rpx;
+}
+.detail-title text {
+	font-size: 28rpx;
+	font-weight: 600;
+	color: $text-primary;
+}
+.detail-scroll {
+	max-height: 600rpx;
+	border: 1rpx solid $border;
+	border-radius: $radius-sm;
+}
+.detail-table {
+	min-width: 100%;
+}
+.detail-row {
+	display: flex;
+	border-bottom: 1rpx solid #f5f5f5;
+}
+.detail-header {
+	background: #f8f9fc;
+	position: sticky;
+	top: 0;
+}
+.detail-cell {
+	flex: 1;
+	padding: 18rpx 10rpx;
+	font-size: 22rpx;
+	color: $text-secondary;
+	text-align: center;
+}
+.detail-header .detail-cell {
+	font-weight: 600;
+	color: $text-primary;
+	font-size: 22rpx;
+}
+.detail-row:nth-child(even) {
+	background: #fafbfe;
+}
+
+/* ========== Education Card ========== */
+.edu-card {
+	background: $card-bg;
+	border-radius: $radius;
+	padding: 32rpx;
+	margin-top: 24rpx;
+	box-shadow: 0 4rpx 24rpx rgba(0, 0, 0, 0.05);
+}
+.edu-title {
+	margin-bottom: 24rpx;
+}
+.edu-title text {
+	font-size: 30rpx;
+	font-weight: 700;
+	color: $text-primary;
+}
+.edu-item {
+	margin-bottom: 24rpx;
+	padding: 20rpx;
+	background: #f8f9fc;
+	border-radius: $radius-sm;
+}
+.edu-item:last-child {
+	margin-bottom: 0;
+}
+.edu-label-row {
+	display: flex;
+	align-items: center;
+	margin-bottom: 12rpx;
+}
+.edu-dot {
+	width: 16rpx;
+	height: 16rpx;
+	border-radius: 50%;
+	margin-right: 12rpx;
+}
+.edu-label {
+	font-size: 28rpx;
+	font-weight: 600;
+	color: $text-primary;
+}
+.edu-text {
+	font-size: 24rpx;
+	color: $text-secondary;
+	line-height: 1.7;
+}
+
+/* ========== Compare ========== */
+.compare-cards {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 20rpx;
+	margin-bottom: 32rpx;
+}
+.compare-card {
+	flex: 1;
+	min-width: 200rpx;
+	background: $card-bg;
+	border-radius: $radius;
+	overflow: hidden;
+	box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.06);
+}
+.compare-card-head {
+	padding: 20rpx 24rpx;
+}
+.compare-card-title {
+	font-size: 28rpx;
+	font-weight: 700;
+	color: #fff;
+	display: block;
+}
+.compare-card-method {
+	font-size: 22rpx;
+	color: rgba(255, 255, 255, 0.85);
+	display: block;
+	margin-top: 6rpx;
+}
+.compare-card-body {
+	padding: 20rpx 24rpx;
+}
+.compare-row {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 10rpx 0;
+}
+.compare-label {
+	font-size: 24rpx;
+	color: $text-hint;
+}
+.compare-val {
+	font-size: 28rpx;
+	font-weight: 700;
+	color: $text-primary;
+}
+.compare-unit {
+	font-size: 22rpx;
+	font-weight: 400;
+	color: $text-hint;
+}
+
+/* ========== Bar Chart ========== */
+.bar-section {
+	background: $card-bg;
+	border-radius: $radius;
+	padding: 28rpx 24rpx;
+	margin-bottom: 24rpx;
+	box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.05);
+}
+.bar-title {
+	margin-bottom: 20rpx;
+}
+.bar-title text {
+	font-size: 28rpx;
+	font-weight: 600;
+	color: $text-primary;
+}
+.bar-row {
+	display: flex;
+	align-items: center;
+	margin-bottom: 18rpx;
+}
+.bar-row:last-child {
+	margin-bottom: 0;
+}
+.bar-label {
+	font-size: 24rpx;
+	color: $text-secondary;
+	width: 100rpx;
+	flex-shrink: 0;
+}
+.bar-track {
+	flex: 1;
+	height: 32rpx;
+	background: #f0f2f5;
+	border-radius: 16rpx;
+	overflow: hidden;
+	margin: 0 16rpx;
+}
+.bar-fill {
+	height: 100%;
+	border-radius: 16rpx;
+	transition: width 0.5s ease;
+	min-width: 10rpx;
+}
+.bar-value {
+	font-size: 24rpx;
+	font-weight: 600;
+	color: $text-primary;
+	width: 140rpx;
+	text-align: right;
+	flex-shrink: 0;
+}
+
+/* ========== Rating ========== */
+.rating-section {
+	margin-top: 28rpx;
+	padding-top: 28rpx;
+	border-top: 1rpx solid $border;
+}
+.rating-title {
+	margin-bottom: 24rpx;
+}
+.rating-title text {
+	font-size: 28rpx;
+	font-weight: 600;
+	color: $text-primary;
+}
+.rating-meter {
+	position: relative;
+	margin-bottom: 16rpx;
+	padding: 0 8rpx;
+}
+.rating-bar {
+	display: flex;
+	height: 16rpx;
+	border-radius: 8rpx;
+	overflow: hidden;
+}
+.rating-seg {
+	flex: 1;
+	height: 100%;
+}
+.rating-indicator {
+	position: absolute;
+	top: -6rpx;
+	transform: translateX(-50%);
+}
+.rating-dot {
+	width: 28rpx;
+	height: 28rpx;
+	border-radius: 50%;
+	background: #fff;
+	border: 4rpx solid $primary;
+	box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.2);
+}
+.rating-labels {
+	display: flex;
+	justify-content: space-between;
+	padding: 0 8rpx;
+	margin-bottom: 24rpx;
+}
+.rating-label-item {
+	font-size: 22rpx;
+	color: $text-hint;
+	flex: 1;
+	text-align: center;
+}
+.rating-badge {
+	display: inline-block;
+	padding: 12rpx 40rpx;
+	border-radius: 32rpx;
+	margin-bottom: 20rpx;
+}
+.rating-badge-text {
+	font-size: 32rpx;
+	font-weight: 700;
+	color: #fff;
+}
+.rating-desc {
+	background: #f8f9fc;
+	border-radius: $radius-sm;
+	padding: 20rpx 24rpx;
+}
+.rating-desc-text {
+	font-size: 24rpx;
+	color: $text-secondary;
+	line-height: 1.7;
+}
+
+/* ========== Custom Picker ========== */
+.picker-mask {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background: rgba(0, 0, 0, 0.5);
+	z-index: 999;
+	display: flex;
+	align-items: flex-end;
+}
+.picker-panel {
+	width: 100%;
+	background: #fff;
+	border-radius: 24rpx 24rpx 0 0;
+	max-height: 60vh;
+	display: flex;
+	flex-direction: column;
+}
+.picker-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 28rpx 32rpx;
+	border-bottom: 1rpx solid $border;
+}
+.picker-cancel {
+	font-size: 30rpx;
+	color: $text-hint;
+}
+.picker-confirm {
+	font-size: 30rpx;
+	color: $primary;
+	font-weight: 600;
+}
+.picker-scroll {
+	max-height: 50vh;
+	padding: 0 32rpx;
+}
+.picker-option {
+	padding: 28rpx 0;
+	border-bottom: 1rpx solid #f5f5f5;
+}
+.picker-option.active {
+	background: $primary-light;
+	margin: 0 -32rpx;
+	padding: 28rpx 32rpx;
+	border-radius: 8rpx;
+}
+.picker-option-text {
+	font-size: 30rpx;
+	color: $text-primary;
+}
+.picker-option.active .picker-option-text {
+	color: $primary;
+	font-weight: 600;
+}
+
+/* ========== Compare Result Wrapper ========== */
+.compare-result {
+	margin-top: 8rpx;
+}

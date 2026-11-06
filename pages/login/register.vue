@@ -30,6 +30,7 @@
 
 <script>
 import { setUserInfo,setToken } from "../../utils/auth";
+import { navTo } from '@/utils/helpers.js';
 export default {
   data() {
     return {
@@ -60,12 +61,6 @@ export default {
 		uni.navigateTo({
 			url: '/pages/login/login2'
 		});
-	},
-	navTo(url){
-		uni.navigateTo({
-			url:url,
-			animationType: 'slide-in-bottom',
-		})
 	},
 	navsTo(url){
 		uni.navigateTo({

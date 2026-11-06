@@ -208,12 +208,9 @@ export default {
 				'\uD83E\uDD30': '/static/icons/pregnancy.png',
 				'\uD83D\uDC89': '/static/icons/vaccine.png',
 				'\uD83D\uDD04': '/static/icons/font_convert.png',
-				'\uD83D\uDCCA': '/static/icons/word_count.png',
-				'\uD83D\uDCAC': '/static/icons/pinyin.png',
 				'\uD83D\uDCC5': '/static/icons/date_calc.png',
 				'\uD83D\uDCCF': '/static/icons/unit_convert.png',
 				'\u2696\uFE0F': '/static/icons/bmi.png',
-				'\uD83C\uDFA8': '/static/icons/color_convert.png'
 			};
 			var changed = false;
 			for (var i = 0; i < this.favoriteTools.length; i++) {

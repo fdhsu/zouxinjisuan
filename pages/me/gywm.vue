@@ -13,6 +13,7 @@
 </template>
 
 <script>
+	import { navTo } from '@/utils/helpers.js';
 	export default {
 		data() {
 			return {
@@ -23,12 +24,6 @@
 			//this.$app.recordVisitLog()
 		},
 		methods:{
-			navTo(url){
-				uni.navigateTo({
-					url:url,
-					animationType: 'slide-in-bottom',
-				})
-			},
 			navsTo(url){
 				uni.navigateTo({
 					url:url

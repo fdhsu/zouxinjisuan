@@ -354,14 +354,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$primary: #2B7DE9;
-$primary-light: #EEF4FF;
-$radius: 24rpx;
-$text-main: #333;
-$text-sec: #888;
-$bg: #F5F5FA;
-$card-bg: #fff;
-
 @import '@/common/tool-styles.scss';
 
 .pregnancy-page { min-height: 100vh; background: $bg; padding: 24rpx; padding-bottom: 60rpx; }

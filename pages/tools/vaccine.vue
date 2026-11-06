@@ -239,13 +239,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$primary: #2B7DE9;
-$primary-light: #EEF4FF;
-$radius: 24rpx;
-$text-main: #333;
-$text-sec: #888;
-$bg: #F5F5FA;
-$card-bg: #fff;
 $danger: #E54D42;
 $danger-light: #FEF0EE;
 $success: #19BE6B;
