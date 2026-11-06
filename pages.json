@@ -117,6 +117,36 @@
 				"navigationBarTitleText": "意见反馈"
 			}
 		},
+		{
+			"path" : "pages/tools/deposit",
+			"style" : {
+				"navigationBarTitleText" : "存款利息计算"
+			}
+		},
+		{
+			"path" : "pages/tools/pregnancy",
+			"style" : {
+				"navigationBarTitleText" : "孕期计算器"
+			}
+		},
+		{
+			"path" : "pages/tools/vaccine",
+			"style" : {
+				"navigationBarTitleText" : "疫苗接种提醒"
+			}
+		},
+		{
+			"path" : "pages/tools/unit",
+			"style" : {
+				"navigationBarTitleText" : "单位换算"
+			}
+		},
+		{
+			"path" : "pages/tools/bmi",
+			"style" : {
+				"navigationBarTitleText" : "BMI计算"
+			}
+		},
         {
         	"path" : "pages/index/webview",
         	"style" :

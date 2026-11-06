@@ -114,15 +114,15 @@ export default {
 						{ id: 'mortgage', name: '房贷计算器', icon: '/static/icons/mortgage.png', bgColor: '#2B7DE9', color: '#2B7DE9', url: '../tools/house', placeholder: false },
 						{ id: 'calculator', name: '科学计算器', icon: '/static/icons/calculator.png', bgColor: '#F5A623', color: '#F5A623', url: '../tools/electric', placeholder: false },
 						{ id: 'tax', name: '税费计算器', icon: '/static/icons/tax.png', bgColor: '#27AE60', color: '#27AE60', url: '../tools/tax', placeholder: false },
-						{ id: 'deposit', name: '存款利息计算', icon: '/static/icons/deposit.png', bgColor: '#E74C3C', color: '#E74C3C', url: '', placeholder: true }
+						{ id: 'deposit', name: '存款利息计算', icon: '/static/icons/deposit.png', bgColor: '#E74C3C', color: '#E74C3C', url: '../tools/deposit', placeholder: false }
 					]
 				},
 				{
 					name: '育儿助手',
 					tools: [
 						{ id: 'baby_subsidy', name: '育儿补贴计算', icon: '/static/icons/baby_subsidy.png', bgColor: '#E74C3C', color: '#E74C3C', url: '../baby/index', placeholder: false },
-						{ id: 'pregnancy', name: '孕期计算器', icon: '/static/icons/pregnancy.png', bgColor: '#9B59B6', color: '#9B59B6', url: '', placeholder: true },
-						{ id: 'vaccine', name: '疫苗接种提醒', icon: '/static/icons/vaccine.png', bgColor: '#1ABC9C', color: '#1ABC9C', url: '', placeholder: true }
+						{ id: 'pregnancy', name: '孕期计算器', icon: '/static/icons/pregnancy.png', bgColor: '#9B59B6', color: '#9B59B6', url: '../tools/pregnancy', placeholder: false },
+						{ id: 'vaccine', name: '疫苗接种提醒', icon: '/static/icons/vaccine.png', bgColor: '#1ABC9C', color: '#1ABC9C', url: '../tools/vaccine', placeholder: false }
 					]
 				},
 				{
@@ -137,8 +137,8 @@ export default {
 					name: '生活工具',
 					tools: [
 						{ id: 'date_calc', name: '日期计算器', icon: '/static/icons/date_calc.png', bgColor: '#E74C3C', color: '#E74C3C', url: '../tools/date', placeholder: false },
-						{ id: 'unit_convert', name: '单位换算', icon: '/static/icons/unit_convert.png', bgColor: '#27AE60', color: '#27AE60', url: '', placeholder: true },
-						{ id: 'bmi', name: 'BMI计算', icon: '/static/icons/bmi.png', bgColor: '#9B59B6', color: '#9B59B6', url: '', placeholder: true },
+						{ id: 'unit_convert', name: '单位换算', icon: '/static/icons/unit_convert.png', bgColor: '#27AE60', color: '#27AE60', url: '../tools/unit', placeholder: false },
+						{ id: 'bmi', name: 'BMI计算', icon: '/static/icons/bmi.png', bgColor: '#9B59B6', color: '#9B59B6', url: '../tools/bmi', placeholder: false },
 						{ id: 'color_convert', name: '颜色转换器', icon: '/static/icons/color_convert.png', bgColor: '#2B7DE9', color: '#2B7DE9', url: '', placeholder: true }
 					]
 				}
